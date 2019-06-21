@@ -76,14 +76,6 @@ $query_builder = TRUE;
 $active_group = 'default';
 $active_record = TRUE;
 
-function IsProduction() {
-	if (ENVIRONMENT == 'production') {
-		return true;
-	} else {
-		return false;
-	}
-}
-
 $db['default'] = array();
 if (IsProduction()) {
   $db['default']['hostname'] = 'localhost';

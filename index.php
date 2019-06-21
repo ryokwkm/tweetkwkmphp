@@ -312,4 +312,14 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
+
+
+function IsProduction() {
+	if (ENVIRONMENT == 'production') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 require_once BASEPATH.'core/CodeIgniter.php';
