@@ -76,19 +76,20 @@ $query_builder = TRUE;
 $active_group = 'default';
 $active_record = TRUE;
 
-$prod = false;
-//portが80なら本番。それ以外ならDev環境とみなす
-if($_SERVER["SERVER_PORT"] == 80) {
-	$prod = true;
+function IsProduction() {
+	if (ENVIRONMENT == 'production') {
+		return true;
+	} else {
+		return false;
+	}
 }
 
-
 $db['default'] = array();
-if ($prod) {
+if (IsProduction()) {
   $db['default']['hostname'] = 'localhost';
   $db['default']['username'] = 'vacation_ts';
   $db['default']['password'] = '200000';
-  $db['default']['database'] = 'vacation_ts';
+  $db['default']['database'] = 'vacation_tweets';
 } else {
   $db['default']['hostname'] = 'localhost';
   $db['default']['port']     = 8889;
@@ -101,7 +102,7 @@ $db['default']['dsn']	= '';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = FALSE;
-$db['default']['db_debug'] = (ENVIRONMENT !== 'production');
+$db['default']['db_debug'] = true;	//(ENVIRONMENT !== 'production');
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8';
