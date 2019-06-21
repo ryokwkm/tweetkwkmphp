@@ -75,7 +75,13 @@ $query_builder = TRUE;
 
 $active_group = 'default';
 $active_record = TRUE;
+
 $prod = false;
+//portが80なら本番。それ以外ならDev環境とみなす
+if($_SERVER["SERVER_PORT"] == 80) {
+	$prod = true;
+}
+
 
 $db['default'] = array();
 if ($prod) {
