@@ -78,7 +78,7 @@ $active_record = TRUE;
 
 $db['default'] = array();
 if (IsProduction()) {
-  $db['default']['hostname'] = 'localhost';
+  $db['default']['hostname'] = '127.0.0.1';
   $db['default']['username'] = 'vacation_ts';
   $db['default']['password'] = '200000';
   $db['default']['database'] = 'vacation_tweets';
