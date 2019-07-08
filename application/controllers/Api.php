@@ -62,8 +62,8 @@ class Api extends CI_Controller {
 	//html特殊文字をもとに戻す
 	private function htmlDecode($articles) {
 		foreach ($articles as $key => $article) {
-			$articles[$key]["head"] = htmlspecialchars_decode($article["head"]);
-			$articles[$key]["body"] = htmlspecialchars_decode($article["body"]);
+			$articles[$key]["head"] = html_entity_decode($article["head"]);
+			$articles[$key]["body"] = html_entity_decode($article["body"]);
 			$articles[$key]["head"] = htmlspecialchars_decode($article["head"], ENT_QUOTES);
 			$articles[$key]["body"] = htmlspecialchars_decode($article["body"], ENT_QUOTES);
 		}
