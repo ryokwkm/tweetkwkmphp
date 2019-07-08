@@ -62,10 +62,10 @@ class Api extends CI_Controller {
 	//html特殊文字をもとに戻す
 	private function htmlDecode($articles) {
 		foreach ($articles as $key => $article) {
-			$articles[$key]["head"] = str_replace(array('&nbsp;', '&emsp;', '&ensp;'), '', $article["head"]);
-			$articles[$key]["body"] = str_replace(array('&nbsp;', '&emsp;', '&ensp;'), '', $article["body"]);
-			$articles[$key]["head"] = htmlspecialchars_decode($article["head"], ENT_QUOTES);
-			$articles[$key]["body"] = htmlspecialchars_decode($article["body"], ENT_QUOTES);
+			$articles[$key]["head"] = str_replace(array('&nbsp;', '&emsp;', '&ensp;'), '', $articles[$key]["head"]);
+			$articles[$key]["body"] = str_replace(array('&nbsp;', '&emsp;', '&ensp;'), '', $articles[$key]["body"]);
+			$articles[$key]["head"] = htmlspecialchars_decode($articles[$key]["head"], ENT_QUOTES);
+			$articles[$key]["body"] = htmlspecialchars_decode($articles[$key]["body"], ENT_QUOTES);
 		}
 		return $articles;
 	}
