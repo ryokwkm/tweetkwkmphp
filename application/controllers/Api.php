@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Api extends CI_Controller {
 
+	public $beforeDay;
+	public $country;
+
 	public function get($beforeDay=0,$country=0)
 	{
 		if($this->input->get("country") != NULL) {
@@ -12,9 +15,36 @@ class Api extends CI_Controller {
 			$beforeDay = $this->input->get("page");
 		}
 
+		$this->beforeDay = $beforeDay;
+		$this->country = $country;
+
+
+		$topArticles = $this->getTopArticles();
+		if (empty($topArticles)) {
+			$this->beforeDay += 1;
+			$topArticles = $this->getTopArticles();
+		}
+
+
+		//html特殊文字を変換
+		$topArticles = $this->htmlDecode($topArticles);
+		$topArticles = $this->sortById($topArticles);
+
+		$topArticles = $this->getChildArticles($topArticles);
+
+
+
+
+//		var_dump($topArticles);
+		header('Access-Control-Allow-Origin: *');
+		echo json_encode($topArticles);
+	}
+
+	//情報取得
+	private function getTopArticles() {
 		$tableName = $this->getTable();
-		$targetStart = date('Y-m-d', mktime(0, 0, 0, date('n'), date('j') - $beforeDay, date('Y')));
-		$targetEnd = date('Y-m-d', mktime(0, 0, 0, date('n'), date('j') - $beforeDay + 1, date('Y')));
+		$targetStart = date('Y-m-d', mktime(0, 0, 0, date('n'), date('j') - $this->beforeDay, date('Y')));
+		$targetEnd = date('Y-m-d', mktime(0, 0, 0, date('n'), date('j') - $this->beforeDay + 1, date('Y')));
 
 		$this->load->database();
 		$query = $this->db->query(
@@ -22,13 +52,14 @@ class Api extends CI_Controller {
 			WHERE created >= ? AND created < ?
 			AND country = ?
 			AND parent_id = 0",
-			array($targetStart, $targetEnd, $country));
-		$topArticles = $query->result_array();
-		// echo $this->db->last_query();
+			array($targetStart, $targetEnd, $this->country));
+		return $query->result_array();
+	}
 
-		//html特殊文字を変換
-		$topArticles = $this->htmlDecode($topArticles);
-		$topArticles = $this->sortById($topArticles);
+	private function getChildArticles($topArticles) {
+		$tableName = $this->getTable();
+		$targetStart = date('Y-m-d', mktime(0, 0, 0, date('n'), date('j') - $this->beforeDay, date('Y')));
+		$targetEnd = date('Y-m-d', mktime(0, 0, 0, date('n'), date('j') - $this->beforeDay + 1, date('Y')));
 
 		foreach($topArticles as $key => $topArticle ) {
 			$reactions = $this->db->query(
@@ -36,17 +67,14 @@ class Api extends CI_Controller {
 				WHERE created >= ? AND created < ?
 				AND country = ?
 				AND parent_id = ?",
-				array($targetStart, $targetEnd, $country, $topArticle["id"]))->result_array();
+				array($targetStart, $targetEnd, $this->country, $topArticle["id"]))->result_array();
 
 			//いいね順にソート。Html特殊文字変換
 			$reactions = $this->htmlDecode($reactions);
 			$reactions = $this->sortById($reactions, "favorite");
 			$topArticles[$key]["reactions"] = $reactions;
 		}
-
-//		var_dump($topArticles);
-		header('Access-Control-Allow-Origin: *');
-		echo json_encode($topArticles);
+		return $topArticles;
 	}
 
 	//ソート
