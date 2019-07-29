@@ -25,14 +25,11 @@ class Api extends CI_Controller {
 			$topArticles = $this->getTopArticles();
 		}
 
-
 		//html特殊文字を変換
 		$topArticles = $this->htmlDecode($topArticles);
 		$topArticles = $this->sortById($topArticles);
 
 		$topArticles = $this->getChildArticles($topArticles);
-
-
 
 
 //		var_dump($topArticles);
@@ -79,6 +76,7 @@ class Api extends CI_Controller {
 
 	//ソート
 	private function sortById($articles, $keyName="id") {
+		if(empty($articles)) return $articles;
 		foreach ($articles as $key => $value) {
 		    $sort[$key] = $value[$keyName];
 		}
