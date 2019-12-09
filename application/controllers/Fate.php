@@ -69,23 +69,23 @@ class Fate extends MY_Controller {
 
 	protected function keyword_sort($articles, $keywords) {
 
+		$favorites = array();
+		foreach($articles as $article ) {
+			$favorites[] = $article["favorite"];
+		}
+		
+		array_multisort($favorites, SORT_DESC, SORT_NUMERIC, $articles);
+		
 		$ret = array();
-		foreach($articles as $article ) {;
-			foreach($keywords as $key => $keyword ) {
+		foreach($keywords as $key => $keyword ) {
+			foreach($articles as $article ) {
 				if($article["keyword"] == $keyword){
-					$article["favorite"] = (int)$article["favorite"];
+					// $article["favorite"] = (int)$article["favorite"];
 					$ret[] = $article;
 				}
 			}
 		}
 
-		$favorites = array();
-		foreach($ret as $key => $re ) {
-			$favorites[] = $re["favorite"];
-		}
-		
-		array_multisort($favorites, SORT_DESC, SORT_NUMERIC, $ret);
-		
 		return $ret;
 	}
 
