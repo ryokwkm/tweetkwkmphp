@@ -847,3 +847,11 @@ if ( ! function_exists('function_usable'))
 		return FALSE;
 	}
 }
+
+if ( ! function_exists("vr") ) {
+function vr($array) {
+	echo "<pre>";
+	var_dump($array);
+	echo "</pre>";
+}
+}

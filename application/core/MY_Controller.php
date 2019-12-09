@@ -21,7 +21,7 @@ class MY_Controller extends CI_Controller {
 			AND parent_id = 0",
 			array($targetStart, $targetEnd, $this->country));
 		$result = $query->result_array();
-
+		//echo $this->db->last_query();
 		return $result;
 	}
 
@@ -43,6 +43,7 @@ class MY_Controller extends CI_Controller {
 			$reactions = $this->sortById($reactions, "favorite");
 			$topArticles[$key]["reactions"] = $reactions;
 		}
+		//echo $this->db->last_query();
 		return $topArticles;
 	}
 
@@ -82,3 +83,4 @@ class MY_Controller extends CI_Controller {
 		}
 	}
 }
+
