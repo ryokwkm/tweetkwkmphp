@@ -19,7 +19,7 @@ class Test extends CI_Controller {
 		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
 //
 //		//コールバックURLをここでセット
-//		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
+		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
 
 		vr($twitterApp);
 
