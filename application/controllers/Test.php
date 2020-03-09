@@ -11,12 +11,14 @@ class Test extends CI_Controller {
 	public function index()
 	{
 		echo "ok";
-		var_dump($_SESSION);
+
 		vr(array("ok"));
 //		$this->load->view('auth/index.html');
 			session_start();
 //		$this->load->library('session');
+		var_dump($_SESSION["test"]);
 
+		$_SESSION["test"] = "gogogo";
 		echo "ng?";
 		vr(array("ok"));
 	}
