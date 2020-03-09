@@ -94,7 +94,3 @@ class CI_Controller {
 	}
 
 }
-
-if( !function_exists("vr") ) { function vr( $array ) {
-  echo "<pre>";	var_dump( $array ); echo "</pre>";
-} }
