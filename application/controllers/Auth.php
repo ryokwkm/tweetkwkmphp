@@ -10,7 +10,7 @@ class Auth extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->library('session');
+		session_start();
 		vr($_SESSION);
 		$this->load->view('auth/index.html');
 	}
@@ -20,7 +20,7 @@ class Auth extends CI_Controller {
 	 */
 	public function callback()
 	{
-		$this->load->library('session');
+		session_start();
 		$this->load->database();
 
 		//login.phpでセットしたセッション
@@ -77,7 +77,7 @@ class Auth extends CI_Controller {
 	 */
 	public function login()
 	{
-		$this->load->library('session');
+		session_start();
 
 		$twitterApps = $this->getApp();
 		$twitterApp = $twitterApps[0];
