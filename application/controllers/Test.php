@@ -22,6 +22,12 @@ class Test extends CI_Controller {
 		$twitterApps = $this->getApp();
 		$twitterApp = $twitterApps[0];
 
+
+		$key = $twitterApp["consumerkey"];
+		$secret = $twitterApp["consumersecret"];
+		$connection = new TwitterOAuth($key, $secret, $request_token['oauth_token'], $request_token['oauth_token_secret']);
+
+
 	}
 	//情報取得
 	protected function getApp() {
