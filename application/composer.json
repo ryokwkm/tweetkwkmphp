@@ -1,0 +1,6 @@
+{
+	"description": "The CodeIgniter framework",
+	"require": {
+		"abraham/twitteroauth": "0.9.0"
+	}
+}

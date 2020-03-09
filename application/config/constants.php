@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+
+$now_host = (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"];
+define('OAUTH_CALLBACK', $now_host. "/auth/callback");
+
+
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace
