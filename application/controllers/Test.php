@@ -13,7 +13,7 @@ class Test extends CI_Controller {
 		echo "ok";
 
 		vr(array("ok"));
-//		$this->load->view('auth/index.html');
+		$this->load->view('auth/index.html');
 			session_start();
 //		$this->load->library('session');
 		var_dump($_SESSION["test"]);
