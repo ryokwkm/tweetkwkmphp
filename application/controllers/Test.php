@@ -16,7 +16,6 @@ class Test extends CI_Controller {
 //		$this->load->view('auth/index.html');
 
 		$this->load->library('session');
-		vr($_SESSION);
 
 		echo "ng?";
 		vr(array("ok"));
