@@ -11,6 +11,7 @@ class Test extends CI_Controller {
 	public function index()
 	{
 		echo APPPATH;
+		$this->load->library('session');
 	}
 
 }
