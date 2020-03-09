@@ -15,6 +15,38 @@ class Auth extends CI_Controller {
 		$this->load->view('auth/index.html');
 	}
 
+
+
+	/**
+	 * Login
+	 * @throws \Abraham\TwitterOAuth\TwitterOAuthException
+	 */
+	public function login()
+	{
+		session_start();
+		$this->load->database();
+
+		$twitterApps = $this->getApp();
+		$twitterApp = $twitterApps[0];
+		//TwitterOAuth をインスタンス化
+		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
+
+		//コールバックURLをここでセット
+		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
+
+		//callback.phpで使うのでセッションに入れる
+		$_SESSION['account_name'] = "magialogin"; //$_POST['account_name']; FIXME:POSTにする
+		$_SESSION['oauth_token'] = $request_token['oauth_token'];
+		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+
+		//Twitter.com 上の認証画面のURLを取得( この行についてはコメント欄も参照 )
+		$url = $connection->url('oauth/authenticate', array('oauth_token' => $request_token['oauth_token']));
+
+		//Twitter.com の認証画面へリダイレクト
+		header( 'location: '. $url );
+	}
+
+
 	/**
 	 * callback
 	 */
@@ -70,34 +102,6 @@ class Auth extends CI_Controller {
 
 	}
 
-
-	/**
-	 * Login
-	 * @throws \Abraham\TwitterOAuth\TwitterOAuthException
-	 */
-	public function login()
-	{
-		session_start();
-
-		$twitterApps = $this->getApp();
-		$twitterApp = $twitterApps[0];
-		//TwitterOAuth をインスタンス化
-		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
-
-		//コールバックURLをここでセット
-		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
-
-		//callback.phpで使うのでセッションに入れる
-		$_SESSION['account_name'] = "magialogin"; //$_POST['account_name']; FIXME:POSTにする
-		$_SESSION['oauth_token'] = $request_token['oauth_token'];
-		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
-
-		//Twitter.com 上の認証画面のURLを取得( この行についてはコメント欄も参照 )
-		$url = $connection->url('oauth/authenticate', array('oauth_token' => $request_token['oauth_token']));
-
-		//Twitter.com の認証画面へリダイレクト
-		header( 'location: '. $url );
-	}
 
 
 

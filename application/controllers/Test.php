@@ -11,15 +11,17 @@ class Test extends CI_Controller {
 	public function index()
 	{
 		session_start();
+		$this->load->database();
 
 		$twitterApps = $this->getApp();
 		$twitterApp = $twitterApps[0];
 		//TwitterOAuth をインスタンス化
 //		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
-		echo OAUTH_CALLBACK;
-		//コールバックURLをここでセット
+//
+//		//コールバックURLをここでセット
 //		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
 
+		vr($twitterApp);
 
 	}
 	//情報取得
