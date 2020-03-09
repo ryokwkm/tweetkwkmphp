@@ -11,23 +11,15 @@ class Test extends CI_Controller {
 	public function index()
 	{
 		session_start();
-		$this->load->database();
 
-		//login.phpでセットしたセッション
-		$request_token = [];  // [] は array() の短縮記法。詳しくは以下の「追々記」参照
-		$request_token['oauth_token'] = $_SESSION['oauth_token'];
-		$request_token['oauth_token_secret'] = $_SESSION['oauth_token_secret'];
-		//OAuth トークンも用いて TwitterOAuth をインスタンス化
-		$app_name = $_SESSION['account_name'];
 		$twitterApps = $this->getApp();
 		$twitterApp = $twitterApps[0];
+		//TwitterOAuth をインスタンス化
+		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
 
+		//コールバックURLをここでセット
+		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
 
-		$key = $twitterApp["consumerkey"];
-		$secret = $twitterApp["consumersecret"];
-		$connection = new TwitterOAuth($key, $secret, $request_token['oauth_token'], $request_token['oauth_token_secret']);
-
-		echo "ok";
 
 	}
 	//情報取得
