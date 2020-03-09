@@ -14,7 +14,7 @@ class Test extends CI_Controller {
 		var_dump($_SESSION);
 		vr(array("ok"));
 //		$this->load->view('auth/index.html');
-
+			session_start();
 //		$this->load->library('session');
 
 		echo "ng?";
