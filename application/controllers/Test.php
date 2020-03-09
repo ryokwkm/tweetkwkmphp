@@ -12,6 +12,7 @@ class Test extends CI_Controller {
 	{
 		echo APPPATH;
 		$this->load->library('session');
+		vr($_SESSION);
 	}
 
 }
