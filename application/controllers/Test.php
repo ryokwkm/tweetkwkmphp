@@ -10,17 +10,14 @@ class Test extends CI_Controller {
 	 */
 	public function index()
 	{
-		echo "ok";
+		session_start();
+		$this->load->database();
 
-		vr(array("ok"));
-		$this->load->view('auth/index.html');
-			session_start();
-//		$this->load->library('session');
-		var_dump($_SESSION["test"]);
+		//login.phpでセットしたセッション
+		$request_token = [];  // [] は array() の短縮記法。詳しくは以下の「追々記」参照
+		$request_token['oauth_token'] = $_SESSION['oauth_token'];
+		$request_token['oauth_token_secret'] = $_SESSION['oauth_token_secret'];
 
-		$_SESSION["test"] = "gogogo";
-		echo "ng?";
-		vr(array("ok"));
 	}
 
 }
