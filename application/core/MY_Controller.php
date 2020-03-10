@@ -6,6 +6,20 @@ class MY_Controller extends CI_Controller {
 	public $country;
 	public $appName;	//twitter_usersテーブルのID
 
+	/**
+	 * マイページのBaseテンプレート
+	 */
+	function getBaseTemplate() {
+		$data["jsBase"] = $this->load->view('admin/parts/js_base', '', TRUE);
+
+		$navData["my_pages"] = $this->config->item("my_pages");
+		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $navData, TRUE);
+		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
+
+		$data["fixedSetting"] = $this->load->view('admin/parts/fixed_setting', '', TRUE);
+		$data["footer"] = $this->load->view('admin/parts/footer', '', TRUE);
+		return $data;
+	}
 
 	//情報取得
 	protected function getTopArticles() {

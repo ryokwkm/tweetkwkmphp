@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'vendor/autoload.php');
 use Abraham\TwitterOAuth\TwitterOAuth;
 
-class Auth extends CI_Controller {
+class Auth extends MY_Controller {
 
 	/**
 	 * index
@@ -11,8 +11,15 @@ class Auth extends CI_Controller {
 	public function index()
 	{
 		session_start();
-		vr($_SESSION);
-		$this->load->view('auth/index.html');
+
+		$data = $this->getBaseTemplate();
+		$data["contents"] = $this->load->view('admin/login', '', TRUE);
+		$this->load->view('admin/noside_base', $data);
+	}
+
+	public function logout() {
+		session_destroy();
+		header( 'location: /auth/index' );
 	}
 
 
@@ -98,7 +105,7 @@ class Auth extends CI_Controller {
 		//ログイン状態にする
 		$_SESSION["is_login"] = true;
 		//マイページへリダイレクト
-		header( 'location: /auth/index' );
+		header( 'location: /mypage/index' );
 
 	}
 
