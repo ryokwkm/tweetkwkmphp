@@ -15,7 +15,7 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label class="bmd-label-floating">対象アカウント</label>
-									<input type="text" class="form-control">
+									<input type="text" name="account_name" class="form-control">
 								</div>
 							</div>
 						</div>
@@ -24,7 +24,7 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label class="bmd-label-floating">パスワード</label>
-									<input type="text" class="form-control">
+									<input type="text" name="password" class="form-control">
 								</div>
 							</div>
 						</div>

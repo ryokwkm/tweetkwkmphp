@@ -40,8 +40,7 @@
 <script src="/assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="/assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
-<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="/assets/demo/demo.js"></script>
+
 <script>
 	$(document).ready(function() {
 		$().ready(function() {
@@ -212,4 +211,28 @@
 			});
 		});
 	});
+</script>
+
+<script>
+	//固有
+	function setToggleCheckWord($elm) {
+		word = "Off"
+		if($elm.prop('checked')) {
+			word = "On"
+		}
+		$("#"+ $elm.attr('id') +"_text").text(word);
+	}
+	$(document).ready(function() {
+		$('input[type="checkbox"]').each(function(){
+			setToggleCheckWord($(this));
+		});
+
+		$('input[type="checkbox"]').click(function(){
+			setToggleCheckWord($(this));
+		});
+	});
+
+	setTimeout(function() {
+		$('.alert').fadeOut();
+	}, 3000);
 </script>

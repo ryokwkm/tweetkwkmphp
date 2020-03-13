@@ -6,19 +6,40 @@ class MY_Controller extends CI_Controller {
 	public $country;
 	public $appName;	//twitter_usersテーブルのID
 
+	protected $vd;	//viewにわたすData
+	public function __construct() {
+		parent::__construct();
+		session_start();
+		$this->load->database();
+		$this->load->model("session_model");
+		$this->load->model("user_model");
+		$this->load->model("appuser_model");
+	}
+
+
+
 	/**
 	 * マイページのBaseテンプレート
 	 */
 	function getBaseTemplate() {
+		$data["debug"] = false;
 		$data["jsBase"] = $this->load->view('admin/parts/js_base', '', TRUE);
 
 		$navData["my_pages"] = $this->config->item("my_pages");
+		if($this->session_model->IsLogin()) {
+			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
+		}
 		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $navData, TRUE);
 		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
 
 		$data["fixedSetting"] = $this->load->view('admin/parts/fixed_setting', '', TRUE);
 		$data["footer"] = $this->load->view('admin/parts/footer', '', TRUE);
-		return $data;
+		$this->vd = $data;
+		return $this->vd;
+	}
+
+	function debugMode() {
+		$this->vd["debug"] = true;
 	}
 
 	//情報取得
@@ -83,6 +104,11 @@ class MY_Controller extends CI_Controller {
 		return $articles;
 	}
 
+	//情報取得
+	protected function getApp($appName) {
+		$query = $this->db->query("SELECT * from twitter_apps where account_name = ?", $appName);
+		return $query->result_array();
+	}
 
 	protected function getTable() {
 		// if(true){	//if(IsProduction()) {

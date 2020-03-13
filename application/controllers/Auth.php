@@ -4,13 +4,16 @@ require_once(APPPATH . 'vendor/autoload.php');
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 class Auth extends MY_Controller {
+	public function __construct() {
+		parent::__construct();
+	}
+
 
 	/**
 	 * index
 	 */
 	public function index()
 	{
-		session_start();
 
 		$data = $this->getBaseTemplate();
 		$data["contents"] = $this->load->view('admin/login', '', TRUE);
@@ -30,10 +33,15 @@ class Auth extends MY_Controller {
 	 */
 	public function login()
 	{
-		session_start();
-		$this->load->database();
+		//バリデーション
+		$appName = $this->input->post('account_name');
+		if($appName != "magialogin") {
+			vr($appName);
+			echo "エラーです";
+			exit;
+		}
 
-		$twitterApps = $this->getApp();
+		$twitterApps = $this->getApp($appName);
 		$twitterApp = $twitterApps[0];
 		//TwitterOAuth をインスタンス化
 		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
@@ -42,7 +50,7 @@ class Auth extends MY_Controller {
 		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
 
 		//callback.phpで使うのでセッションに入れる
-		$_SESSION['account_name'] = "magialogin"; //$_POST['account_name']; FIXME:POSTにする
+		$_SESSION['account_name'] = $appName; //magialogin
 		$_SESSION['oauth_token'] = $request_token['oauth_token'];
 		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 
@@ -59,8 +67,6 @@ class Auth extends MY_Controller {
 	 */
 	public function callback()
 	{
-		session_start();
-		$this->load->database();
 
 		//login.phpでセットしたセッション
 		$request_token = [];  // [] は array() の短縮記法。詳しくは以下の「追々記」参照
@@ -74,7 +80,7 @@ class Auth extends MY_Controller {
 
 		//OAuth トークンも用いて TwitterOAuth をインスタンス化
 		$app_name = $_SESSION['account_name'];
-		$twitterApps = $this->getApp();
+		$twitterApps = $this->getApp($app_name);
 		$twitterApp = $twitterApps[0];
 
 		$key = $twitterApp["consumerkey"];
@@ -83,24 +89,24 @@ class Auth extends MY_Controller {
 
 		//アプリでは、access_token(配列になっています)をうまく使って、Twitter上のアカウントを操作していきます
 		try {
-			$_SESSION['access_token'] = $connection->oauth("oauth/access_token", array("oauth_verifier" => $this->input->get("oauth_verifier", false)));
+			$_SESSION['auth'] = $connection->oauth("oauth/access_token", array("oauth_verifier" => $this->input->get("oauth_verifier", false)));
 		} catch (\Exception $e) {
 			//\Fuel\Core\Log::error($e->getMessage());
 			vr($e->getMessage());
 			exit;
 		}
 
-		/*
-		ちなみに、この変数の中に、OAuthトークンとトークンシークレットが配列となって入っています。
-		*/
+		$twitterProfile = $this->getTwitterProfile($_SESSION['auth']["user_id"], $_SESSION['auth']["oauth_token"], $_SESSION['auth']["oauth_token_secret"]);
 		$data = array(
 			"app_id" => $twitterApp["id"],
-			"user_id" => $_SESSION['access_token']["user_id"],
-			"screen_name" => $_SESSION['access_token']["screen_name"],
-			"access_token" => $_SESSION['access_token']["oauth_token"],
-			"access_secret" => $_SESSION['access_token']["oauth_token_secret"],
+			"user_id" => $_SESSION['auth']["user_id"],
+			"access_token" => $_SESSION['auth']["oauth_token"],
+			"access_secret" => $_SESSION['auth']["oauth_token_secret"],
+			"screen_name" => $twitterProfile->screen_name,
+			"display_name" => $twitterProfile->name,
+			"image_url" => $twitterProfile->profile_image_url_https,
 		);
-		$this->db->insert("twitter_end_users", $data);
+		$this->db->replace("twitter_end_users", $data);
 
 		//ログイン状態にする
 		$_SESSION["is_login"] = true;
@@ -110,11 +116,25 @@ class Auth extends MY_Controller {
 	}
 
 
+	/**
+	 * Twitterからプロフィール情報を取得する
+	 * @return array|object
+	 */
+	function getTwitterProfile($userID, $oauth_token, $oauth_token_secret) {
+		$query = $this->db->query("
+			SELECT a.*, u.screen_name 
+			from twitter_end_users u 
+			INNER JOIN twitter_apps a
+			ON u.app_id = a.id   
+			where u.user_id = ?", $userID);
+		$app = $query->row();
 
 
-	//情報取得
-	protected function getApp() {
-		$query = $this->db->query("SELECT * from twitter_apps where id = 14");
-		return $query->result_array();
+		//twitterのプロフィールを取得
+		$connection = new TwitterOAuth($app->consumerkey, $app->consumersecret, $oauth_token, $oauth_token_secret);
+		$user_data = $connection->get("users/show", array("screen_name" => $app->screen_name));
+		return $user_data;
 	}
+
+
 }

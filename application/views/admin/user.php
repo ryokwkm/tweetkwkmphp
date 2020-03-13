@@ -1,110 +1,262 @@
 
+<script>
+	function DisplayProfileForm($elm) {
+		if($("#input_trendsearch").prop('checked')){
+			$(".trendsearch_box").show();
+		} else {
+			$(".trendsearch_box").hide();
+		}
+
+		if($("#input_replyaction").prop('checked')){
+			$(".replyaction_box").show();
+		} else {
+			$(".replyaction_box").hide();
+		}
+	}
+
+	function DispCharaMode() {
+		$this = $('input[name="character_mode"]:checked');
+
+		if( $this.val() == 1) {
+			$(".character_mode1").show();
+			$(".character_mode2").hide();
+		} else if( $this.val() == 2) {
+			$(".character_mode1").hide();
+			$(".character_mode2").show();
+		}
+	}
+
+	function ChangeExeRate(){
+		$perHour = $('input[name="exe_rate"]').val() * 6 / 100;
+		$body = "1時間に約 " + $perHour.toFixed(1)  + "回実行される"
+		$("#exe_rate_text").text($body);
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	$(document).ready(function() {
+		$('input[type="checkbox"]').each(function(){
+			DisplayProfileForm($(this));
+		});
+		DispCharaMode();
+		ChangeExeRate();
+
+
+		$('input[type="checkbox"]').change(function(){
+			DisplayProfileForm($(this));
+		});
+		$('input[name="character_mode"]').change(function(){
+			DispCharaMode();
+		});
+		$('input[name="exe_rate"]').change(function(){
+			ChangeExeRate();
+		});
+	});
+
+</script>
+
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-4">
-			<div class="card card-profile">
-				<div class="card-avatar">
-					<a href="#pablo">
-						<img class="img" src="../assets/img/faces/marc.jpg" />
-					</a>
-				</div>
-				<div class="card-body">
-					<h6 class="card-category text-gray">CEO / Co-Founder</h6>
-					<h4 class="card-title">Alec Thompson</h4>
-					<p class="card-description">
-						Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-					</p>
-					<a href="#pablo" class="btn btn-primary btn-round">Follow</a>
-				</div>
-			</div>
+
+	<form action="userupdate" method="post">
+		<?php if(!empty($message)) { ?>
+			<div class="alert alert-success" role="alert"><?= $message ?></div>
+		<?php } ?>
+
+
 		</div>
-		<div class="col-md-8">
+	<div class="row">
+		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header card-header-primary">
 					<h4 class="card-title">Edit Profile</h4>
-					<p class="card-category">Complete your profile</p>
+					<p class="card-category">えーりんちゃん</p>
 				</div>
 				<div class="card-body">
-					<form>
+
 						<div class="row">
-							<div class="col-md-5">
+
+
+							<div class="col-md-6">
 								<div class="form-group">
-									<label class="bmd-label-floating">Company (disabled)</label>
-									<input type="text" class="form-control" disabled>
+									<label for="exampleInputPassword1">実行確率(/10min)</label>
+									<input name="exe_rate" type="number" class="form-control"  min="1" max="100" value="<?= $appuser["exe_rate"] ?>">
 								</div>
 							</div>
+							<div class="col-md-6">
+								<blockquote class="blockquote" style="margin-top: 10px">
+									<small class="text-muted" id="exe_rate_text">1時間に約、X回行われる</small>
+								</blockquote>
+							</div>
+
+							<?php
+							$character_mode1 = "";
+							$character_mode2 = "";
+							if($appuser["character_mode"] == 1) {
+								$character_mode1 = " checked";
+							} else if($appuser["character_mode"] == 2) {
+								$character_mode2 = " checked";
+							} ?>
+
 							<div class="col-md-3">
-								<div class="form-group">
-									<label class="bmd-label-floating">Username</label>
-									<input type="text" class="form-control">
+								<div class="form-check form-check-radio">
+									<label class="form-check-label">
+										<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> >
+										Twitterユーザー
+										<span class="circle">
+											<span class="check"></span>
+									</span>
+									</label>
+								</div>
+
+								<div class="form-check form-check-radio">
+									<label class="form-check-label">
+										<input class="form-check-input" type="radio" name="character_mode" id="exampleRadios2" value="2" <?= $character_mode2 ?> >
+										キャラクター
+										<span class="circle">
+											<span class="check"></span>
+									</span>
+									</label>
 								</div>
 							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="bmd-label-floating">Email address</label>
-									<input type="email" class="form-control">
+
+							<div class="col-md-9">
+								<div class="form-group character_mode1">
+									<label for="exampleInputPassword1" style="margin-top: 10px;">Twitterユーザー名</label>
+									<input type="text" name="target_screen_name" class="form-control"  value="<?= $appuser["target_screen_name"] ?>" >
+								</div>
+
+								<div class="form-group character_mode2">
+									<select name="target_character_id" id="inputState" class="form-control">
+										<option value="1" selected>まどか</option>
+										<option value="2">...</option>
+									</select>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label class="bmd-label-floating">Fist Name</label>
-									<input type="text" class="form-control">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label class="bmd-label-floating">Last Name</label>
-									<input type="text" class="form-control">
-								</div>
-							</div>
-						</div>
-						<div class="row">
+
 							<div class="col-md-12">
-								<div class="form-group">
-									<label class="bmd-label-floating">Adress</label>
-									<input type="text" class="form-control">
+								<div class="togglebutton">
+									<label>
+										<input type="checkbox" name="is_search" value="1" id="input_trendsearch" <?php if($appuser["is_search"] == 1) echo "checked" ?> >
+										<span class="toggle"></span>
+										トレンドサーチ
+										<span id="input_trendsearch_text"></span>
+									</label>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
+
+
+							<div class="col-md-6 trendsearch_box">
 								<div class="form-group">
-									<label class="bmd-label-floating">City</label>
-									<input type="text" class="form-control">
+									<label for="exampleInputPassword1">実行確率</label>
+									<input type="number" name="search_rate" class="form-control"  min="0" max="100" value="<?= $appuser["search_rate"] ?>">
 								</div>
 							</div>
-							<div class="col-md-4">
+
+							<div class="col-md-6 trendsearch_box">
 								<div class="form-group">
-									<label class="bmd-label-floating">Country</label>
-									<input type="text" class="form-control">
+									<label for="exampleInputPassword1">実行量</label>
+									<input type="number" name="fire_lv" class="form-control"  min="0" max="100" value="<?= $appuser["fire_lv"] ?>">
 								</div>
 							</div>
-							<div class="col-md-4">
+
+							<div class="col-md-6 trendsearch_box">
 								<div class="form-group">
-									<label class="bmd-label-floating">Postal Code</label>
-									<input type="text" class="form-control">
+									<label for="exampleInputPassword1">トレンドキーワード</label>
+									<input type="text" name="search_keyword" class="form-control" value="<?= $appuser["search_keyword"] ?>" placeholder="fate fgo">
 								</div>
 							</div>
-						</div>
-						<div class="row">
+
+							<div class="col-md-6 trendsearch_box">
+								<div class="form-group">
+									<label for="exampleInputPassword1">サーチオプション</label>
+									<input type="text" name="search_option" class="form-control" value="<?= $appuser["search_option"] ?>" placeholder="min_faves:3">
+								</div>
+							</div>
+
 							<div class="col-md-12">
-								<div class="form-group">
-									<label>About Me</label>
-									<div class="form-group">
-										<label class="bmd-label-floating"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
-										<textarea class="form-control" rows="5"></textarea>
-									</div>
+								<div class="togglebutton">
+									<label>
+										<input type="checkbox" value="1" name="is_news" id="input_news" <?php if($appuser["is_news"] == 1) echo "checked" ?> >
+										<span class="toggle"></span>
+										ニュースをツイート
+										<span id="input_news_text"></span>
+									</label>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="togglebutton">
+									<label>
+										<input type="checkbox" value="1" name="is_reply" id="input_replyaction" <?php if($appuser["is_reply"] == 1) echo "checked" ?> >
+										<span class="toggle"></span>
+										リプライをトリガーにアクションを実行
+										<span id="input_replyaction_text"></span>
+									</label>
+								</div>
+							</div>
+
+							<div class="col-md-12 replyaction_box">
+								<div class="togglebutton">
+									<label>
+										<input type="checkbox" value="1" name="reply_retweet" id="input_replyretweet" <?php if($appuser["reply_retweet"] == 1) echo "checked" ?> >
+										<span class="toggle"></span>
+										リプライをリツイート
+										<span id="input_replyretweet_text"></span>
+									</label>
+								</div>
+							</div>
+
+							<div class="col-md-12 replyaction_box">
+								<div class="togglebutton">
+									<label>
+										<input type="checkbox" value="1" name="is_replyreply" id="input_replyreply" <?php if($appuser["is_replyreply"] == 1) echo "checked" ?> >
+										<span class="toggle"></span>
+										リプライにお返事
+										<span id="input_replyreply_text"></span>
+									</label>
+								</div>
+							</div>
+
+
+							<div class="col-md-12">
+								<div class="togglebutton">
+									<label>
+										<input type="checkbox" value="1" name="followback" id="input_followback" <?php if($appuser["followback"] == 1) echo "checked" ?> >
+										<span class="toggle"></span>
+										フォローバック
+										<span id="input_followback_text"></span>
+									</label>
 								</div>
 							</div>
 						</div>
-						<button type="submit" class="btn btn-primary pull-right">Update Profile</button>
-						<div class="clearfix"></div>
-					</form>
-				</div>
+
+
+
+
+					</div>
+					<button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+					<div class="clearfix"></div>
+
 			</div>
 		</div>
+<!--		<div class="col-md-4">-->
+<!--			<div class="card card-profile">-->
+<!--				<div class="card-avatar">-->
+<!--					<a href="#pablo">-->
+<!--						<img class="img" src="--><?//= $user_data["image_url"]; ?><!--" style="" />-->
+<!--					</a>-->
+<!--				</div>-->
+<!--				<div class="card-body">-->
+<!--					<h6 class="card-category text-gray">CEO / Co-Founder</h6>-->
+<!--					<h4 class="card-title">Alec Thompson</h4>-->
+<!--					<p class="card-description">-->
+<!--						Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...-->
+<!--					</p>-->
+<!--					<a href="#pablo" class="btn btn-primary btn-round">Follow</a>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
 
 	</div>
+	</form>
 </div>
