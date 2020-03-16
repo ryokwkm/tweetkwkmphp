@@ -13,12 +13,15 @@ class MyPage extends MY_Controller {
 		}
 	}
 
+	public $appID = 6;
+
 	/**
 	 * index
 	 */
 	public function index()
 	{
-		$appID = 14;	//どうやって渡すか
+		$appID = $this->appID;
+
 		$this->getBaseTemplate();
 //		$this->debugMode();
 		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
@@ -31,7 +34,15 @@ class MyPage extends MY_Controller {
 	public function userupdate() {
 		$appID = 14;	//どうやって渡すか
 		$posts = $this->input->post();
+		if(!empty($posts["screen_name"])) {
+
+		}
 		$this->appuser_model->UpdateByID($posts, $appID);
+
+		//action済みにする
+		$appuser = $this->appuser_model->FindByID($appID);
+		$this->usertlog_model->UpdateActioned($appuser["user_id"]);
+
 		$this->session_model->SetFlash("message", "更新しました");
 		header( 'location: /mypage/index' );
 	}

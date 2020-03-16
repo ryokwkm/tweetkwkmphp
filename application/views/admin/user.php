@@ -55,7 +55,7 @@
 
 </script>
 
-<div class="container-fluid">
+<div class="container-fluid" >
 
 	<form action="userupdate" method="post">
 		<?php if(!empty($message)) { ?>
@@ -69,7 +69,7 @@
 			<div class="card">
 				<div class="card-header card-header-primary">
 					<h4 class="card-title">Edit Profile</h4>
-					<p class="card-category">えーりんちゃん</p>
+					<p class="card-category"><?= $appuser["name"] ?></p>
 				</div>
 				<div class="card-body">
 
@@ -189,7 +189,7 @@
 									<label>
 										<input type="checkbox" value="1" name="is_reply" id="input_replyaction" <?php if($appuser["is_reply"] == 1) echo "checked" ?> >
 										<span class="toggle"></span>
-										リプライをトリガーにアクションを実行
+										リプライに対しにアクションを実行
 										<span id="input_replyaction_text"></span>
 									</label>
 								</div>

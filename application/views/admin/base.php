@@ -27,12 +27,12 @@
 
 			<?= $navBar; ?>
 
-      <div class="content">
+      <div class="content" >
 
 				<?= $contents; ?>
-
+				<?= $footer; ?>
       </div>
-			<?= $footer; ?>
+
     </div>
   </div>
 

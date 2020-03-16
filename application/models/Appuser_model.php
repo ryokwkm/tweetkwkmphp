@@ -32,7 +32,7 @@ class Appuser_model extends CI_Model {
 			$posts[$checkbox] = $this->check_checkbox($posts, $checkbox);
 		}
 
-		$this->db->update("twitter_users", $posts, array("id" => $id));
+		return $this->db->update("twitter_users", $posts, array("id" => $id));
 	}
 
 	public function check_checkbox($params, $name) {
