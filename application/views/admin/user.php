@@ -68,8 +68,24 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header card-header-primary">
-					<h4 class="card-title">Edit Profile</h4>
-					<p class="card-category"><?= $appuser["name"] ?></p>
+					<table width="100%">
+						<tr >
+							<td width="50%">
+								<h4 class="card-title">Edit Profile</h4>
+								<p class="card-category"><?= $appuser["name"] ?></p>
+							</td>
+							<td width="50%">
+								<div class="togglebutton">
+									<label>
+										<input type="checkbox" name="main_status" value="1" id="input_status" <?php if($appuser["is_search"] == 1) echo "checked" ?> >
+										<span class="toggle toggle-main"></span>
+										<span id="input_status_text" style="color: #ffffff"></span>
+									</label>
+								</div>
+							</td>
+						</tr>
+					</table>
+
 				</div>
 				<div class="card-body">
 

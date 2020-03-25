@@ -15,21 +15,8 @@ class MY_Controller extends CI_Controller {
 		$this->load->model("user_model");
 		$this->load->model("appuser_model");
 		$this->load->model("usertlog_model");
+		$this->load->model("twitter_model");
 	}
-
-	function makeTwitterObj() {
-		$query = $this->db->query("
-			SELECT a.*, u.access_token, a.access_secret
-			from twitter_end_users u 
-			INNER JOIN twitter_apps a
-			ON u.app_id = a.id   
-			where u.user_id = ?", $userID);
-		$app = $query->row();
-
-		$connection = new TwitterOAuth($app->consumerkey, $app->consumersecret, $app->access_token, $app->access_secret);
-		return $connection;
-	}
-
 
 
 	/**
