@@ -73,6 +73,10 @@
         background-color: rgba($brand-primary, (70/100)); // Switch bg on
       }
 
+	  + .toggle-main {
+		background-color: rgba($pink-200, (70/100)); // 目立つように
+	  }
+
       + .toggle:after {
         border-color: $brand-primary; // Handle on
       }

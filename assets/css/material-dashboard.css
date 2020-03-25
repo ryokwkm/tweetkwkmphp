@@ -10124,6 +10124,8 @@ a[aria-expanded="true"] .caret,
       left: 15px; }
     .togglebutton label input[type=checkbox]:checked + .toggle {
       background-color: rgba(156, 39, 176, 0.7); }
+    .togglebutton label input[type=checkbox]:checked + .toggle-main {
+      background-color: rgba(244, 143, 177, 0.7); }
     .togglebutton label input[type=checkbox]:checked + .toggle:after {
       border-color: #9c27b0; }
     .togglebutton label input[type=checkbox]:checked + .toggle:active:after {
