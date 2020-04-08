@@ -17,7 +17,7 @@ class Admin extends CI_Controller {
 	//情報取得
 	protected function getTwitterUsers() {
 		$this->load->database();
-		$query = $this->db->query("SELECT * from twitter_users where is_deleted = 1");
+		$query = $this->db->query("SELECT * from twitter_users where is_deleted <> 1 OR (is_deleted = 1 AND is_debug = 1)");
 		return $query->result_array();
 	}
 }

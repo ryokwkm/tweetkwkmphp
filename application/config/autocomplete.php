@@ -92,6 +92,12 @@
  * @property CI_Session               $session
  *
  * @property Your_lib                 $your_lib
+ * @property Twitter_model            $twitter_model
+ * @property User_model            		$user_model
+ * @property Usertlog_model           $usertlog_model
+ * @property Session_model            $session_model
+ * @property Appuser_model            $appuser_model
+ * @property ACharacter_model         $acharacter_model
  */
 class CI_Controller{};
 class MY_Controller extends CI_Controller{};

@@ -13,6 +13,7 @@ class Appuser_model extends CI_Model {
 		"is_search",
 		"is_news",
 		"is_reply",
+		"is_replyreply",
 		"reply_retweet",
 		"followback"
 	);

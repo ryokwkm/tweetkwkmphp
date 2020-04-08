@@ -77,9 +77,9 @@
 							<td width="50%">
 								<div class="togglebutton">
 									<label>
-										<input type="checkbox" name="main_status" value="1" id="input_status" <?php if($appuser["is_search"] == 1) echo "checked" ?> >
+										<input type="checkbox" name="main_status" value="1" id="input_main_status" <?php if($appuser["is_deleted"] == 0 || $appuser["is_deleted"]== 3) echo "checked" ?> >
 										<span class="toggle toggle-main"></span>
-										<span id="input_status_text" style="color: #ffffff"></span>
+										<span id="input_main_status_text" style="color: #ffffff"></span>
 									</label>
 								</div>
 							</td>
@@ -142,9 +142,20 @@
 								</div>
 
 								<div class="form-group character_mode2">
-									<select name="target_character_id" id="inputState" class="form-control">
-										<option value="1" selected>まどか</option>
-										<option value="2">...</option>
+									<script>
+										$(function(){
+											$('#target_character').selectpicker('val', <?= $appuser["target_character_id"] ?>);
+										});
+									</script>
+									<select name="target_character_id" id="target_character" class="form-control selectpicker" data-style="btn btn-link">
+										<?php foreach($characters as $character) {
+											$characterCheck = "";
+											if ($character["id"] == $appuser["target_character_id"]) {
+												$characterCheck = " selected";
+											}
+											?>
+											<option value="<?= $character["id"] ?>" <?= $characterCheck ?>"><?= $character["name"] ?></option>
+										<?php } ?>
 									</select>
 								</div>
 							</div>

@@ -222,6 +222,7 @@
 		}
 		$("#"+ $elm.attr('id') +"_text").text(word);
 	}
+
 	$(document).ready(function() {
 		$('input[type="checkbox"]').each(function(){
 			setToggleCheckWord($(this));
