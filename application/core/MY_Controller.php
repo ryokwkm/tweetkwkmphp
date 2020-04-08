@@ -12,9 +12,9 @@ class MY_Controller extends CI_Controller {
 		session_start();
 		$this->load->database();
 		$this->load->model("session_model");
-//		$this->load->model("user_model");
-//		$this->load->model("appuser_model");
-//		$this->load->model("usertlog_model");
+		$this->load->model("user_model");
+		$this->load->model("appuser_model");
+		$this->load->model("usertlog_model");
 		$this->load->model("twitter_model");
 		$this->load->model("acharacter_model");
 	}
