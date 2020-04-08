@@ -96,7 +96,7 @@ class Auth extends MY_Controller {
 			exit;
 		}
 
-		$twitterProfile = $this->getTwitterProfile($_SESSION['auth']["user_id"], $_SESSION['auth']["oauth_token"], $_SESSION['auth']["oauth_token_secret"]);
+		$twitterProfile = $this->getTwitterProfile($_SESSION['auth']["user_id"], $_SESSION['auth']["oauth_token"], $_SESSION['auth']["oauth_token_secret"], $_SESSION["account_name"]);
 		$data = array(
 			"app_id" => $twitterApp["id"],
 			"user_id" => $_SESSION['auth']["user_id"],
@@ -120,19 +120,17 @@ class Auth extends MY_Controller {
 	 * Twitterからプロフィール情報を取得する
 	 * @return array|object
 	 */
-	function getTwitterProfile($userID, $oauth_token, $oauth_token_secret) {
+	function getTwitterProfile($userID, $oauth_token, $oauth_token_secret, $account_name) {
 		$query = $this->db->query("
-			SELECT a.*, u.screen_name 
-			from twitter_end_users u 
-			INNER JOIN twitter_apps a
-			ON u.app_id = a.id   
-			where u.user_id = ?", $userID);
+			SELECT *  
+			from twitter_apps a
+			where account_name = ?", $account_name);
 		$app = $query->row();
 
 
 		//twitterのプロフィールを取得
 		$connection = new TwitterOAuth($app->consumerkey, $app->consumersecret, $oauth_token, $oauth_token_secret);
-		$user_data = $connection->get("users/show", array("screen_name" => $app->screen_name));
+		$user_data = $connection->get("users/show", array("user_id" => $userID));
 		return $user_data;
 	}
 
