@@ -97,7 +97,7 @@
  * @property Usertlog_model           $usertlog_model
  * @property Session_model            $session_model
  * @property Appuser_model            $appuser_model
- * @property ACharacter_model         $acharacter_model
+ * @property Acharacter_model         $acharacter_model
  */
 class CI_Controller{};
 class MY_Controller extends CI_Controller{};
