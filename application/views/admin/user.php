@@ -57,7 +57,8 @@
 
 <div class="container-fluid" >
 
-	<form action="userupdate" method="post">
+	<form action="/mypage/userupdate" method="post">
+		<input type="hidden" name="id" value="<?= $appuser["id"] ?>" >
 		<?php if(!empty($message)) { ?>
 			<div class="alert alert-success" role="alert"><?= $message ?></div>
 		<?php } ?>
@@ -107,7 +108,7 @@
 							<?php
 							$character_mode1 = "";
 							$character_mode2 = "";
-							if($appuser["character_mode"] == 1) {
+							if(empty($appuser["character_mode"]) || $appuser["character_mode"] == 1) {
 								$character_mode1 = " checked";
 							} else if($appuser["character_mode"] == 2) {
 								$character_mode2 = " checked";

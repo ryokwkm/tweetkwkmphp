@@ -10,15 +10,15 @@ class Mypage extends MY_Controller {
 		}
 	}
 
-	public $appID = 14;
+	public $defaultAppID = 14;
+	public $myApps = array(14, 15);
 
 	/**
 	 * index
 	 */
-	public function index()
+	public function index($appID=0)
 	{
-
-		$appID = $this->appID;
+		$appID = $this->checkAppID($appID);
 
 		$this->getBaseTemplate();
 		$this->debugMode();
@@ -32,8 +32,10 @@ class Mypage extends MY_Controller {
 	}
 
 	public function userupdate() {
-		$appID = $this->appID;
+
 		$posts = $this->input->post();
+		$appID = $this->checkAppID($posts["id"]);
+
 
 		//更新対象Paramを格納
 		$columns = array(
@@ -79,7 +81,7 @@ class Mypage extends MY_Controller {
 		$this->usertlog_model->UpdateActioned($appuser["user_id"]);
 
 		$this->session_model->SetFlash("message", "更新しました");
-		header( 'location: /mypage/index' );
+		header( 'location: /mypage/index/'. $appID );
 	}
 
 	public function user()
@@ -91,5 +93,15 @@ class Mypage extends MY_Controller {
 	}
 
 
+	public function checkAppID($appID) {
+		if(empty($appID)) {
+			$appID = $this->defaultAppID;
+		}
 
+		if(!in_array($appID, $this->myApps)) {
+			echo "アプリの編集が許可されていません";
+			exit;
+		}
+		return $appID;
+	}
 }

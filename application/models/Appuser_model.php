@@ -32,6 +32,8 @@ class Appuser_model extends CI_Model {
 		foreach( $this->checkboxs as $checkbox ) {
 			$posts[$checkbox] = $this->check_checkbox($posts, $checkbox);
 		}
+//		vr($posts);
+//		exit;
 
 		return $this->db->update("twitter_users", $posts, array("id" => $id));
 	}

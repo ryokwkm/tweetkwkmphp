@@ -11,6 +11,7 @@ class Twitter_model extends CI_Model {
 	}
 
 
+	// twitter_end_usersに登録済みユーザーの情報をTwitterAPIを使って取得
 	public function NewObject($userID) {
 		$query = $this->db->query("
 			SELECT a.*, u.access_token, u.access_secret
@@ -21,5 +22,23 @@ class Twitter_model extends CI_Model {
 
 		$connection = new TwitterOAuth($app->consumerkey, $app->consumersecret, $app->access_token, $app->access_secret);
 		return $connection;
+	}
+
+	/**
+	 * Twitterからプロフィール情報を取得する
+	 * @return array|object
+	 */
+	function GetTwitterProfile($userID, $oauth_token, $oauth_token_secret, $account_name) {
+		$query = $this->db->query("
+			SELECT *  
+			from twitter_apps a
+			where account_name = ?", $account_name);
+		$app = $query->row();
+
+
+		//twitterのプロフィールを取得
+		$connection = new TwitterOAuth($app->consumerkey, $app->consumersecret, $oauth_token, $oauth_token_secret);
+		$user_data = $connection->get("users/show", array("user_id" => $userID));
+		return $user_data;
 	}
 }
