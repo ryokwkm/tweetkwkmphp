@@ -23,6 +23,9 @@
 		} else if( $this.val() == 2) {
 			$(".character_mode1").hide();
 			$(".character_mode2").show();
+		} else {
+			$(".character_mode1").hide();
+			$(".character_mode2").hide();
 		}
 	}
 
@@ -106,15 +109,28 @@
 							</div>
 
 							<?php
+							$character_mode0 = "";
 							$character_mode1 = "";
 							$character_mode2 = "";
-							if(empty($appuser["character_mode"]) || $appuser["character_mode"] == 1) {
+							if(empty($appuser["character_mode"])) {
+								$character_mode0 = " checked";
+							} else if($appuser["character_mode"] == 1) {
 								$character_mode1 = " checked";
 							} else if($appuser["character_mode"] == 2) {
 								$character_mode2 = " checked";
 							} ?>
 
 							<div class="col-md-3">
+								<div class="form-check form-check-radio">
+									<label class="form-check-label">
+										<input class="form-check-input" type="radio" name="character_mode" value="0" <?= $character_mode0 ?> >
+										なし
+										<span class="circle">
+											<span class="check"></span>
+									</span>
+									</label>
+								</div>
+
 								<div class="form-check form-check-radio">
 									<label class="form-check-label">
 										<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> >
@@ -164,6 +180,7 @@
 							<div class="col-md-12">
 								<div class="togglebutton">
 									<label>
+										<input type="hidden" name="search_mode" value="2">
 										<input type="checkbox" name="is_search" value="1" id="input_trendsearch" <?php if($appuser["is_search"] == 1) echo "checked" ?> >
 										<span class="toggle"></span>
 										トレンドサーチ
@@ -183,7 +200,7 @@
 							<div class="col-md-6 trendsearch_box">
 								<div class="form-group">
 									<label for="exampleInputPassword1">実行量</label>
-									<input type="number" name="fire_lv" class="form-control"  min="0" max="100" value="<?= $appuser["fire_lv"] ?>">
+									<input type="number" name="search_count" class="form-control"  min="0" max="100" value="<?= $appuser["search_count"] ?>">
 								</div>
 							</div>
 

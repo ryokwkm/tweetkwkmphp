@@ -38,16 +38,18 @@ class Mypage extends MY_Controller {
 
 
 		//更新対象Paramを格納
+		//fire_lv, search_modeを追加（search_modeは今２固定にしてる）
 		$columns = array(
 			"exe_rate",
 			"character_mode",
 			"target_screen_name",
 			"target_character_id",
 			"search_rate",
-			"fire_lv",
+			"search_count",
 			"search_keyword",
 			"search_option",
 			"is_search",
+			"search_mode",
 			"is_news",
 			"is_reply",
 			"is_replyreply",

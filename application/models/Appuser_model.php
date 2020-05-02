@@ -10,6 +10,7 @@ class Appuser_model extends CI_Model {
 	//0 or 1 の要素。バリデーションに使用
 	//type=checkbox の場合、checkが入っていない場合は値が送信されない。そのため、値が無い場合は０で更新
 	public $checkboxs = array(
+		"character_mode",	//0がある
 		"is_search",
 		"is_news",
 		"is_reply",
