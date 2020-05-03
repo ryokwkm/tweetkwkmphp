@@ -80,6 +80,7 @@
 <!--					<p>Upgrade to PRO</p>-->
 <!--				</a>-->
 <!--			</li>-->
+
 				<li class="nav-item active-pro ">
 					<a class="nav-link" href="/auth/logout">
 						<i class="material-icons">logout</i>

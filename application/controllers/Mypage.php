@@ -11,7 +11,7 @@ class Mypage extends MY_Controller {
 	}
 
 	public $defaultAppID = 14;
-	public $myApps = array(14, 15);
+	public $myApps = array(14, 15);	//編集を許可するBOT
 
 	/**
 	 * index
@@ -36,47 +36,19 @@ class Mypage extends MY_Controller {
 		$posts = $this->input->post();
 		$appID = $this->checkAppID($posts["id"]);
 
-
-		//更新対象Paramを格納
-		//fire_lv, search_modeを追加（search_modeは今２固定にしてる）
-		$columns = array(
-			"exe_rate",
-			"character_mode",
-			"target_screen_name",
-			"target_character_id",
-			"search_rate",
-			"search_count",
-			"search_keyword",
-			"search_option",
-			"is_search",
-			"search_mode",
-			"is_news",
-			"is_reply",
-			"is_replyreply",
-			"reply_retweet",
-			"followback",
-		);
-		$updateParams = array();
-		foreach($columns as $col) {
-			if(isset($posts[$col])) {
-				$updateParams[$col] = $posts[$col];
-			}
+		//バリデーション＆更新
+		try {
+			$new = $this->appuser_model->ValidationUpdate($posts);
+			$old = $this->appuser_model->FindByID($appID);
+			$this->deleteOldLogs($old["user_id"], $old, $new);
+			$this->appuser_model->UpdateByID($appID, $new);
+		} catch(Exception $e) {
+			$this->session_model->SetFlash("err", $e->getMessage());
+			header( 'location: /mypage/index/'. $appID );
+			exit;
 		}
 
-		//screen_nameからuser_idを取得
-		if(!empty($posts["target_screen_name"])) {
-			$twitter = $this->twitter_model->NewObject($this->session_model->UserID());
-			$res = $twitter->get("users/show", array("screen_name" => $posts["target_screen_name"]));
-			$updateParams["target_user_id"] = $res->id_str;
-		}
-		if(isset($posts["main_status"]) && $posts["main_status"] == 1){
-			$statusReady = 3;
-			$updateParams["is_deleted"] = $statusReady;	//go側の処理で0にする。check後、action済みにする
-		} else {
-			$updateParams["is_deleted"] = 1;
-		}
 
-		$this->appuser_model->UpdateByID($updateParams, $appID);
 
 		//action済みにする
 		$appuser = $this->appuser_model->FindByID($appID);
@@ -86,16 +58,9 @@ class Mypage extends MY_Controller {
 		header( 'location: /mypage/index/'. $appID );
 	}
 
-	public function user()
-	{
 
-		$data = $this->getBaseTemplate();
-		$data["contents"] = $this->load->view('admin/user', '', TRUE);
-		$this->load->view('admin/base', $data);
-	}
-
-
-	public function checkAppID($appID) {
+	//権限チェック的なことがしたい
+	protected function checkAppID($appID) {
 		if(empty($appID)) {
 			$appID = $this->defaultAppID;
 		}
@@ -105,5 +70,25 @@ class Mypage extends MY_Controller {
 			exit;
 		}
 		return $appID;
+	}
+
+
+
+	private function deleteOldLogs($userID, $old, $new) {
+		//マルコフユーザーが違った場合
+		if($new["character_mode"] == CHARA_MODE_TWITTER_USER) {
+			if($new["target_character_id"] != $old["target_character_id"]) {
+				//a_eelin_tweet_logsを削除
+				$this->aeelin_model->DeleteByUserID($userID);
+			}
+		}
+
+		//ニュースが違った場合
+		if($new["is_news"] == 1) {
+			if($new["news_keyword"] != $old["news_keyword"]) {
+				//t_news削除
+				$this->tnews_model->DeleteByUserID($userID);
+			}
+		}
 	}
 }

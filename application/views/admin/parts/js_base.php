@@ -234,6 +234,6 @@
 	});
 
 	setTimeout(function() {
-		$('.alert').fadeOut();
+		$('.alert-success').fadeOut();
 	}, 3000);
 </script>
