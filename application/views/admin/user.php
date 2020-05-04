@@ -102,15 +102,15 @@
 					<table width="100%">
 						<tr >
 							<td width="50%">
-								<h4 class="card-title">Edit Profile</h4>
-								<p class="card-category"><a href="https://twitter.com/<?= $appuser["account_name"] ?>"><?= $appuser["name"] ?></a></p>
+								<h4 class="card-title">Edit <a href="https://twitter.com/<?= $appuser["account_name"] ?>"><?= $appuser["name"] ?></a></h4>
+<!--								<p class="card-category"><a href="https://twitter.com/--><?//= $appuser["account_name"] ?><!--">--><?//= $appuser["name"] ?><!--</a></p>-->
 							</td>
 							<td width="50%">
 								<div class="togglebutton">
 									<label>
 										<input type="checkbox" name="main_status" value="1" id="input_main_status" <?php if($appuser["is_deleted"] == 0 || $appuser["is_deleted"]== 3) echo "checked" ?> >
 										<span class="toggle toggle-main"></span>
-										<span id="input_main_status_text" style="color: #ffffff"></span>
+										<span style="color: #ffffff">電源</span> <span id="input_main_status_text" style="color: #ffffff"></span>
 									</label>
 								</div>
 							</td>
