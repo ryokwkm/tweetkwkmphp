@@ -12,6 +12,11 @@ $config["my_pages"] = array(
 		"icon" => "person",
 		"title" => "User",
 	),
+	array(
+		"url" => "/mypage/test_user",
+		"icon" => "local_hospital",
+		"title" => "テスト",
+	),
 );
 
 

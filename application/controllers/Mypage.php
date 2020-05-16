@@ -13,15 +13,17 @@ class Mypage extends MY_Controller {
 	public $defaultAppID = 14;
 	public $myApps = array(14, 15);	//編集を許可するBOT
 
-	/**
-	 * index
-	 */
+
 	public function index($appID=0)
 	{
+		$this->user($appID);
+	}
+
+	public function user($appID=0) {
 		$appID = $this->checkAppID($appID);
 
 		$this->getBaseTemplate();
-		$this->debugMode();
+
 		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
 		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
 
@@ -44,20 +46,42 @@ class Mypage extends MY_Controller {
 			$this->appuser_model->UpdateByID($appID, $new);
 		} catch(Exception $e) {
 			$this->session_model->SetFlash("err", $e->getMessage());
-			header( 'location: /mypage/index/'. $appID );
+			header( 'location: /mypage/user/'. $appID );
 			exit;
 		}
-
-
 
 		//action済みにする
 		$appuser = $this->appuser_model->FindByID($appID);
 		$this->usertlog_model->UpdateActioned($appuser["user_id"]);
 
 		$this->session_model->SetFlash("message", "更新しました");
-		header( 'location: /mypage/index/'. $appID );
+		header( 'location: /mypage/user/'. $appID );
 	}
 
+
+	public function test_user($appID=0) {
+		$appID = $this->checkAppID($appID);
+		if(!empty($this->input->post())){
+			//チェック実行
+			shell_exec("ls");
+			if (IsProduction()) {
+				$output = shell_exec("sh /virtual/vacation/public_html/www.2chx.net/test.sh");
+			} else {
+				$output = shell_exec("sh ~/source/GAS/.go/src/github.com/ryokwkm/trends/test-mac.sh");
+			}
+		}
+
+		$this->getBaseTemplate();
+
+		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
+		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
+
+		$this->vd += $this->session_model->GetFlash();
+		$this->vd["output"] = $output;
+		$this->debugMode();
+		$this->vd["contents"] = $this->load->view('admin/test_user', $this->vd, TRUE);
+		$this->load->view('admin/base', $this->vd);
+	}
 
 	//権限チェック的なことがしたい
 	protected function checkAppID($appID) {

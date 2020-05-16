@@ -1,3 +1,5 @@
+#ErrorDocument 404 http://www.google.com/	#htaccessが効いているのか確認
+
 RewriteEngine on
 RewriteCond $1 !^(index\.php|git\.php|public|build|static|assets|images|css|img|js|capp|robots\.txt|sitemap.xml|google90566ace2332a498.html)
 RewriteRule ^(.*)$ /index.php?/$1 [L]
