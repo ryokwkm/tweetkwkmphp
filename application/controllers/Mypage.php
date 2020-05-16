@@ -78,7 +78,7 @@ class Mypage extends MY_Controller {
 
 		$this->vd += $this->session_model->GetFlash();
 		$this->vd["output"] = $output;
-		$this->debugMode();
+		
 		$this->vd["contents"] = $this->load->view('admin/test_user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
