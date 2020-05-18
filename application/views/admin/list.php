@@ -56,8 +56,8 @@
 											<td><?= OnOffButton($twitterUser["is_search"]); ?></td>
 											<td><?= OnOffButton($twitterUser["is_news"]); ?></td>
 										<?php } */ ?>
-										<td><a href="/mypage/user/<?= $twitterUser["app_id"]; ?>"><button type="button" class="btn btn-default">編集</button></a></td>
-										<td><a href="/mypage/test_user/<?= $twitterUser["app_id"]; ?>"><button type="button" class="btn btn-default">テスト</button></a></td>
+										<td><a href="/mypage/user/<?= $twitterUser["id"]; ?>"><button type="button" class="btn btn-default">編集</button></a></td>
+										<td><a href="/mypage/test_user/<?= $twitterUser["id"]; ?>"><button type="button" class="btn btn-default">テスト</button></a></td>
 									</tr>
 								<?php } ?>
 
