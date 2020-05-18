@@ -102,7 +102,7 @@
 					<table width="100%">
 						<tr >
 							<td width="50%">
-								<h4 class="card-title">Edit <a href="https://twitter.com/<?= $appuser["account_name"] ?>"><?= $appuser["name"] ?></a></h4>
+								<h4 class="card-title"><a href="https://twitter.com/<?= $appuser["account_name"] ?>"><?= $appuser["name"] ?></a> コントローラー</h4>
 <!--								<p class="card-category"><a href="https://twitter.com/--><?//= $appuser["account_name"] ?><!--">--><?//= $appuser["name"] ?><!--</a></p>-->
 							</td>
 							<td width="50%">
@@ -213,16 +213,18 @@
 												<script>
 													$(function(){
 														$('#target_character').selectpicker('val', <?= $appuser["target_character_id"] ?>);
+														$("#target_character").change(function(){
+															$("#target_character_id").val( $(this).val() );
+														});
 													});
 												</script>
-												<select name="target_character_id" id="target_character" class="form-control selectpicker" data-style="btn btn-link">
-													<?php foreach($characters as $character) {
-														$characterCheck = "";
-														if ($character["id"] == $appuser["target_character_id"]) {
-															$characterCheck = " selected";
-														}
-														?>
-														<option value="<?= $character["id"] ?>" <?= $characterCheck ?>"><?= $character["name"] ?></option>
+												<input type="hidden" name="target_character_id" id="target_character_id" value="<?= $appuser["target_character_id"] ?>" >
+												<select id="target_character" class="form-control selectpicker" data-style="btn btn-link">
+													<?php foreach($characters as $character) {	?>
+														<option value="<?= $character["id"] ?>"
+															<?php if ($character["id"] == $appuser["target_character_id"]) echo " selected"; ?> >
+															<?= $character["name"] ?>
+														</option>
 													<?php } ?>
 												</select>
 											</div>

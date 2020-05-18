@@ -7,6 +7,10 @@ class MY_Controller extends CI_Controller {
 	public $appName;	//twitter_usersテーブルのID
 
 	protected $vd;	//viewにわたすData
+
+	public $defaultAppID = 14;
+	public $myApps = array(6,14, 15);	//編集を許可するBOT
+
 	public function __construct() {
 		parent::__construct();
 		session_start();
@@ -19,7 +23,21 @@ class MY_Controller extends CI_Controller {
 		$this->load->model("acharacter_model");
 		$this->load->model("aeelin_model");
 		$this->load->model("tnews_model");
+		$this->load->library('params');
 
+	}
+
+	//権限チェック的なことがしたい
+	protected function checkAppID($appID) {
+		if(empty($appID)) {
+			$appID = $this->defaultAppID;
+		}
+
+		if(!in_array($appID, $this->myApps)) {
+			echo "アプリの編集が許可されていません";
+			exit;
+		}
+		return $appID;
 	}
 
 

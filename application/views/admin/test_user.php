@@ -9,7 +9,7 @@
 
 <div class="container-fluid" >
 
-	<form action="/mypage/test_user" method="post">
+	<form action="/mypage/test_user/<?= $appuser["id"] ?>" method="post">
 		<input type="hidden" name="id" value="<?= $appuser["id"] ?>" >
 		<?php if(!empty($message)) { ?>
 			<div class="alert alert-success" role="alert"><?= $message ?></div>

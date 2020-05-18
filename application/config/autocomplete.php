@@ -92,6 +92,8 @@
  * @property CI_Session               $session
  *
  * @property Your_lib                 $your_lib
+ * @property Params            				$params
+ *
  * @property Twitter_model            $twitter_model
  * @property User_model            		$user_model
  * @property Usertlog_model           $usertlog_model

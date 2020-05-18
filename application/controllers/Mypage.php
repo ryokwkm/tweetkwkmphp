@@ -10,34 +10,45 @@ class Mypage extends MY_Controller {
 		}
 	}
 
-	public $defaultAppID = 14;
-	public $myApps = array(14, 15);	//編集を許可するBOT
 
 
 	public function index($appID=0)
 	{
-		$this->user($appID);
+		$this->load->helper("twitter_user");
+		$appID = $this->checkAppID($appID);
+		$this->getBaseTemplate();
+		$this->vd += $this->session_model->GetFlash();
+
+
+		$this->vd["twitterUsers"] = $this->appuser_model->GetUsers();
+
+		$this->vd["contents"] = $this->load->view('admin/list', $this->vd, TRUE);
+		$this->load->view('admin/base', $this->vd);
 	}
 
 	public function user($appID=0) {
-		$appID = $this->checkAppID($appID);
 
-		$this->getBaseTemplate();
-
-		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
-		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
-
-		$this->vd += $this->session_model->GetFlash();
-
+		$this->makeUserTpl($appID);
 		$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
 
+	private function makeUserTpl($appID=0) {
+		$appID = $this->checkAppID($appID);
+		$this->getBaseTemplate();
+		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
+		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
+		$this->vd += $this->session_model->GetFlash();
+	}
+
 	public function userupdate() {
+		if(empty($this->input->post())) {
+			header( 'location: /mypage/user/' );
+		}
 
 		$posts = $this->input->post();
+		$posts = $this->appuser_model->SetDefault($posts);
 		$appID = $this->checkAppID($posts["id"]);
-
 		//バリデーション＆更新
 		try {
 			$new = $this->appuser_model->ValidationUpdate($posts);
@@ -46,8 +57,17 @@ class Mypage extends MY_Controller {
 			$this->appuser_model->UpdateByID($appID, $new);
 		} catch(Exception $e) {
 			$this->session_model->SetFlash("err", $e->getMessage());
-			header( 'location: /mypage/user/'. $appID );
-			exit;
+			$this->makeUserTpl($appID);
+			$this->debugMode();
+
+			if($posts["main_status"] > 0) {
+				$this->vd["appuser"]["is_deleted"] = Appuser_model::$StatusReady;
+			}
+			$this->vd["appuser"] = $this->params->OverWrite($this->vd["appuser"], $posts);
+
+			$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
+			$this->load->view('admin/base', $this->vd);
+			return;
 		}
 
 		//action済みにする
@@ -60,41 +80,33 @@ class Mypage extends MY_Controller {
 
 
 	public function test_user($appID=0) {
+
 		$appID = $this->checkAppID($appID);
-		if(!empty($this->input->post())){
+		$output = "";
+		$posts = $this->input->post();
+		if(!empty($posts)){
 			//チェック実行
 			shell_exec("ls");
 			if (IsProduction()) {
-				$output = shell_exec("sh /virtual/vacation/public_html/www.2chx.net/test.sh");
+				$output = shell_exec("sh /virtual/vacation/public_html/www.2chx.net/test.sh ". $posts["id"]);
 			} else {
-				$output = shell_exec("sh ~/source/GAS/.go/src/github.com/ryokwkm/trends/test-mac.sh");
+				$output = shell_exec("sh ~/source/GAS/.go/src/github.com/ryokwkm/trends/test-mac.sh ". $posts["id"]);
 			}
 		}
 
 		$this->getBaseTemplate();
-
+//		$this->debugMode();
 		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
 		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
 
 		$this->vd += $this->session_model->GetFlash();
 		$this->vd["output"] = $output;
-		
+
 		$this->vd["contents"] = $this->load->view('admin/test_user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
 
-	//権限チェック的なことがしたい
-	protected function checkAppID($appID) {
-		if(empty($appID)) {
-			$appID = $this->defaultAppID;
-		}
 
-		if(!in_array($appID, $this->myApps)) {
-			echo "アプリの編集が許可されていません";
-			exit;
-		}
-		return $appID;
-	}
 
 
 

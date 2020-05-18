@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 define("CHARA_MODE_TWITTER_USER", 1);
 define("CHARA_MODE_STORY_USER", 2);
 class Appuser_model extends CI_Model {
+	public static $StatusReady = 3;
 	public function __construct()
 	{
 		parent::__construct();
@@ -26,8 +27,8 @@ class Appuser_model extends CI_Model {
 	public $updateColumn = array(
 		"exe_rate",
 		"character_mode",
-//		"target_screen_name",
-//		"target_character_id",
+		"target_character_id",
+		"target_screen_name",
 		"search_rate",
 		"search_count",
 		"search_keyword",
@@ -44,6 +45,7 @@ class Appuser_model extends CI_Model {
 	);
 
 
+
 	public function FindByID($userID) {
 		$query = $this->db->query("SELECT  * from twitter_users where id = ?", $userID);
 		$users = $query->result_array();
@@ -53,13 +55,25 @@ class Appuser_model extends CI_Model {
 		return array();
 	}
 
+	public function GetUsers() {
+		$query = $this->db->query("SELECT  * from twitter_users 
+			where is_deleted <> 1 ");
+		$users = $query->result_array();
+
+		return $users;
+	}
+
 	public function UpdateByID($id, $posts) {
+		$this->db->update("twitter_users", $posts, array("id" => $id));
+		echo $this->db->last_query();
+		return;
+	}
+
+	public function SetDefault($posts) {
 		foreach( $this->checkboxs as $checkbox ) {
 			$posts[$checkbox] = $this->check_checkbox($posts, $checkbox);
 		}
-//		vr($posts);
-//		exit;
-		return $this->db->update("twitter_users", $posts, array("id" => $id));
+		return $posts;
 	}
 
 
@@ -70,6 +84,7 @@ class Appuser_model extends CI_Model {
 	 * @throws \Exception
 	 */
 	public function ValidationUpdate($posts) {
+		$posts = $this->SetDefault($posts);
 
 		//更新対象Paramを格納
 		$ups = array();
@@ -87,6 +102,9 @@ class Appuser_model extends CI_Model {
 		if($ups["is_search"] == 1 && empty($ups["search_keyword"]) ) {
 			throw new Exception("トレンドを検索する場合は、トレンド検索キーワードを指定してください");
 		}
+		if($ups["is_reply"] == 1 && (empty($ups["reply_retweet"]) && empty($ups["is_replyreply"])) ) {
+			throw new Exception("リプライアクションを実行する場合、リプライアクションを最低１つは指定してください");
+		}
 		if($ups["fire_lv"] > 10) {
 			throw new Exception("リアクション数が多すぎます");
 		}
@@ -94,9 +112,15 @@ class Appuser_model extends CI_Model {
 			throw new Exception("ツイートするランキング数が多すぎます");
 		}
 
+		if($ups["character_mode"] == CHARA_MODE_TWITTER_USER && empty($ups["target_screen_name"])) {
+			throw new Exception("性格をTwitterユーザーにする場合は、Twitterユーザー名（スクリーンネーム）を指定してください");
+		}
+		else if($ups["character_mode"] == CHARA_MODE_STORY_USER && empty($ups["target_character_id"])) {
+			throw new Exception("性格をキャラクターにする場合は、キャラクターを指定してください");
+		}
 
 		//screen_nameからuser_idを取得
-		if($posts["character_mode"] == CHARA_MODE_TWITTER_USER && !empty($posts["target_screen_name"])) {
+		if($posts["character_mode"] == CHARA_MODE_TWITTER_USER ) {
 			$twitter = $this->twitter_model->NewObject($this->session_model->UserID());
 			$res = $twitter->get("users/show", array("screen_name" => $posts["target_screen_name"]));
 			if(!isset($res->id_str) || empty($res->id_str)) {
@@ -105,15 +129,19 @@ class Appuser_model extends CI_Model {
 
 			$ups["target_screen_name"] = $posts["target_screen_name"];
 			$ups["target_user_id"] = $res->id_str;
+			unset($ups["target_character_id"]);	//twitter userを更新する場合キャラクターは更新しない
+		}
+		else if($posts["character_mode"] == CHARA_MODE_STORY_USER ) {
+			$ups["target_character_id"] = $posts["target_character_id"];
+			unset($ups["target_screen_name"]);	//キャラクターを更新する場合、Twitter Userは更新しない
 		}
 
-		if($ups["is_replyreply"] == 1 && empty($ups["target_user_id"])) {
+		if($ups["is_replyreply"] == 1 && empty($ups["character_mode"])) {
 			throw new Exception("「リプライにお返事」する場合、キャラクターの性格を設定する必要があります");
 		}
 
 		if(isset($posts["main_status"]) && $posts["main_status"] == 1){
-			$statusReady = 3;
-			$ups["is_deleted"] = $statusReady;	//go側の処理で0にする。check後、action済みにする
+			$ups["is_deleted"] = $this::$StatusReady;	//go側の処理で0にする。check後、action済みにする
 		} else {
 			$ups["is_deleted"] = 1;
 		}
