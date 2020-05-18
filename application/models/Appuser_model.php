@@ -57,7 +57,7 @@ class Appuser_model extends CI_Model {
 
 	public function GetUsers() {
 		$query = $this->db->query("SELECT  * from twitter_users 
-			where is_deleted <> 1 ");
+			where 1 ");
 		$users = $query->result_array();
 
 		return $users;
