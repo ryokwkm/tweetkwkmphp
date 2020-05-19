@@ -43,7 +43,7 @@
 								<?php foreach($twitterUsers as $twitterUser) { ?>
 									<tr>
 										<td><?= $twitterUser["name"]; ?></td>
-										<td><?= OnOffButton($twitterUser["is_deleted"]); ?></td>
+										<td><?= PowerButton($twitterUser["is_deleted"]); ?></td>
 
 										<?php /* if($twitterUser["is_deleted"] == 0) { ?>
 											<td> - </td>

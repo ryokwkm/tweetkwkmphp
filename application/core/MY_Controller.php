@@ -8,8 +8,8 @@ class MY_Controller extends CI_Controller {
 
 	protected $vd;	//viewにわたすData
 
-	public $defaultAppID = 14;
-	public $myApps = array(6,14, 15);	//編集を許可するBOT
+	public $defaultAppID = 15;
+	public $myApps = array(6,7,13,14,15);	//編集を許可するBOT。 TODO: 権限によって編集可能なものをわけたい
 
 	public function __construct() {
 		parent::__construct();

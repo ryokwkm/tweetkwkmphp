@@ -18,16 +18,7 @@ class Mypage2 extends MY_Controller {
 	}
 
 	public function list($appID=0) {
-		$this->load->helper("twitter_user");
-		$appID = $this->checkAppID($appID);
-		$this->getBaseTemplate();
-		$this->vd += $this->session_model->GetFlash();
 
-
-		$this->vd["twitterUsers"] = $this->appuser_model->GetUsers();
-
-		$this->vd["contents"] = $this->load->view('admin/list', $this->vd, TRUE);
-		$this->load->view('admin/base', $this->vd);
 	}
 
 }

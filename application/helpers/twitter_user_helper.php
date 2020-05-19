@@ -41,3 +41,11 @@ function OnOffButton($value) {
 		return '<button type="button" class="btn btn-secondary">OFF</button>';
 	}
 }
+
+function PowerButton($is_deleted) {
+	if($is_deleted==1) {
+		return '<button type="button" class="btn btn-secondary">OFF</button>';
+	} else {
+		return '<button type="button" class="btn btn-success">ON</button>';
+	}
+}

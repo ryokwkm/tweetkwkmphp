@@ -55,10 +55,9 @@ class Appuser_model extends CI_Model {
 		return array();
 	}
 
-	public function GetUsers() {
-		$query = $this->db->query("SELECT  * from twitter_users 
-			where 1 ");
-		$users = $query->result_array();
+	public function GetUserByIDs($ids) {
+
+		$users = $this->db->where_in("id", $ids)->get('twitter_users')->result_array();
 
 		return $users;
 	}
