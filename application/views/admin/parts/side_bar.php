@@ -82,10 +82,18 @@
 <!--			</li>-->
 
 				<li class="nav-item active-pro ">
-					<a class="nav-link" href="/auth/logout">
-						<i class="material-icons">logout</i>
-						<p>logout</p>
-					</a>
+					<?php if( !empty($login)) { ?>
+						<a class="nav-link" href="/auth/logout">
+							<i class="material-icons">logout</i>
+							<p>logout</p>
+						</a>
+					<?php } else { ?>
+						<a class="nav-link" href="/mypage/index">
+							<i class="material-icons">mood</i>
+							<p>ログイン</p>
+						</a>
+					<?php } ?>
+
 				</li>
 		</ul>
 	</div>

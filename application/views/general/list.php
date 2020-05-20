@@ -38,7 +38,7 @@
 									<tr>
 										<td><a target="_blank" href="https://twitter.com/<?= $twitterUser["account_name"]; ?>"><?= $twitterUser["name"]; ?></a></td>
 										<td><?= PowerButton($twitterUser["is_deleted"]); ?></td>
-										<td><a href="/general/user/<?= $twitterUser["id"]; ?>"><button type="button" class="btn btn-default">確認</button></a></td>
+										<td><a href="/user/view/<?= $twitterUser["id"]; ?>"><button type="button" class="btn btn-default">確認</button></a></td>
 									</tr>
 								<?php } ?>
 

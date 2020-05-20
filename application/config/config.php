@@ -7,16 +7,16 @@ $config["my_pages"] = array(
 		"icon" => "dashboard",
 		"title" => "Dashboard",
 	),
-	array(
-		"url" => "/mypage/user",
-		"icon" => "person",
-		"title" => "User",
-	),
-	array(
-		"url" => "/mypage/test_user",
-		"icon" => "local_hospital",
-		"title" => "テスト",
-	),
+//	array(
+//		"url" => "/mypage/user",
+//		"icon" => "person",
+//		"title" => "User",
+//	),
+//	array(
+//		"url" => "/mypage/test_user",
+//		"icon" => "local_hospital",
+//		"title" => "テスト",
+//	),
 );
 
 $config["general_pages"] = array(
@@ -25,11 +25,11 @@ $config["general_pages"] = array(
 		"icon" => "dashboard",
 		"title" => "Dashboard",
 	),
-	array(
-		"url" => "/user/view",
-		"icon" => "person",
-		"title" => "User",
-	),
+//	array(
+//		"url" => "/user/view",
+//		"icon" => "person",
+//		"title" => "User",
+//	),
 );
 
 

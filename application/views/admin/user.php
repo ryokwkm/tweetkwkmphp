@@ -1,3 +1,14 @@
+<?php
+
+$editMode = true;
+$readOnly = "";
+
+if(!empty($general)) {
+	$editMode = false;
+	$readOnly = " disabled='disabled' ";
+}
+?>
+
 <style>
 
 	.card {
@@ -84,8 +95,14 @@
 
 <div class="container-fluid" >
 
-	<form action="/mypage/userupdate" method="post">
-		<input type="hidden" name="id" value="<?= $appuser["id"] ?>" >
+	<?php if($editMode) { ?>
+		<form action="/mypage/userupdate" method="post">
+			<input type="hidden" name="id" value="<?= $appuser["id"] ?>" >
+	<?php } ?>
+
+
+
+
 		<?php if(!empty($message)) { ?>
 			<div class="alert alert-success" role="alert"><?= $message ?></div>
 		<?php } ?>
@@ -108,7 +125,7 @@
 							<td width="50%">
 								<div class="togglebutton">
 									<label>
-										<input type="checkbox" name="main_status" value="1" id="input_main_status" <?php if($appuser["is_deleted"] == 0 || $appuser["is_deleted"]== 3) echo "checked" ?> >
+										<input type="checkbox" name="main_status" value="1" id="input_main_status" <?php if($appuser["is_deleted"] == 0 || $appuser["is_deleted"]== 3) echo "checked" ?>  <?= $readOnly ?> >
 										<span class="toggle toggle-main"></span>
 										<span style="color: #ffffff">電源</span> <span id="input_main_status_text" style="color: #ffffff"></span>
 									</label>
@@ -139,7 +156,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInputPassword1">実行確率(%) /10min</label>
-												<input name="exe_rate" type="number" class="form-control"  min="1" max="100" value="<?= $appuser["exe_rate"] ?>">
+												<input name="exe_rate" type="number" class="form-control"  min="1" max="100" value="<?= $appuser["exe_rate"] ?>" <?= $readOnly ?>>
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -174,7 +191,7 @@
 										<div class="col-md-3">
 											<div class="form-check form-check-radio">
 												<label class="form-check-label">
-													<input class="form-check-input" type="radio" name="character_mode" value="0" <?= $character_mode0 ?> >
+													<input class="form-check-input" type="radio" name="character_mode" value="0" <?= $character_mode0 ?>  <?= $readOnly ?>>
 													なし
 													<span class="circle">
 											<span class="check"></span>
@@ -184,7 +201,7 @@
 
 											<div class="form-check form-check-radio">
 												<label class="form-check-label">
-													<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> >
+													<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> <?= $readOnly ?> >
 													Twitterユーザー
 													<span class="circle">
 											<span class="check"></span>
@@ -194,7 +211,7 @@
 
 											<div class="form-check form-check-radio">
 												<label class="form-check-label">
-													<input class="form-check-input" type="radio" name="character_mode" id="exampleRadios2" value="2" <?= $character_mode2 ?> >
+													<input class="form-check-input" type="radio" name="character_mode" id="exampleRadios2" value="2" <?= $character_mode2 ?> <?= $readOnly ?> >
 													キャラクター
 													<span class="circle">
 											<span class="check"></span>
@@ -206,7 +223,7 @@
 										<div class="col-md-9">
 											<div class="form-group character_mode1">
 												<label for="exampleInputPassword1" style="margin-top: 10px;">Twitterユーザー名</label>
-												<input type="text" name="target_screen_name" class="form-control"  value="<?= $appuser["target_screen_name"] ?>" >
+												<input type="text" name="target_screen_name" class="form-control"  value="<?= $appuser["target_screen_name"] ?>" <?= $readOnly ?> >
 											</div>
 
 											<div class="form-group character_mode2">
@@ -218,8 +235,8 @@
 														});
 													});
 												</script>
-												<input type="hidden" name="target_character_id" id="target_character_id" value="<?= $appuser["target_character_id"] ?>" >
-												<select id="target_character" class="form-control selectpicker" data-style="btn btn-link">
+												<input type="hidden" name="target_character_id" id="target_character_id" value="<?= $appuser["target_character_id"] ?>" <?= $readOnly ?> >
+												<select id="target_character" class="form-control selectpicker" data-style="btn btn-link" <?= $readOnly ?>>
 													<?php foreach($characters as $character) {	?>
 														<option value="<?= $character["id"] ?>"
 															<?php if ($character["id"] == $appuser["target_character_id"]) echo " selected"; ?> >
@@ -247,7 +264,7 @@
 											<div class="togglebutton">
 												<label>
 													<input type="hidden" name="search_mode" value="2">
-													<input type="checkbox" name="is_search" value="1" id="input_trendsearch" <?php if($appuser["is_search"] == 1) echo "checked" ?> >
+													<input type="checkbox" name="is_search" value="1" id="input_trendsearch" <?php if($appuser["is_search"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
 													トレンドサーチ
 													<span id="input_trendsearch_text"></span>
@@ -258,28 +275,28 @@
 										<div class="col-md-6 trendsearch_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">実行確率</label>
-												<input type="number" name="search_rate" class="form-control"  min="0" max="100" value="<?= $appuser["search_rate"] ?>">
+												<input type="number" name="search_rate" class="form-control"  min="0" max="100" value="<?= $appuser["search_rate"] ?>" <?= $readOnly ?>>
 											</div>
 										</div>
 
 										<div class="col-md-6 trendsearch_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">ツイートするランキング数</label>
-												<input type="number" name="search_count" class="form-control"  min="0" max="10" value="<?= $appuser["search_count"] ?>">
+												<input type="number" name="search_count" class="form-control"  min="0" max="10" value="<?= $appuser["search_count"] ?>" <?= $readOnly ?>>
 											</div>
 										</div>
 
 										<div class="col-md-6 trendsearch_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">トレンド検索キーワード</label>
-												<input type="text" name="search_keyword" class="form-control" value="<?= $appuser["search_keyword"] ?>" placeholder="fate fgo">
+												<input type="text" name="search_keyword" class="form-control" value="<?= $appuser["search_keyword"] ?>" placeholder="fate fgo" <?= $readOnly ?>>
 											</div>
 										</div>
 
 										<div class="col-md-6 trendsearch_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">リアクション数</label>
-												<input type="number" name="fire_lv" class="form-control" min="0" max="10" value="<?= $appuser["fire_lv"] ?>" placeholder="min_faves:3">
+												<input type="number" name="fire_lv" class="form-control" min="0" max="10" value="<?= $appuser["fire_lv"] ?>" placeholder="min_faves:3" <?= $readOnly ?>>
 											</div>
 										</div>
 									</div>
@@ -299,7 +316,7 @@
 										<div class="col-md-12">
 											<div class="togglebutton">
 												<label>
-													<input type="checkbox" value="1" name="is_news" id="input_news" <?php if($appuser["is_news"] == 1) echo "checked" ?> >
+													<input type="checkbox" value="1" name="is_news" id="input_news" <?php if($appuser["is_news"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
 													ニュースをツイート
 													<span id="input_news_text"></span>
@@ -310,7 +327,7 @@
 										<div class="col-md-12 news_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">ニュース検索キーワード</label>
-												<input type="text" name="news_keyword" class="form-control"  value="<?= $appuser["news_keyword"] ?>">
+												<input type="text" name="news_keyword" class="form-control"  value="<?= $appuser["news_keyword"] ?>" <?= $readOnly ?>>
 											</div>
 										</div>
 									</div>
@@ -330,7 +347,7 @@
 										<div class="col-md-12">
 											<div class="togglebutton">
 												<label>
-													<input type="checkbox" value="1" name="is_reply" id="input_replyaction" <?php if($appuser["is_reply"] == 1) echo "checked" ?> >
+													<input type="checkbox" value="1" name="is_reply" id="input_replyaction" <?php if($appuser["is_reply"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
 													リプライに対しにアクションを実行
 													<span id="input_replyaction_text"></span>
@@ -341,7 +358,7 @@
 										<div class="col-md-12 replyaction_box">
 											<div class="togglebutton">
 												<label>
-													<input type="checkbox" value="1" name="reply_retweet" id="input_replyretweet" <?php if($appuser["reply_retweet"] == 1) echo "checked" ?> >
+													<input type="checkbox" value="1" name="reply_retweet" id="input_replyretweet" <?php if($appuser["reply_retweet"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
 													リプライをリツイート
 													<span id="input_replyretweet_text"></span>
@@ -352,7 +369,7 @@
 										<div class="col-md-12 replyaction_box">
 											<div class="togglebutton">
 												<label>
-													<input type="checkbox" value="1" name="is_replyreply" id="input_replyreply" <?php if($appuser["is_replyreply"] == 1) echo "checked" ?> >
+													<input type="checkbox" value="1" name="is_replyreply" id="input_replyreply" <?php if($appuser["is_replyreply"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
 													リプライにお返事
 													<span id="input_replyreply_text"></span>
@@ -374,7 +391,7 @@
 										<div class="col-md-12">
 											<div class="togglebutton">
 												<label>
-													<input type="checkbox" value="1" name="followback" id="input_followback" <?php if($appuser["followback"] == 1) echo "checked" ?> >
+													<input type="checkbox" value="1" name="followback" id="input_followback" <?php if($appuser["followback"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
 													フォローバック
 													<span id="input_followback_text"></span>
@@ -391,7 +408,10 @@
 
 
 
-					<button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+					<?php if($editMode) { ?>
+						<button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+					<?php } ?>
+
 					<div class="clearfix"></div>
 
 			</div>
@@ -415,5 +435,9 @@
 <!--		</div>-->
 
 	</div>
-	</form>
+
+<?php if($editMode) {?>
+		</form>
+<?php  }  ?>
+
 </div>

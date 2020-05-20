@@ -25,6 +25,10 @@ class MY_Controller extends CI_Controller {
 		$this->load->model("tnews_model");
 		$this->load->library('params');
 
+		//テンプレートにわたす変数を初期化
+		$this->vd = array(
+			"debug" => false,
+			"general" => false);
 	}
 
 	//権限チェック的なことがしたい
@@ -45,11 +49,11 @@ class MY_Controller extends CI_Controller {
 	 * マイページのBaseテンプレート
 	 */
 	function getBaseTemplate() {
-		if(!empty($this->vd)) {
-			$data = $this->vd;
-		}
+		$data = $this->vd;
+
 		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
 
+		$navData["login"] = true;
 		$navData["my_pages"] = $this->config->item("my_pages");
 		if($this->session_model->IsLogin()) {
 			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
@@ -67,17 +71,15 @@ class MY_Controller extends CI_Controller {
 	 * 一般ページのBaseテンプレート
 	 */
 	function getGeneralTemplate() {
-		if(!empty($this->vd)) {
-			$data = $this->vd;
-		}
+		$data = $this->vd;
 		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
 
 		$navData["my_pages"] = $this->config->item("general_pages");
-//		if($this->session_model->IsLogin()) {
-//			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
-//		}
+		if($this->session_model->IsLogin()) {
+			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
+		}
 		$data["navBar"] = $this->load->view('general/parts/nav_bar', $navData, TRUE);
-		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);	//いる？？
+		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
 
 		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
 		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
