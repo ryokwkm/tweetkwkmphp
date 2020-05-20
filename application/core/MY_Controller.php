@@ -61,7 +61,7 @@ class MY_Controller extends CI_Controller {
 		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $navData, TRUE);
 		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
 
-		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
+//		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
 		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
 		$this->vd = $data;
 		return $this->vd;
@@ -81,7 +81,7 @@ class MY_Controller extends CI_Controller {
 		$data["navBar"] = $this->load->view('general/parts/nav_bar', $navData, TRUE);
 		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
 
-		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
+//		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
 		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
 		$this->vd = $data;
 		return $this->vd;

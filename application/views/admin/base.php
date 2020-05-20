@@ -36,7 +36,7 @@
     </div>
   </div>
 
-	<?= $fixedSetting; ?>
+	<?php if(isset($fixedSetting)) {echo $fixedSetting;	}  ?>
 </body>
 
 </html>
