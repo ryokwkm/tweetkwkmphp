@@ -19,6 +19,19 @@ $config["my_pages"] = array(
 	),
 );
 
+$config["general_pages"] = array(
+	array(
+		"url" => "/user/index",
+		"icon" => "dashboard",
+		"title" => "Dashboard",
+	),
+	array(
+		"url" => "/user/view",
+		"icon" => "person",
+		"title" => "User",
+	),
+);
+
 
 $config['base_url'] = '';
 

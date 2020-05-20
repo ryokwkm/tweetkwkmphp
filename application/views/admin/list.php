@@ -42,7 +42,7 @@
 
 								<?php foreach($twitterUsers as $twitterUser) { ?>
 									<tr>
-										<td><?= $twitterUser["name"]; ?></td>
+										<td><a target="_blank" href="https://twitter.com/<?= $twitterUser["account_name"]; ?>"><?= $twitterUser["name"]; ?></a></td>
 										<td><?= PowerButton($twitterUser["is_deleted"]); ?></td>
 
 										<?php /* if($twitterUser["is_deleted"] == 0) { ?>

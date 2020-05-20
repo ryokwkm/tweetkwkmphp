@@ -7,7 +7,7 @@ class Admin extends MY_Controller {
 	{
 		$this->load->helper("twitter_user");
 		$data["twitterUsers"] = $this->getTwitterUsers();
-		$data["jsBase"] = $this->load->view('admin/parts/js_base', '', TRUE);
+		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
 		$data["navBar"] = $this->load->view('admin/parts/nav_bar', '', TRUE);
 		$this->load->view('admin_index', $data);
 
