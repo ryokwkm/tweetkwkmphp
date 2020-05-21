@@ -88,7 +88,7 @@ class Mypage extends MY_Controller {
 			//チェック実行
 			shell_exec("ls");
 			if (IsProduction()) {
-				$output = shell_exec("sh /virtual/vacation/public_html/www.2chx.net/test.sh ". $posts["id"]);
+				$output = shell_exec("sh /virtual/vacation/public_html/www.2chx.net/test-mac.sh ". $posts["id"]);
 			} else {
 				$output = shell_exec("sh ~/source/GAS/.go/src/github.com/ryokwkm/trends/test-mac.sh ". $posts["id"]);
 			}
