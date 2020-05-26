@@ -24,6 +24,25 @@ class Twitter_model extends CI_Model {
 		return $connection;
 	}
 
+	// エンドユーザー登録用のアプリを１つ取得
+	public function GetEnduserNewApp() {
+		$apps = $this->db->query("
+			SELECT a.id, a.account_name, count(e.id) cnt
+			FROM twitter_apps a
+			LEFT JOIN twitter_end_users e on a.id = e.app_id
+			WHERE a.is_enduser = 1
+			GROUP BY a.id
+			ORDER BY a.id
+			")->result_array();
+
+		foreach($apps as $app) {
+			if($app["cnt"] < $this->config->item('create_app_limit')) {
+				return $app["account_name"];
+			}
+		}
+		return "";
+	}
+
 	/**
 	 * Twitterからプロフィール情報を取得する
 	 * @return array|object

@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+$config["version"] = 1;
+
+$config["create_app"] = "createapp";	//エンドユーザーによるBot作成
+$config["create_app_limit"] = 10;	//1つのTwitterアプリが担当できるエンドユーザー数（あんまり多いとAPIリミットになる）
+$config["create_app_admin"] = "createadmin";
+$config["login_app"] = "loginapp";
+
 $config["my_pages"] = array(
 	array(
 		"url" => "/mypage/index",
@@ -21,6 +29,7 @@ $config["my_pages"] = array(
 
 $config["general_pages"] = array(
 	array(
+		"default" => true,
 		"url" => "/user/index",
 		"icon" => "dashboard",
 		"title" => "Dashboard",

@@ -56,10 +56,16 @@ class Appuser_model extends CI_Model {
 	}
 
 	public function GetUserByIDs($ids) {
+		return $this->db->where_in("id", $ids)->get('twitter_users')->result_array();
+	}
 
-		$users = $this->db->where_in("id", $ids)->get('twitter_users')->result_array();
+	public function GetPublicUsers() {
+		return $this->db->query("SELECT  * from twitter_users where is_public = 1 and is_debug = 0")->result_array();
+	}
 
-		return $users;
+	//管理者用。デバッグユーザーも表示
+	public function GetUsersByAdmin() {
+		return $this->db->query("SELECT  * from twitter_users where is_public = 1 ")->result_array();
 	}
 
 	public function UpdateByID($id, $posts) {

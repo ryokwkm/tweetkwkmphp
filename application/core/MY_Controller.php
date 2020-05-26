@@ -28,7 +28,8 @@ class MY_Controller extends CI_Controller {
 		//テンプレートにわたす変数を初期化
 		$this->vd = array(
 			"debug" => false,
-			"general" => false);
+			"general" => false,
+			"login" => $this->session_model->IsLogin());
 	}
 
 	//権限チェック的なことがしたい
@@ -48,18 +49,22 @@ class MY_Controller extends CI_Controller {
 	/**
 	 * マイページのBaseテンプレート
 	 */
-	function getBaseTemplate() {
+	function getBaseTemplate($mypage=true) {
 		$data = $this->vd;
 
 		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
 
-		$navData["login"] = true;
-		$navData["my_pages"] = $this->config->item("my_pages");
-		if($this->session_model->IsLogin()) {
-			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
+		if($mypage && $this->session_model->IsLogin()) {
+			$data["my_pages"] = $this->config->item("my_pages");
+		} else {
+			$data["my_pages"] = $this->config->item("general_pages");
 		}
-		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $navData, TRUE);
-		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
+
+		if($this->session_model->IsLogin()) {
+			$data["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
+		}
+		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $data, TRUE);
+		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $data, TRUE);
 
 //		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
 		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
@@ -70,22 +75,22 @@ class MY_Controller extends CI_Controller {
 	/**
 	 * 一般ページのBaseテンプレート
 	 */
-	function getGeneralTemplate() {
-		$data = $this->vd;
-		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
-
-		$navData["my_pages"] = $this->config->item("general_pages");
-		if($this->session_model->IsLogin()) {
-			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
-		}
-		$data["navBar"] = $this->load->view('general/parts/nav_bar', $navData, TRUE);
-		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
-
-//		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
-		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
-		$this->vd = $data;
-		return $this->vd;
-	}
+//	function getGeneralTemplate() {
+//		$data = $this->vd;
+//		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
+//
+//		$navData["my_pages"] = $this->config->item("general_pages");
+//		if($this->session_model->IsLogin()) {
+//			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
+//		}
+//		$data["navBar"] = $this->load->view('general/parts/nav_bar', $navData, TRUE);
+//		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
+//
+////		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
+//		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
+//		$this->vd = $data;
+//		return $this->vd;
+//	}
 
 	function debugMode() {
 		$this->vd["debug"] = true;

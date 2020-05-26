@@ -5,10 +5,10 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 class Auth extends MY_Controller {
 	// ログインを許可するアプリ。エンドユーザー用
-	public $loginApp = array("magialogin");
+
+	public $loginApp = array("magialogin");	//
 
 	// ソース側で定義してあるユーザーの場合、end_userではない
-	public $myUser = array();	//array("priconnekwkm");
 	public $myApp = array();	//array("priconne");
 
 
@@ -33,7 +33,7 @@ class Auth extends MY_Controller {
 
 	public function logout() {
 		session_destroy();
-		header( 'location: /auth/index' );
+		header( 'location: /' );
 	}
 
 
@@ -46,8 +46,26 @@ class Auth extends MY_Controller {
 	{
 		//バリデーション
 		$appName = $this->input->post('account_name');
-		if( !in_array($appName, $this->loginApp) && !in_array($appName, $this->myApp) ){
-			echo $appName. " それは不正アクセス";
+		if($appName == $this->config->item("create_app")) {
+			//エンドユーザーによるBotの作成
+			$_SESSION['create_mode'] = $this->config->item("create_app");
+
+			$appName = $this->twitter_model->GetEnduserNewApp();
+			if(empty($appName)) {
+				echo " 現在アクセスが集中しています。アプリの作成が出来ません <br> 管理者にお問い合わせ下さい";
+				exit;
+			}
+		}
+		else if(!in_array($appName, $this->loginApp)) {
+			//ログインのみ
+			$_SESSION['create_mode'] = $this->config->item("login_app");
+		}
+		else if(in_array($appName, $this->myApp)) {
+			//管理者によるBotの作成
+			$_SESSION['create_mode'] = $this->config->item("create_app_admin");
+		}
+		else {
+			echo "不明なエラー。不正アクセスしていませんか？";
 			exit;
 		}
 
@@ -64,7 +82,7 @@ class Auth extends MY_Controller {
 		$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
 
 		//callback.phpで使うのでセッションに入れる
-		$_SESSION['account_name'] = $appName; //magialogin
+		$_SESSION['account_name'] = $appName;
 		$_SESSION['oauth_token'] = $request_token['oauth_token'];
 		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 
@@ -112,19 +130,10 @@ class Auth extends MY_Controller {
 
 		$twitterProfile = $this->twitter_model->getTwitterProfile($_SESSION['auth']["user_id"], $_SESSION['auth']["oauth_token"], $_SESSION['auth']["oauth_token_secret"], $_SESSION["account_name"]);
 
-		// アプリがエンドユーザーに許可されたものか
-		if(!in_array($_SESSION["account_name"], $this->loginApp)) {
-			// そうでない場合、俺か？許可したTwitterユーザーであるか確認
-			if(!in_array($twitterProfile->screen_name, $this->myUser)) {
-				$errMsg = "ログイン先:". $_SESSION["account_name"].  " ユーザー：". $twitterProfile->screen_name;
-				echo $errMsg. "<br> 不正な動作を検知しました";
-				exit;
-			}
-		}
 
-
-		if(in_array($twitterProfile->screen_name, $this->myUser)) {
-			//BOT
+		if($_SESSION['create_mode'] == $this->config->item("create_app") ||
+				$_SESSION['create_mode'] == $this->config->item("create_app_admin")	){
+			//作成
 			$data = array(
 				"name" => $twitterProfile->name,
 				"user_id" => $_SESSION['auth']["user_id"],
@@ -134,7 +143,14 @@ class Auth extends MY_Controller {
 				"access_secret" => $_SESSION['auth']["oauth_token_secret"],
 				"function_id" => 15,  //マスターモード
 				"language_id" => 95,  //日本語
+				"location_id" => 1,  //日本
+				"is_deleted" => 1,	// 削除状態で作成
+				"is_public" => 1,	// リストにて公開
 			);
+			//管理者による作成の場合、管理者フラグをOn
+			if($_SESSION['create_mode'] == $this->config->item("create_app_admin")) {
+				$data["is_admin"] = 1;
+			}
 			$this->db->replace("twitter_users", $data);
 		}
 

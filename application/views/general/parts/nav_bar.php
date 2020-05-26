@@ -25,19 +25,7 @@
 
 			<ul class="navbar-nav">
 				<li class="nav-item dropdown">
-					<a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<img src="/assets/img/faces/person.png" style="width: 50px; ; border-radius: 300px;" />
-						<p class="d-lg-none d-md-block">
-							Account
-						</p>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-						<!--						<a class="dropdown-item" href="#">Profile</a>-->
-						<!--						<a class="dropdown-item" href="#">Settings</a>-->
-						<!--						<p class="dropdown-item">--><?//= $user_data["display_name"] ?><!--</p>-->
-						<!--						<div class="dropdown-divider"></div>-->
-						<a class="dropdown-item" href="/mypage/index">ログイン</a>
-					</div>
+
 				</li>
 			</ul>
 		</div>

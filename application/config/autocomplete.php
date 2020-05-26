@@ -239,9 +239,6 @@ class MY_Model extends CI_Model{};
  */
 class CI_Cache{};
 
-/**
- * @property Twitter_model $twitter_model
- */
 
 
 /* End of file autocomplete.php */

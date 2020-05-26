@@ -7,7 +7,7 @@
 		Tip 2: you can also add an image using data-image tag
 -->
 	<div class="logo">
-		<a href="/auth/index" class="simple-text logo-normal">
+		<a href="/" class="simple-text logo-normal">
 			管理画面
 		</a>
 	</div>
@@ -16,6 +16,10 @@
 			<?php foreach($my_pages as $page) {
 				$active = "";
 				if(strpos($_SERVER['REQUEST_URI'],$page["url"]) === 0) {
+					$active = " active";
+				}
+				// urlがデフォルトの時の対応
+				if($_SERVER['REQUEST_URI'] == "/" && isset($page["default"]) && $page["default"] == true) {
 					$active = " active";
 				}
 				?>
@@ -91,6 +95,10 @@
 						<a class="nav-link" href="/mypage/index">
 							<i class="material-icons">mood</i>
 							<p>ログイン</p>
+						</a>
+						<a class="nav-link" href="/auth/regist">
+							<i class="material-icons">mood</i>
+							<p>BOTを新規作成</p>
 						</a>
 					<?php } ?>
 

@@ -7,7 +7,7 @@ class User extends MY_Controller {
 	{
 		parent::__construct();
 //		$this->debugMode();
-		$this->vd = $this->getGeneralTemplate();
+		$this->vd = $this->getBaseTemplate(false);
 		$this->vd["general"] = true;
 	}
 
@@ -23,7 +23,7 @@ class User extends MY_Controller {
 		$this->vd += $this->session_model->GetFlash();
 
 
-		$this->vd["twitterUsers"] = $this->appuser_model->GetUserByIDs($this->myApps);
+		$this->vd["twitterUsers"] = $this->appuser_model->GetPublicUsers();
 
 		$this->vd["contents"] = $this->load->view('general/list', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
