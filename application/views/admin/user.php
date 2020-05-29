@@ -65,8 +65,8 @@ if(!empty($general)) {
 	}
 
 	function ChangeExeRate(){
-		$perHour = $('input[name="exe_rate"]').val() * 6 / 100;
-		$body = "1時間に約 " + $perHour.toFixed(1)  + "回実行される"
+		$perHour = $('input[name="exe_rate"]').val() * 6 / 10 / 100 * 24;
+		$body = "1日に約 " + $perHour.toFixed(1)  + "回実行される"
 		$("#exe_rate_text").text($body);
 	}
 
@@ -151,17 +151,17 @@ if(!empty($general)) {
 							<div class="card">
 								<div class="card-body">
 									<h4 class="card-title">実行間隔</h4>
-									<p class="category">10分間に一度、以下の確率(%)で実行します</p>
+									<p class="category">約100分間に一度、以下の確率(%)で実行します</p>
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="exampleInputPassword1">実行確率(%) /10min</label>
+												<label for="exampleInputPassword1">実行確率(%) /100min</label>
 												<input name="exe_rate" type="number" class="form-control"  min="1" max="100" value="<?= $appuser["exe_rate"] ?>" <?= $readOnly ?>>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<blockquote class="blockquote" style="margin-top: 10px">
-												<small class="text-muted" id="exe_rate_text">1時間に約、X回行われる</small>
+												<small class="text-muted" id="exe_rate_text">1日に約、X回行われる</small>
 											</blockquote>
 										</div>
 									</div>
