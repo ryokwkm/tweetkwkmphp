@@ -56,7 +56,7 @@ class Auth extends MY_Controller {
 				exit;
 			}
 		}
-		else if(!in_array($appName, $this->loginApp)) {
+		else if(in_array($appName, $this->loginApp)) {
 			//ログインのみ
 			$_SESSION['create_mode'] = $this->config->item("login_app");
 		}

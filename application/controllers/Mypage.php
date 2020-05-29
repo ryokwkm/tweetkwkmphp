@@ -12,34 +12,19 @@ class Mypage extends MY_Controller {
 
 
 
-	public function index($appID=0)
+	public function index()
 	{
-		$this->load->helper("twitter_user");
-		$appID = $this->checkAppID($appID);
-		$this->getBaseTemplate();
-		$this->vd += $this->session_model->GetFlash();
-
-
-		$this->vd["twitterUsers"] = $this->appuser_model->GetUsersByAdmin();
-
-		$this->vd["contents"] = $this->load->view('admin/list', $this->vd, TRUE);
-		$this->load->view('admin/base', $this->vd);
+		vr($_SESSION);
+//		$this->user();
 	}
 
 	public function user($appID=0) {
 
-		$this->makeUserTpl($appID);
+		$this->mypage_model->MakeUserTpl($this, $appID);
 		$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
 
-	private function makeUserTpl($appID=0) {
-		$appID = $this->checkAppID($appID);
-		$this->getBaseTemplate();
-		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
-		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
-		$this->vd += $this->session_model->GetFlash();
-	}
 
 	public function userupdate() {
 		if(empty($this->input->post())) {
@@ -48,7 +33,7 @@ class Mypage extends MY_Controller {
 
 		$posts = $this->input->post();
 		$posts = $this->appuser_model->SetDefault($posts);
-		$appID = $this->checkAppID($posts["id"]);
+		$appID = $this->mypage_model->checkAppID($this, $posts["id"]);
 		//バリデーション＆更新
 		try {
 			$new = $this->appuser_model->ValidationUpdate($posts);
@@ -57,7 +42,7 @@ class Mypage extends MY_Controller {
 			$this->appuser_model->UpdateByID($appID, $new);
 		} catch(Exception $e) {
 			$this->session_model->SetFlash("err", $e->getMessage());
-			$this->makeUserTpl($appID);
+			$this->mypage_model->MakeUserTpl($this, $appID);
 			$this->debugMode();
 
 			if($posts["main_status"] > 0) {
@@ -81,7 +66,7 @@ class Mypage extends MY_Controller {
 
 	public function test_user($appID=0) {
 
-		$appID = $this->checkAppID($appID);
+		$appID = $this->mypage_model->checkAppID($this, $appID);
 		$output = "";
 		$posts = $this->input->post();
 		if(!empty($posts)){

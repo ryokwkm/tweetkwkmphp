@@ -2,8 +2,28 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends MY_Controller {
+	public function __construct()
+	{
+		parent::__construct();
+		if($this->session_model->IsLogin() == false ) {
+			header( 'location: /auth/index' );
+		}
+	}
 
 	public function index()
+	{
+		$this->load->helper("twitter_user");
+		$this->getBaseTemplate();
+		$this->vd += $this->session_model->GetFlash();
+
+
+		$this->vd["twitterUsers"] = $this->appuser_model->GetUsersByAdmin();
+
+		$this->vd["contents"] = $this->load->view('admin/list', $this->vd, TRUE);
+		$this->load->view('admin/base', $this->vd);
+	}
+
+	public function list2()
 	{
 		$this->load->helper("twitter_user");
 		$data["twitterUsers"] = $this->getTwitterUsers();

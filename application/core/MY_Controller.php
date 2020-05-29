@@ -6,7 +6,7 @@ class MY_Controller extends CI_Controller {
 	public $country;
 	public $appName;	//twitter_usersテーブルのID
 
-	protected $vd;	//viewにわたすData
+	public $vd;	//viewにわたすData
 
 	public $defaultAppID = 15;
 	public $myApps = array(6,7,13,14,15);	//編集を許可するBOT。 TODO: 権限によって編集可能なものをわけたい
@@ -23,6 +23,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->model("acharacter_model");
 		$this->load->model("aeelin_model");
 		$this->load->model("tnews_model");
+		$this->load->model("mypage_model");
 		$this->load->library('params');
 
 		//テンプレートにわたす変数を初期化
@@ -32,65 +33,34 @@ class MY_Controller extends CI_Controller {
 			"login" => $this->session_model->IsLogin());
 	}
 
-	//権限チェック的なことがしたい
-	protected function checkAppID($appID) {
-		if(empty($appID)) {
-			$appID = $this->defaultAppID;
-		}
-
-		if(!in_array($appID, $this->myApps)) {
-			echo "アプリの編集が許可されていません";
-			exit;
-		}
-		return $appID;
-	}
-
 
 	/**
 	 * マイページのBaseテンプレート
 	 */
 	function getBaseTemplate($mypage=true) {
-		$data = $this->vd;
-
-		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
-
-		if($mypage && $this->session_model->IsLogin()) {
-			$data["my_pages"] = $this->config->item("my_pages");
-		} else {
-			$data["my_pages"] = $this->config->item("general_pages");
-		}
-
-		if($this->session_model->IsLogin()) {
-			$data["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
-		}
-		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $data, TRUE);
-		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $data, TRUE);
-
-//		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
-		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
-		$this->vd = $data;
-		return $this->vd;
-	}
-
-	/**
-	 * 一般ページのBaseテンプレート
-	 */
-//	function getGeneralTemplate() {
 //		$data = $this->vd;
+//
 //		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
 //
-//		$navData["my_pages"] = $this->config->item("general_pages");
-//		if($this->session_model->IsLogin()) {
-//			$navData["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
+//		if($mypage && $this->session_model->IsLogin()) {
+//			$data["my_pages"] = $this->config->item("my_pages");
+//		} else {
+//			$data["my_pages"] = $this->config->item("general_pages");
 //		}
-//		$data["navBar"] = $this->load->view('general/parts/nav_bar', $navData, TRUE);
-//		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $navData, TRUE);
+//
+//		if($this->session_model->IsLogin()) {
+//			$data["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
+//		}
+//		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $data, TRUE);
+//		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $data, TRUE);
 //
 ////		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
 //		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
 //		$this->vd = $data;
 //		return $this->vd;
-//	}
+		return $this->mypage_model->GetBaseTemplate($this, $mypage);
+	}
+
 
 	function debugMode() {
 		$this->vd["debug"] = true;

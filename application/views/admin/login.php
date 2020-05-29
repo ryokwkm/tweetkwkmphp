@@ -9,17 +9,12 @@
 				</div>
 				<div class="card-body">
 					<form action="/auth/login" method="post">
+						<input type="hidden" name="account_name" value="magialogin">
 
+						<p class="category">
+							Botを作成済みの場合、 ログインすることで動作を設定できます<br>
+						</p>
 
-						<div class="row">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label class="bmd-label-floating">対象アカウント</label>
-									<input type="text" name="account_name" class="form-control" readonly value="magialogin">
-								</div>
-							</div>
-						</div>
-						えーりんちゃんコントローラーにログインします（固定）
 						<button type="submit" class="btn btn-primary pull-right">Login</button>
 						<div class="clearfix"></div>
 

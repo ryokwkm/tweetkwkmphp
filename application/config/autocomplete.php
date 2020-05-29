@@ -102,6 +102,7 @@
  * @property Acharacter_model         $acharacter_model
  * @property Aeelin_model             $aeelin_model
  * @property Tnews_model              $tnews_model
+ * @property Mypage_model             $mypage_model
  *
  */
 class CI_Controller{};

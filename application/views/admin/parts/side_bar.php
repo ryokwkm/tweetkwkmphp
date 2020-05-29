@@ -85,21 +85,28 @@
 <!--				</a>-->
 <!--			</li>-->
 
-				<li class="nav-item active-pro ">
+
 					<?php if( !empty($login)) { ?>
-						<a class="nav-link" href="/auth/logout">
-							<i class="material-icons">logout</i>
-							<p>logout</p>
-						</a>
+						<li class="nav-item active-pro ">
+							<a class="nav-link" href="/auth/logout">
+								<i class="material-icons">logout</i>
+								<p>logout</p>
+							</a>
+						</li>
 					<?php } else { ?>
-						<a class="nav-link" href="/mypage/index">
-							<i class="material-icons">mood</i>
-							<p>ログイン</p>
-						</a>
-						<a class="nav-link" href="/auth/regist">
-							<i class="material-icons">mood</i>
-							<p>BOTを新規作成</p>
-						</a>
+
+						<li class="nav-item ">
+							<a class="nav-link" href="/mypage/index">
+								<i class="material-icons">mood</i>
+								<p>ログイン</p>
+							</a>
+						</li>
+						<li class="nav-item ">
+							<a class="nav-link" href="/auth/regist">
+								<i class="material-icons">mood</i>
+								<p>BOTを新規作成</p>
+							</a>
+						</li>
 					<?php } ?>
 
 				</li>

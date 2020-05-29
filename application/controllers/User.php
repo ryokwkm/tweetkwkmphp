@@ -31,7 +31,11 @@ class User extends MY_Controller {
 
 	public function view($appID)
 	{
-		$appID = $this->checkAppID($appID);
+		if(empty($appID)) {
+			echo "エラー";
+			exit;
+		}
+
 		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
 		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
 		$this->vd += $this->session_model->GetFlash();
