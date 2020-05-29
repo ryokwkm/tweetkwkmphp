@@ -14,7 +14,7 @@ class Mypage_model extends CI_Model {
 
 	// エンドユーザー登録用のアプリを１つ取得
 	public function MakeUserTpl($CI, $appID=0) {
-		$appID = $this->checkAppID($appID);
+		$appID = $this->checkAppID($CI, $appID);
 		$this->GetBaseTemplate($CI);
 		$CI->vd["appuser"] = $this->appuser_model->FindByID($appID);
 		$CI->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
@@ -53,10 +53,12 @@ class Mypage_model extends CI_Model {
 			$appID = $CI->defaultAppID;
 		}
 
-		if(!in_array($appID, $CI->myApps)) {
-			echo "アプリの編集が許可されていません";
+		$app = $this->appuser_model->FindByID($appID);
+		if(empty($app) || $app["is_public"] == 0 ) {
+			echo "編集が許可されていません";
 			exit;
 		}
+
 		return $appID;
 	}
 

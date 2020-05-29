@@ -95,7 +95,7 @@ class Appuser_model extends CI_Model {
 		$ups = array();
 		foreach($this->updateColumn as $col) {
 			if(isset($posts[$col])) {
-				$ups[$col] = $posts[$col];
+				$ups[$col] = trim($posts[$col]);
 			}
 		}
 		$ups["search_keyword"] = trim($ups["search_keyword"]);
@@ -104,9 +104,23 @@ class Appuser_model extends CI_Model {
 		if($ups["is_news"] == 1 && empty($ups["news_keyword"]) ) {
 			throw new Exception("ニュースを検索する場合は、ニュース検索キーワードを指定してください");
 		}
+		if(!empty($ups["news_keyword"])) {
+			$spaceCount = explode(" ", $ups["news_keyword"]);
+			if(count($spaceCount) > 2) {
+				throw new Exception("ニュース検索キーワードはスペース区切りで２つまで指定できます");
+			}
+		}
+
 		if($ups["is_search"] == 1 && empty($ups["search_keyword"]) ) {
 			throw new Exception("トレンドを検索する場合は、トレンド検索キーワードを指定してください");
 		}
+		if(!empty($ups["search_keyword"])) {
+			$spaceCount = explode(" ", $ups["search_keyword"]);
+			if(count($spaceCount) > 2) {
+				throw new Exception("トレンド検索キーワードはスペース区切りで２つまで指定できます");
+			}
+		}
+
 		if($ups["is_reply"] == 1 && (empty($ups["reply_retweet"]) && empty($ups["is_replyreply"])) ) {
 			throw new Exception("リプライアクションを実行する場合、リプライアクションを最低１つは指定してください");
 		}
