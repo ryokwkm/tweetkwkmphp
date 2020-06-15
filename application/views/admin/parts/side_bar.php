@@ -85,29 +85,33 @@
 <!--				</a>-->
 <!--			</li>-->
 
+					<?php
+					vr( $_SERVER["REMOTE_ADDR"]);
+					if( $_SERVER["REMOTE_ADDR"]  == '118.6.103.236') { ?>
+						<?php if( !empty($login)) { ?>
+							<li class="nav-item active-pro ">
+								<a class="nav-link" href="/auth/logout">
+									<i class="material-icons">logout</i>
+									<p>logout</p>
+								</a>
+							</li>
+						<?php } else { ?>
 
-					<?php if( !empty($login)) { ?>
-						<li class="nav-item active-pro ">
-							<a class="nav-link" href="/auth/logout">
-								<i class="material-icons">logout</i>
-								<p>logout</p>
-							</a>
-						</li>
-					<?php } else { ?>
-
-						<li class="nav-item ">
-							<a class="nav-link" href="/mypage/index">
-								<i class="material-icons">mood</i>
-								<p>ログイン</p>
-							</a>
-						</li>
-						<li class="nav-item ">
-							<a class="nav-link" href="/auth/regist">
-								<i class="material-icons">mood</i>
-								<p>BOTを新規作成</p>
-							</a>
-						</li>
+							<li class="nav-item ">
+								<a class="nav-link" href="/mypage/index">
+									<i class="material-icons">mood</i>
+									<p>ログイン</p>
+								</a>
+							</li>
+							<li class="nav-item ">
+								<a class="nav-link" href="/auth/regist">
+									<i class="material-icons">mood</i>
+									<p>BOTを新規作成</p>
+								</a>
+							</li>
+						<?php } ?>
 					<?php } ?>
+
 
 				</li>
 		</ul>
