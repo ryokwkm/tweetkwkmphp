@@ -14,8 +14,12 @@ class Mypage extends MY_Controller {
 
 	public function index()
 	{
-		vr($_SESSION);
 //		$this->user();
+		$this->getBaseTemplate();
+		$this->vd += $this->session_model->GetFlash();
+		$this->vd["twitterUsers"] = $this->appuser_model->GetUsersByAdmin();
+		$this->vd["contents"] = $this->load->view('admin/list', $this->vd, TRUE);
+		$this->load->view('admin/base', $this->vd);
 	}
 
 	public function user($appID=0) {

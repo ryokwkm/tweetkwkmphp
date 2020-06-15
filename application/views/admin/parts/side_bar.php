@@ -8,7 +8,7 @@
 -->
 	<div class="logo">
 		<a href="/" class="simple-text logo-normal">
-			管理画面
+			キュレーターめいかー<BR>（仮）
 		</a>
 	</div>
 	<div class="sidebar-wrapper">
@@ -86,8 +86,7 @@
 <!--			</li>-->
 
 					<?php
-					vr( $_SERVER["REMOTE_ADDR"]);
-					if( $_SERVER["REMOTE_ADDR"]  == '118.6.103.236') { ?>
+					if(IsAdminIP()) { ?>
 						<?php if( !empty($login)) { ?>
 							<li class="nav-item active-pro ">
 								<a class="nav-link" href="/auth/logout">

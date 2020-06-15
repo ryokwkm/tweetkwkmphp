@@ -18,7 +18,6 @@ class User extends MY_Controller {
 
 	public function list()
 	{
-		$this->load->helper("twitter_user");
 
 		$this->vd += $this->session_model->GetFlash();
 

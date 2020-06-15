@@ -15,6 +15,7 @@ if(!empty($general)) {
 		margin-bottom: 0px;
 	}
 
+
 </style>
 
 <script>
@@ -147,6 +148,20 @@ if(!empty($general)) {
 				<div class="card-body" id="main_form">
 
 
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">概要</h4>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="exampleInputPassword1"></label>
+												<textarea name="memo" class="form-control" rows="10" <?= $readOnly ?>><?= $appuser["memo"] ?></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
 
 							<div class="card">
 								<div class="card-body">
@@ -183,72 +198,72 @@ if(!empty($general)) {
 							} ?>
 
 <!--							セリフ		-->
-								<div class="card">
-									<div class="card-body">
-										<h4 class="card-title">キャラクターの性格</h4>
-										<p class="category">AIでこのキャラクターのセリフを生成してつぶやく</p>
-										<div class="row">
-										<div class="col-md-3">
-											<div class="form-check form-check-radio">
-												<label class="form-check-label">
-													<input class="form-check-input" type="radio" name="character_mode" value="0" <?= $character_mode0 ?>  <?= $readOnly ?>>
-													なし
-													<span class="circle">
-											<span class="check"></span>
-									</span>
-												</label>
-											</div>
-
-											<div class="form-check form-check-radio">
-												<label class="form-check-label">
-													<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> <?= $readOnly ?> >
-													Twitterユーザー
-													<span class="circle">
-											<span class="check"></span>
-									</span>
-												</label>
-											</div>
-
-											<div class="form-check form-check-radio">
-												<label class="form-check-label">
-													<input class="form-check-input" type="radio" name="character_mode" id="exampleRadios2" value="2" <?= $character_mode2 ?> <?= $readOnly ?> >
-													キャラクター
-													<span class="circle">
-											<span class="check"></span>
-									</span>
-												</label>
-											</div>
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">キャラクターの性格</h4>
+									<p class="category">AIでこのキャラクターのセリフを生成してつぶやく</p>
+									<div class="row">
+									<div class="col-md-3">
+										<div class="form-check form-check-radio">
+											<label class="form-check-label">
+												<input class="form-check-input" type="radio" name="character_mode" value="0" <?= $character_mode0 ?>  <?= $readOnly ?>>
+												なし
+												<span class="circle">
+										<span class="check"></span>
+								</span>
+											</label>
 										</div>
 
-										<div class="col-md-9">
-											<div class="form-group character_mode1">
-												<label for="exampleInputPassword1" style="margin-top: 10px;">Twitterユーザー名</label>
-												<input type="text" name="target_screen_name" class="form-control"  value="<?= $appuser["target_screen_name"] ?>" <?= $readOnly ?> >
-											</div>
-
-											<div class="form-group character_mode2">
-												<script>
-													$(function(){
-														$('#target_character').selectpicker('val', <?= $appuser["target_character_id"] ?>);
-														$("#target_character").change(function(){
-															$("#target_character_id").val( $(this).val() );
-														});
-													});
-												</script>
-												<input type="hidden" name="target_character_id" id="target_character_id" value="<?= $appuser["target_character_id"] ?>" <?= $readOnly ?> >
-												<select id="target_character" class="form-control selectpicker" data-style="btn btn-link" <?= $readOnly ?>>
-													<?php foreach($characters as $character) {	?>
-														<option value="<?= $character["id"] ?>"
-															<?php if ($character["id"] == $appuser["target_character_id"]) echo " selected"; ?> >
-															<?= $character["name"] ?>
-														</option>
-													<?php } ?>
-												</select>
-											</div>
+										<div class="form-check form-check-radio">
+											<label class="form-check-label">
+												<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> <?= $readOnly ?> >
+												Twitterユーザー
+												<span class="circle">
+										<span class="check"></span>
+								</span>
+											</label>
 										</div>
+
+										<div class="form-check form-check-radio">
+											<label class="form-check-label">
+												<input class="form-check-input" type="radio" name="character_mode" id="exampleRadios2" value="2" <?= $character_mode2 ?> <?= $readOnly ?> >
+												キャラクター
+												<span class="circle">
+										<span class="check"></span>
+								</span>
+											</label>
 										</div>
 									</div>
+
+									<div class="col-md-9">
+										<div class="form-group character_mode1">
+											<label for="exampleInputPassword1" style="margin-top: 10px;">Twitterユーザー名</label>
+											<input type="text" name="target_screen_name" class="form-control"  value="<?= $appuser["target_screen_name"] ?>" <?= $readOnly ?> >
+										</div>
+
+										<div class="form-group character_mode2">
+											<script>
+												$(function(){
+													$('#target_character').selectpicker('val', <?= $appuser["target_character_id"] ?>);
+													$("#target_character").change(function(){
+														$("#target_character_id").val( $(this).val() );
+													});
+												});
+											</script>
+											<input type="hidden" name="target_character_id" id="target_character_id" value="<?= $appuser["target_character_id"] ?>" <?= $readOnly ?> >
+											<select id="target_character" class="form-control selectpicker" data-style="btn btn-link" <?= $readOnly ?>>
+												<?php foreach($characters as $character) {	?>
+													<option value="<?= $character["id"] ?>"
+														<?php if ($character["id"] == $appuser["target_character_id"]) echo " selected"; ?> >
+														<?= $character["name"] ?>
+													</option>
+												<?php } ?>
+											</select>
+										</div>
+									</div>
+									</div>
 								</div>
+							</div>
 
 
 

@@ -42,6 +42,7 @@ class Appuser_model extends CI_Model {
 		"is_replyreply",
 		"reply_retweet",
 		"followback",
+		"memo",
 	);
 
 
@@ -95,7 +96,7 @@ class Appuser_model extends CI_Model {
 		$ups = array();
 		foreach($this->updateColumn as $col) {
 			if(isset($posts[$col])) {
-				$ups[$col] = trim($posts[$col]);
+				$ups[$col] = strip_tags(trim($posts[$col]));
 			}
 		}
 		$ups["search_keyword"] = trim($ups["search_keyword"]);

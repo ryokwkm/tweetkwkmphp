@@ -23,6 +23,13 @@ function TwitterFunc($mode) {
 	}
 }
 
+function IsAdminIP() {
+	if(in_array($_SERVER["REMOTE_ADDR"], array('118.6.103.236', '127.0.0.1'))) {
+		return true;
+	}
+	return false;
+}
+
 function TwitterMode($mode) {
 	switch ($mode) {
 		case 0:

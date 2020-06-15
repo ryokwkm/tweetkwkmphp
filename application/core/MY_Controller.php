@@ -24,6 +24,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->model("tnews_model");
 		$this->load->model("mypage_model");
 		$this->load->library('params');
+		$this->load->helper("twitter_user");
 
 		//テンプレートにわたす変数を初期化
 		$this->vd = array(

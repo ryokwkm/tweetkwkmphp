@@ -12,7 +12,6 @@ class Admin extends MY_Controller {
 
 	public function index()
 	{
-		$this->load->helper("twitter_user");
 		$this->getBaseTemplate();
 		$this->vd += $this->session_model->GetFlash();
 
@@ -25,12 +24,10 @@ class Admin extends MY_Controller {
 
 	public function list2()
 	{
-		$this->load->helper("twitter_user");
 		$data["twitterUsers"] = $this->getTwitterUsers();
 		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
 		$data["navBar"] = $this->load->view('admin/parts/nav_bar', '', TRUE);
 		$this->load->view('admin_index', $data);
-
 	}
 
 
