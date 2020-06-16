@@ -38,26 +38,6 @@ class MY_Controller extends CI_Controller {
 	 * マイページのBaseテンプレート
 	 */
 	function getBaseTemplate($mypage=true) {
-//		$data = $this->vd;
-//
-//		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
-//
-//		if($mypage && $this->session_model->IsLogin()) {
-//			$data["my_pages"] = $this->config->item("my_pages");
-//		} else {
-//			$data["my_pages"] = $this->config->item("general_pages");
-//		}
-//
-//		if($this->session_model->IsLogin()) {
-//			$data["user_data"] = $this->user_model->FindByID($this->session_model->UserID());
-//		}
-//		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $data, TRUE);
-//		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $data, TRUE);
-//
-////		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
-//		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
-//		$this->vd = $data;
-//		return $this->vd;
 		return $this->mypage_model->GetBaseTemplate($this, $mypage);
 	}
 

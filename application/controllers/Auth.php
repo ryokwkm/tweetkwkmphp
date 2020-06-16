@@ -172,7 +172,7 @@ class Auth extends MY_Controller {
 		//ログイン状態にする
 		$_SESSION["is_login"] = TRUE;
 		//マイページへリダイレクト
-		header('location: /mypage/');
+		header('location: /mypage/index');
 	}
 
 }

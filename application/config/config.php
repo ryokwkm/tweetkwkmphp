@@ -15,13 +15,14 @@ $config["my_pages"] = array(
 	array(
 		"url" => "/mypage/index",
 		"icon" => "dashboard",
-		"title" => "Dashboard",
+		"title" => "Curator list",
 	),
-//	array(
-//		"url" => "/mypage/user",
-//		"icon" => "person",
-//		"title" => "User",
-//	),
+	array(
+		"url" => "/mypage/user",
+		"icon" => "person",
+		"title" => "Editing the curator",
+		"title_only" => true,
+	),
 //	array(
 //		"url" => "/mypage/test_user",
 //		"icon" => "local_hospital",

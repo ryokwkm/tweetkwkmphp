@@ -64,32 +64,35 @@
 <!--				</li>-->
 
 
-				<li class="nav-item dropdown">
-					<?php if($login) {	?>
-						<a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<img src="<?= $user_data["image_url"] ?>" style="width: 50px; ; border-radius: 300px;" />
-							<p class="d-lg-none d-md-block">
-								Account
-							</p>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-							<a class="dropdown-item" href="/mypage/index">マイページ</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/auth/logout">Log out</a>
-						</div>
-					<?php } else {	?>
-						<a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<img src="/assets/img/faces/person.png" style="width: 50px; ; border-radius: 300px;" />
-							<p class="d-lg-none d-md-block">
-								Account
-							</p>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-							<a class="dropdown-item" href="/mypage/index">ログイン</a>
-						</div>
-					<?php } ?>
+				<?php if(IsAdminIP()) { ?>
 
-				</li>
+					<li class="nav-item dropdown">
+						<?php if($login) {	?>
+							<a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="<?= $user_data["image_url"] ?>" style="width: 50px; ; border-radius: 300px;" />
+								<p class="d-lg-none d-md-block">
+									Account
+								</p>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+								<a class="dropdown-item" href="/mypage/index">マイページ</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/auth/logout">Log out</a>
+							</div>
+						<?php } else {	?>
+							<a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="/assets/img/faces/person.png" style="width: 50px; ; border-radius: 300px;" />
+								<p class="d-lg-none d-md-block">
+									Account
+								</p>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+								<a class="dropdown-item" href="/mypage/index">ログイン</a>
+							</div>
+						<?php } ?>
+					</li>
+
+				<?php } ?>
 			</ul>
 		</div>
 
