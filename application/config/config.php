@@ -3,12 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 $config["version"] = 1;
+$config["site_title"] = "キュレーター・メーカー<br>（仮）";
 
 $config["create_app"] = "createapp";	//エンドユーザーによるBot作成
 $config["create_app_limit"] = 10;	//1つのTwitterアプリが担当できるエンドユーザー数（あんまり多いとAPIリミットになる）
 $config["create_app_admin"] = "createadmin";
 $config["login_app"] = "loginapp";
 
+// title_only => true の場合、サイドバーには出さず、タイトル定義のみする
 $config["my_pages"] = array(
 	array(
 		"url" => "/mypage/index",
@@ -34,11 +36,13 @@ $config["general_pages"] = array(
 		"icon" => "dashboard",
 		"title" => "Dashboard",
 	),
-//	array(
-//		"url" => "/user/view",
-//		"icon" => "person",
-//		"title" => "User",
-//	),
+
+	array(
+		"url" => "/user/view",
+		"icon" => "person",
+		"title" => "Curator details",
+		"title_only" => true,
+	),
 );
 
 

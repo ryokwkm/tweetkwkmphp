@@ -8,12 +8,15 @@
 -->
 	<div class="logo">
 		<a href="/" class="simple-text logo-normal">
-			キュレーターめいかー<BR>（仮）
+			<?= $site_title ?>
 		</a>
 	</div>
 	<div class="sidebar-wrapper">
 		<ul class="nav">
 			<?php foreach($my_pages as $page) {
+				if(!empty($page["title_only"])) {
+					continue;
+				}
 				$active = "";
 				if(strpos($_SERVER['REQUEST_URI'],$page["url"]) === 0) {
 					$active = " active";

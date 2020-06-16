@@ -273,7 +273,7 @@ if(!empty($general)) {
 							<div class="card">
 								<div class="card-body">
 									<h4 class="card-title">トレンドを検索</h4>
-									<p class="category">指定したカテゴリ（キーワード）のトレンド度を検索して、リアクションもつぶやく</p>
+									<p class="category">指定したカテゴリ（キーワード）で話題を紹介。リアクションもつぶやく</p>
 									<div class="row">
 										<div class="col-md-12">
 											<div class="togglebutton">
@@ -364,7 +364,7 @@ if(!empty($general)) {
 												<label>
 													<input type="checkbox" value="1" name="is_reply" id="input_replyaction" <?php if($appuser["is_reply"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
-													リプライに対しにアクションを実行
+													リプライアクションを実行
 													<span id="input_replyaction_text"></span>
 												</label>
 											</div>

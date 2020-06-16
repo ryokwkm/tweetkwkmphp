@@ -27,6 +27,7 @@ class Mypage_model extends CI_Model {
 	public function GetBaseTemplate($CI, $mypage=true) {
 		$data = $CI->vd;
 
+		$data["site_title"] = $CI->config->item('site_title');
 		$data["jsBase"] = $this->load->view('general/parts/js_base', '', TRUE);
 
 		if($mypage && $this->session_model->IsLogin()) {

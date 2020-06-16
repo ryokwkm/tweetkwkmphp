@@ -9,6 +9,10 @@
 					$pageTitle = $page["title"];
 				}
 			}
+			if(empty($pageTitle)) {
+				$pageTitle = $site_title;
+			}
+
 			?>
 			<a class="navbar-brand" ><?= $pageTitle; ?></a>
 		</div>
