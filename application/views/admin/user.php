@@ -120,7 +120,7 @@ if(!empty($general)) {
 					<table width="100%">
 						<tr >
 							<td width="50%">
-								<h4 class="card-title"><a href="https://twitter.com/<?= $appuser["account_name"] ?>"><?= $appuser["name"] ?></a> コントローラー</h4>
+								<h4 class="card-title"><a href="https://twitter.com/<?= $appuser["account_name"] ?>" target="_blank"><?= $appuser["name"] ?>  @<?= $appuser["account_name"] ?></a> </h4>
 <!--								<p class="card-category"><a href="https://twitter.com/--><?//= $appuser["account_name"] ?><!--">--><?//= $appuser["name"] ?><!--</a></p>-->
 							</td>
 							<td width="50%">
