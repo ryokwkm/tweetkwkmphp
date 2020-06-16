@@ -156,7 +156,7 @@ class Appuser_model extends CI_Model {
 			unset($ups["target_screen_name"]);	//キャラクターを更新する場合、Twitter Userは更新しない
 		}
 
-		if($ups["is_replyreply"] == 1 && empty($ups["character_mode"])) {
+		if($ups["is_reply"] == 1 && $ups["is_replyreply"] == 1 && empty($ups["character_mode"])) {
 			throw new Exception("「リプライにお返事」する場合、キャラクターの性格を設定する必要があります");
 		}
 
