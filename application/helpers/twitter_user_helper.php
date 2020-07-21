@@ -56,3 +56,8 @@ function PowerButton($is_deleted) {
 		return '<button type="button" class="btn btn-success">ON</button>';
 	}
 }
+
+function ConvertJson($array) {
+	return json_encode($array, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+}
+

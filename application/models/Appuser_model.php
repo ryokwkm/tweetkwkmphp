@@ -139,10 +139,12 @@ class Appuser_model extends CI_Model {
 			throw new Exception("性格をキャラクターにする場合は、キャラクターを指定してください");
 		}
 
+
+
 		//screen_nameからuser_idを取得
-		if($posts["character_mode"] == CHARA_MODE_TWITTER_USER ) {
+		if($ups["character_mode"] == CHARA_MODE_TWITTER_USER ) {
 			$twitter = $this->twitter_model->NewObject($this->session_model->UserID());
-			$res = $twitter->get("users/show", array("screen_name" => $posts["target_screen_name"]));
+			$res = $twitter->get("users/show", array("screen_name" => $ups["target_screen_name"]));
 			if(!isset($res->id_str) || empty($res->id_str)) {
 				throw new Exception("Twitterユーザーが見つかりません。存在しないTwitterユーザー名が入力されています");
 			}
@@ -152,7 +154,15 @@ class Appuser_model extends CI_Model {
 			unset($ups["target_character_id"]);	//twitter userを更新する場合キャラクターは更新しない
 		}
 		else if($posts["character_mode"] == CHARA_MODE_STORY_USER ) {
-			$ups["target_character_id"] = $posts["target_character_id"];
+			//キャラクターIDが正しいものかチェック
+			$character_ids = explode(",", $ups["target_character_id"]);
+			$maxID = $this->acharacter_model->FindMaxID();
+			foreach($character_ids as $character_id) {
+				if ($character_id > $maxID || $character_id < 0) {
+					throw new Exception("不正なキャラクターが指定されています");
+				}
+			}
+
 			unset($ups["target_screen_name"]);	//キャラクターを更新する場合、Twitter Userは更新しない
 		}
 
