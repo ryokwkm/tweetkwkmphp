@@ -56,12 +56,15 @@ if(!empty($general)) {
 		if( $this.val() == 1) {
 			$(".character_mode1").show();
 			$(".character_mode2").hide();
+			$(".serif_rate").show();
 		} else if( $this.val() == 2) {
 			$(".character_mode1").hide();
 			$(".character_mode2").show();
+			$(".serif_rate").show();
 		} else {
 			$(".character_mode1").hide();
 			$(".character_mode2").hide();
+			$(".serif_rate").hide();
 		}
 	}
 
@@ -238,9 +241,9 @@ if(!empty($general)) {
 
 									<div class="col-md-9">
 
-										<div class="form-group">
-											<label for="exampleInputPassword1">実行確率(%)</label>
-											<input name="xxxxxx" type="number" class="form-control"  min="1" max="100" value="<?= $appuser["exe_rate"] ?>" <?= $readOnly ?>>
+										<div class="form-group serif_rate">
+											<label for="exampleInputPassword1">セリフの実行確率(%)</label>
+											<input name="serif_rate" type="number" class="form-control"  min="0" max="100" value="<?= $appuser["serif_rate"] ?>" <?= $readOnly ?>>
 										</div>
 
 										<div class="form-group character_mode1">

@@ -26,6 +26,7 @@ class Appuser_model extends CI_Model {
 	//更新を許可したカラム（idなどが更新されないよう制御）
 	public $updateColumn = array(
 		"exe_rate",
+		"serif_rate",
 		"character_mode",
 		"target_character_id",
 		"target_screen_name",
@@ -102,6 +103,24 @@ class Appuser_model extends CI_Model {
 		$ups["search_keyword"] = trim($ups["search_keyword"]);
 		$ups["news_keyword"] = trim($ups["news_keyword"]);
 
+		// TODO: 不正な値かどうかをチェック。あとですべての項目に対して行う必要あり !!!
+		if($ups["serif_rate"] > 100 || $ups["serif_rate"] < 0 ) {
+			throw new Exception("セリフの実行確率が間違っています");
+		}
+
+		if($ups["search_rate"] > 100 || $ups["search_rate"] < 0 ) {
+			throw new Exception("トレンドを検索の実行確率が間違っています");
+		}
+
+		// 制限チェック
+		if($ups["fire_lv"] > 10) {
+			throw new Exception("リアクション数が多すぎます");
+		}
+		if($ups["search_count"] > 10) {
+			throw new Exception("ツイートするランキング数が多すぎます");
+		}
+
+		// TODO: 組み合わせのエラー
 		if($ups["is_news"] == 1 && empty($ups["news_keyword"]) ) {
 			throw new Exception("ニュースを検索する場合は、ニュース検索キーワードを指定してください");
 		}
@@ -125,12 +144,7 @@ class Appuser_model extends CI_Model {
 		if($ups["is_reply"] == 1 && (empty($ups["reply_retweet"]) && empty($ups["is_replyreply"])) ) {
 			throw new Exception("リプライアクションを実行する場合、リプライアクションを最低１つは指定してください");
 		}
-		if($ups["fire_lv"] > 10) {
-			throw new Exception("リアクション数が多すぎます");
-		}
-		if($ups["search_count"] > 10) {
-			throw new Exception("ツイートするランキング数が多すぎます");
-		}
+
 
 		if($ups["character_mode"] == CHARA_MODE_TWITTER_USER && empty($ups["target_screen_name"])) {
 			throw new Exception("性格をTwitterユーザーにする場合は、Twitterユーザー名（スクリーンネーム）を指定してください");

@@ -29,7 +29,7 @@ class Twitter_model extends CI_Model {
 		$apps = $this->db->query("
 			SELECT a.id, a.account_name, count(e.id) cnt
 			FROM twitter_apps a
-			LEFT JOIN twitter_end_users e on a.id = e.app_id
+			LEFT JOIN twitter_end_users e on a.id = e.app_id and e.is_deleted = 0
 			WHERE a.is_enduser = 1
 			GROUP BY a.id
 			ORDER BY a.id

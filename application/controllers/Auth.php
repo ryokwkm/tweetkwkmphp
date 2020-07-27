@@ -39,15 +39,14 @@ class Auth extends MY_Controller {
 
 
 	/**
-	 * Login
-	 * @throws \Abraham\TwitterOAuth\TwitterOAuthException
+	 * ログイン、Botの作成など、全てはここを経由して行われる！
 	 */
 	public function login()
 	{
 		//バリデーション
 		$appName = $this->input->post('account_name');
+		//エンドユーザーによるBotの作成
 		if($appName == $this->config->item("create_app")) {
-			//エンドユーザーによるBotの作成
 			$_SESSION['create_mode'] = $this->config->item("create_app");
 
 			$appName = $this->twitter_model->GetEnduserNewApp();
@@ -56,12 +55,13 @@ class Auth extends MY_Controller {
 				exit;
 			}
 		}
+		//ログインのみ
 		else if(in_array($appName, $this->loginApp)) {
-			//ログインのみ
 			$_SESSION['create_mode'] = $this->config->item("login_app");
 		}
+		//管理者によるBotの作成
+		//逐一ソースをいじって追加していきます
 		else if(in_array($appName, $this->myApp)) {
-			//管理者によるBotの作成
 			$_SESSION['create_mode'] = $this->config->item("create_app_admin");
 		}
 		else {
