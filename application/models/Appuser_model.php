@@ -46,6 +46,12 @@ class Appuser_model extends CI_Model {
 		"memo",
 	);
 
+	public $csvColumn = array(
+		"target_character_id",
+		"search_keyword",
+		"news_keyword",
+	);
+
 
 
 	public function FindByID($userID) {
@@ -97,11 +103,14 @@ class Appuser_model extends CI_Model {
 		$ups = array();
 		foreach($this->updateColumn as $col) {
 			if(isset($posts[$col])) {
+				//csvなら空白をtrim
+				if(in_array($col,$this->csvColumn)) {
+					$posts[$col] = $this->csvTrim($posts[$col]);
+				}
+
 				$ups[$col] = strip_tags(trim($posts[$col]));
 			}
 		}
-		$ups["search_keyword"] = trim($ups["search_keyword"]);
-		$ups["news_keyword"] = trim($ups["news_keyword"]);
 
 		// TODO: 不正な値かどうかをチェック。あとですべての項目に対して行う必要あり !!!
 		if($ups["serif_rate"] > 100 || $ups["serif_rate"] < 0 ) {
@@ -125,9 +134,9 @@ class Appuser_model extends CI_Model {
 			throw new Exception("ニュースを検索する場合は、ニュース検索キーワードを指定してください");
 		}
 		if(!empty($ups["news_keyword"])) {
-			$spaceCount = explode(" ", $ups["news_keyword"]);
+			$spaceCount = explode(",", $ups["news_keyword"]);
 			if(count($spaceCount) > 2) {
-				throw new Exception("ニュース検索キーワードはスペース区切りで２つまで指定できます");
+				throw new Exception("ニュース検索キーワードはカンマ区切りで２つまで指定できます");
 			}
 		}
 
@@ -135,9 +144,9 @@ class Appuser_model extends CI_Model {
 			throw new Exception("トレンドを検索する場合は、トレンド検索キーワードを指定してください");
 		}
 		if(!empty($ups["search_keyword"])) {
-			$spaceCount = explode(" ", $ups["search_keyword"]);
+			$spaceCount = explode(",", $ups["search_keyword"]);
 			if(count($spaceCount) > 2) {
-				throw new Exception("トレンド検索キーワードはスペース区切りで２つまで指定できます");
+				throw new Exception("トレンド検索キーワードはカンマ区切りで２つまで指定できます");
 			}
 		}
 
@@ -197,5 +206,17 @@ class Appuser_model extends CI_Model {
 			return 0;
 		}
 		return $params[$name];
+	}
+
+
+	//csv文字列から空白を削除して返す
+	function csvTrim($str) {
+		$csvs = explode(",", $str);
+		$ret = array();
+		foreach	($csvs as $csv) {
+			//全角スペースをtrimしたいので、半角スペースに変換したあとtrim
+			$ret[] = trim(mb_convert_kana($csv, "s", 'UTF-8'));
+		}
+		return implode(",", $ret);
 	}
 }
