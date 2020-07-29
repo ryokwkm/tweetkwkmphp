@@ -52,6 +52,8 @@ class Appuser_model extends CI_Model {
 		"news_keyword",
 	);
 
+	public $keywordLimit = 4;
+
 
 
 	public function FindByID($userID) {
@@ -135,8 +137,8 @@ class Appuser_model extends CI_Model {
 		}
 		if(!empty($ups["news_keyword"])) {
 			$spaceCount = explode(",", $ups["news_keyword"]);
-			if(count($spaceCount) > 2) {
-				throw new Exception("ニュース検索キーワードはカンマ区切りで２つまで指定できます");
+			if(count($spaceCount) > $this->keywordLimit) {
+				throw new Exception("ニュース検索キーワードはカンマ区切りで " + $this->keywordLimit + "つまで指定できます");
 			}
 		}
 
@@ -145,8 +147,8 @@ class Appuser_model extends CI_Model {
 		}
 		if(!empty($ups["search_keyword"])) {
 			$spaceCount = explode(",", $ups["search_keyword"]);
-			if(count($spaceCount) > 2) {
-				throw new Exception("トレンド検索キーワードはカンマ区切りで２つまで指定できます");
+			if(count($spaceCount) > $this->keywordLimit) {
+				throw new Exception("トレンド検索キーワードはカンマ区切りで " + $this->keywordLimit + "つまで指定できます");
 			}
 		}
 
