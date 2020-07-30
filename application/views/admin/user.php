@@ -308,8 +308,8 @@ if(!empty($general)) {
 <!--							トレンド		-->
 							<div class="card">
 								<div class="card-body">
-									<h4 class="card-title">トレンドを検索</h4>
-									<p class="category">指定したカテゴリ（キーワード）で話題を紹介。リアクションもつぶやく</p>
+									<h4 class="card-title">みんなの反応検索</h4>
+									<p class="category">指定したキーワードに関するみんなの反応を紹介</p>
 									<div class="row">
 										<div class="col-md-12">
 											<div class="togglebutton">
@@ -319,6 +319,38 @@ if(!empty($general)) {
 													<span class="toggle"></span>
 													トレンドサーチ
 													<span id="input_trendsearch_text"></span>
+												</label>
+											</div>
+										</div>
+
+										<div class="col-md-12 trendsearch_box">
+
+											<?php
+											$search_mode2 = "";
+											$search_mode3 = "";
+											if(empty($appuser["search_mode"]) || $appuser["search_mode"] == 3) {
+												$search_mode3 = " checked";
+											} else if($appuser["character_mode"] == 2) {
+												$search_mode2 = " checked";
+											} ?>
+
+											<div class="form-check form-check-radio">
+												<label class="form-check-label">
+													<input class="form-check-input" type="radio" name="search_mode" value="3" <?= $search_mode3 ?>  <?= $readOnly ?>>
+													キーワードのみを検索
+													<span class="circle">
+														<span class="check"></span>
+													</span>
+												</label>
+											</div>
+
+											<div class="form-check form-check-radio">
+												<label class="form-check-label">
+													<input class="form-check-input" type="radio" name="search_mode" value="2" <?= $search_mode2 ?>  <?= $readOnly ?>>
+													キーワードに関するトレンドを検索
+													<span class="circle">
+														<span class="check"></span>
+													</span>
 												</label>
 											</div>
 										</div>
