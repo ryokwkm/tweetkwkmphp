@@ -330,7 +330,7 @@ if(!empty($general)) {
 											$search_mode3 = "";
 											if(empty($appuser["search_mode"]) || $appuser["search_mode"] == 3) {
 												$search_mode3 = " checked";
-											} else if($appuser["character_mode"] == 2) {
+											} else if($appuser["search_mode"] == 2) {
 												$search_mode2 = " checked";
 											} ?>
 
