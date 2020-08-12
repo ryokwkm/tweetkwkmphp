@@ -471,6 +471,7 @@ if(!empty($general)) {
 									<h4 class="card-title">その他</h4>
 <!--									<p class="category">リプライがあった場合アクションを実行</p>-->
 									<div class="row">
+
 										<div class="col-md-12">
 											<div class="togglebutton">
 												<label>
@@ -481,6 +482,18 @@ if(!empty($general)) {
 												</label>
 											</div>
 										</div>
+
+										<div class="col-md-12">
+											<div class="togglebutton">
+												<label>
+													<input type="checkbox" value="1" name="is_wasshoi" id="input_is_wasshoi" <?php if($appuser["is_wasshoi"] == 1) echo "checked" ?> <?= $readOnly ?> >
+													<span class="toggle"></span>
+													相互わっしょい
+													<span id="input_is_wasshoi_text"></span>
+												</label>
+											</div>
+										</div>
+
 									</div>
 								</div>
 							</div>
