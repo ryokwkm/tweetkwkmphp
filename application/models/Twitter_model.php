@@ -27,9 +27,9 @@ class Twitter_model extends CI_Model {
 	// エンドユーザー登録用のアプリを１つ取得
 	public function GetEnduserNewApp() {
 		$apps = $this->db->query("
-			SELECT a.id, a.account_name, count(e.id) cnt
+			SELECT a.id, a.account_name, count(u.id) cnt
 			FROM twitter_apps a
-			LEFT JOIN twitter_end_users e on a.id = e.app_id and e.is_deleted = 0
+			LEFT JOIN twitter_users u on a.id = u.app_id and u.is_deleted <> 1
 			WHERE a.is_enduser = 1
 			GROUP BY a.id
 			ORDER BY a.id
