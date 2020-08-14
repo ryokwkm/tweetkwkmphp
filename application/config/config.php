@@ -6,7 +6,7 @@ $config["version"] = 1;
 $config["site_title"] = "キュレーター・メーカー（仮）";
 
 $config["create_app"] = "createapp";	//エンドユーザーによるBot作成
-$config["create_app_limit"] = 3;	//1つのTwitterアプリが担当できるエンドユーザー数（あんまり多いとAPIリミットになる）
+$config["create_app_limit"] = 2;	//1つのTwitterアプリが担当できるエンドユーザー数（あんまり多いとAPIリミットになる）
 $config["create_app_admin"] = "createadmin";
 $config["login_app"] = "loginapp";
 
