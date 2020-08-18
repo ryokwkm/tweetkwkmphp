@@ -48,6 +48,10 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 
 	$(function(){
 
+
+		$("#myChart").height(window.innerHeight * 0.8);
+		console.log(window.innerHeight * 0.8)
+
 		var ctx = document.getElementById("myChart").getContext('2d');
 		var options = {
 			title: {
@@ -103,7 +107,6 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 								locale: 'ja'
 							});
 
-
 							$("#targetUser").change(function(){
 								$('input[name="targetUser"]').val( $(this).val() );
 							});
@@ -151,8 +154,10 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 
 
 
+					<div class="col-md-12">
+						<canvas id="myChart" ></canvas>
+					</div>
 
-					<canvas id="myChart" width="400" height="400"></canvas>
 				</div>
 				</form>
 			</div>
