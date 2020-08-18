@@ -90,7 +90,6 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 		<div class="card">
 			<div class="card-header card-header-primary">
 				ユーザーリスト
-				<?php echo date('Y-m-d'); ?>
 			</div>
 			<div class="card-body" id="main_form">
 				<form action="followers" method="post">
