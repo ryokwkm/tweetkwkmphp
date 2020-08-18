@@ -18,6 +18,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->model("user_model");
 		$this->load->model("appuser_model");
 		$this->load->model("usertlog_model");
+		$this->load->model("userfollowers_model");
 		$this->load->model("twitter_model");
 		$this->load->model("acharacter_model");
 		$this->load->model("aeelin_model");
@@ -28,7 +29,7 @@ class MY_Controller extends CI_Controller {
 
 		//テンプレートにわたす変数を初期化
 		$this->vd = array(
-			"debug" => false,
+			"debug" => true,
 			"general" => false,
 			"login" => $this->session_model->IsLogin());
 	}

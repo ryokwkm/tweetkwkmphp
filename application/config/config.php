@@ -23,6 +23,7 @@ $config["my_pages"] = array(
 		"title" => "Editing the curator",
 		"title_only" => true,
 	),
+
 //	array(
 //		"url" => "/mypage/test_user",
 //		"icon" => "local_hospital",
@@ -43,6 +44,11 @@ $config["general_pages"] = array(
 		"icon" => "person",
 		"title" => "Curator details",
 		"title_only" => true,
+	),
+	array(
+		"url" => "/user/followers",
+		"icon" => "person",
+		"title" => "Followers",
 	),
 );
 

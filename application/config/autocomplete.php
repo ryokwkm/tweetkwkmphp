@@ -99,6 +99,7 @@
  * @property Usertlog_model           $usertlog_model
  * @property Session_model            $session_model
  * @property Appuser_model            $appuser_model
+ * @property Userfollowers_model            $userfollowers_model
  * @property Acharacter_model         $acharacter_model
  * @property Aeelin_model             $aeelin_model
  * @property Tnews_model              $tnews_model

@@ -6,6 +6,7 @@
 <script src="/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Plugin for the momentJs  -->
 <script src="/assets/js/plugins/moment.min.js"></script>
+<script src="/assets/js/plugins/moment-with-locales.min.js"></script>
 <!--  Plugin for Sweet Alert -->
 <script src="/assets/js/plugins/sweetalert2.js"></script>
 <!-- Forms Validations Plugin -->

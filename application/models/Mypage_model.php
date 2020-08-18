@@ -42,7 +42,7 @@ class Mypage_model extends CI_Model {
 		$data["navBar"] = $this->load->view('admin/parts/nav_bar', $data, TRUE);
 		$data["sideBar"] = $this->load->view('admin/parts/side_bar', $data, TRUE);
 
-//		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
+		$data["fixedSetting"] = $this->load->view('general/parts/fixed_setting', '', TRUE);
 		$data["footer"] = $this->load->view('general/parts/footer', '', TRUE);
 		$CI->vd = $data;
 		return $CI->vd;
