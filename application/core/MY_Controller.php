@@ -29,7 +29,7 @@ class MY_Controller extends CI_Controller {
 
 		//テンプレートにわたす変数を初期化
 		$this->vd = array(
-			"debug" => true,
+			"debug" => false,
 			"general" => false,
 			"login" => $this->session_model->IsLogin());
 	}

@@ -10,8 +10,11 @@ $chartData = '';
 $chartArray = array();
 $chartArray["datasets"] = array();
 //ラベル作成。key()は最初の要素のキーを返す
-foreach ($userFollowers[key($userFollowers)]["followers"] as $date => $follower) {
-	$labels[] = $date;
+$labels = array();
+if(!empty($userFollowers)) {
+	foreach ($userFollowers[key($userFollowers)]["followers"] as $date => $follower) {
+		$labels[] = $date;
+	}
 }
 $chartArray["labels"] = $labels;
 
@@ -28,6 +31,7 @@ foreach ($userFollowers as $followers) {
 		"label" => $followers["name"],
 		"data"=> $u_followers,
 		"backgroundColor" => "rgba(0,0,0,0)",
+		"hoverBorderWidth" => 10,
 	);
 
 }
@@ -50,7 +54,12 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 				display: true,
 				text: 'フォロワー推移'
 			},
-
+			tooltips: {
+				mode: 'index',
+				itemSort: function(a, b, data) {
+					return (b.yLabel - a.yLabel);
+				},
+			},
 			plugins: {
 				colorschemes: {
 					scheme: 'brewer.Paired12'
@@ -68,6 +77,10 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 	});
 </script>
 
+<?php if(!empty($err)) { ?>
+	<div class="alert alert-danger" role="alert"><?= $err ?></div>
+<?php } ?>
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="card">
@@ -75,48 +88,75 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 				ユーザーリスト
 				<?php echo date('Y-m-d'); ?>
 			</div>
-			<script>
-				// selectの内容をinputへ反映
-				$(function(){
-					$('.datetimepicker').datetimepicker({
-
-						format : 'YYYY-MM-DD',
-						defaultDate: <?php echo date('Y-m-d'); ?>,
-						locale: 'ja'
-					});
+			<div class="card-body" id="main_form">
+				<form action="followers" method="post">
+				<div class="row">
 
 
-					$("#targetUser").change(function(){
-						$('input[name="targetUser"]').val( $(this).val() );
-					});
-				});
-			</script>
-			<form action="followers" method="get">
+					<script>
+						// selectの内容をinputへ反映
+						$(function(){
+							$('.datetimepicker').datetimepicker({
 
-				<!-- input with datetimepicker -->
-				<div class="form-group">
-					<label class="label-control">Datetime Picker</label>
-					<input type="text" class="form-control datetimepicker" value="21/06/2018"/>
+								format : 'YYYY-MM-DD',
+
+								locale: 'ja'
+							});
+
+
+							$("#targetUser").change(function(){
+								$('input[name="targetUser"]').val( $(this).val() );
+							});
+						});
+					</script>
+
+
+						<!-- input with datetimepicker -->
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="label-control">開始日</label>
+								<input name="start" type="text" class="form-control datetimepicker" value="<?= $formDefault["start"] ?>"/>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="label-control">終了日</label>
+								<input name="end" type="text" class="form-control datetimepicker" value="<?= $formDefault["end"] ?>"/>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+
+							<input type="hidden" name="targetUser" value="<?= $formDefault["targetUser"] ?>" >
+							<div class="form-group">
+								<label >対象キュレーターを選択</label>
+								<select multiple class="form-control selectpicker" data-style="btn btn-link" id="targetUser">
+									<?php
+									$target_user_ids = explode(",", $formDefault["targetUser"]);
+									foreach($users as $user) {	?>
+										<option value="<?= $user["id"] ?>"
+											<?php if (in_array($user["id"], $target_user_ids)) echo " selected"; ?> >
+											<?= $user["name"] ?>
+										</option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+
+							<button>検索</button>
+						</div>
+
+
+
+
+					<canvas id="myChart" width="400" height="400"></canvas>
 				</div>
+				</form>
+			</div>
 
-
-				<input type="hidden" name="targetUser" value="" >
-				<div class="form-group">
-					<label >対象キュレーターを選択</label>
-					<select multiple class="form-control selectpicker" data-style="btn btn-link" id="targetUser">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-					</select>
-
-					<button>選択する</button>
-				</div>
-			</form>
-
-
-			<canvas id="myChart" width="400" height="400"></canvas>
 
 
 

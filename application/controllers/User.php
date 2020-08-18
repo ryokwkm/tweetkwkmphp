@@ -32,15 +32,44 @@ class User extends MY_Controller {
 	{
 
 		$this->vd += $this->session_model->GetFlash();
+		//ユーザー一覧を先に取得しておく
+		$users = $this->appuser_model->GetPublicUsers();
 
-		$start = date('Y-m-d', strtotime("-10 days"));
-		$end = date('Y-m-d');
-		$followers = $this->userfollowers_model->FindByDate($start, $end, array(16, 17, 18, 19));
+		$posts = $this->input->post();
+		$formDefault = array();
+		$targetUserArray = array();
+		$errMessage = "";
+		if(!empty($posts)) {
+			$start = $posts["start"];
+			$end = $posts["end"];
+			$targetUserArray = explode(",", $posts["targetUser"]);
+			//バリデーション
+			if($start > $end) {
+				$errMessage .= "日付が間違っています<br>";
+			}
+			if(empty($targetUserArray)){
+				$errMessage .= "ユーザーが選択されていません<br>";
+			}
+		}
+		if(empty($posts)) {
+			//直接アクセス
+			$start = date('Y-m-d', strtotime("-10 days"));
+			$end = date('Y-m-d');
+
+			//対象ユーザーのデフォルト作成
+			foreach ($users as $user) {
+				$targetUserArray[] = $user["id"];
+			}
+		}
+		$formDefault["start"] = $start;
+		$formDefault["end"] = $end;
+		$formDefault["targetUser"] = implode(",", $targetUserArray);
+
+		$followers = $this->userfollowers_model->FindByDate($start, $end, $targetUserArray);
 		//ラベル用に日付を取得
-		$dateTerm = $this->userfollowers_model->FindByDateOnly($start, $end, array(16, 17, 18, 19));
+		$dateTerm = $this->userfollowers_model->FindByDateOnly($start, $end, $targetUserArray);
 
 		//ユーザー名と結合、データ整形。不要なデータがあった場合は削除
-		$users = $this->appuser_model->GetPublicUsers();
 		$userFollowers = array();
 		foreach ($users as $user) {
 			$userFollowers[$user["id"]] = array(
@@ -49,6 +78,9 @@ class User extends MY_Controller {
 				"followers" => array(),
 			);
 		}
+
+
+
 
 		foreach ($followers as $follower) {
 			$user_id = $follower["user_id"];
@@ -77,6 +109,9 @@ class User extends MY_Controller {
 			ksort($userFollowers[$key]["followers"]);
 		}
 		$this->vd["userFollowers"] = $userFollowers;
+		$this->vd["users"] = $users;
+		$this->vd["formDefault"] = $formDefault;
+		$this->vd["err"] = $errMessage;
 
 		$this->vd["contents"] = $this->load->view('general/followers', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
