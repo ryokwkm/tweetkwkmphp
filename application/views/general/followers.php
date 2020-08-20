@@ -89,7 +89,7 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-header card-header-primary">
-				ユーザーリスト
+				フォロワー推移
 			</div>
 			<div class="card-body" id="main_form">
 				<form action="followers" method="post">
@@ -97,16 +97,34 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 
 
 					<script>
-						// selectの内容をinputへ反映
 						$(function(){
+							//データピッカー
 							$('.datetimepicker').datetimepicker({
-
 								format : 'YYYY-MM-DD',
-
 								locale: 'ja'
 							});
 
+							// selectの内容をinputへ反映
+							var allSelect = 0;
+							$("#selectall").click(function(){
+								console.log("click")
+								if(allSelect == 0 ) {
+									//全選択解除
+									allSelect = 1
+									$("#targetUser option").prop("selected", false);
+								} else {
+									//全選択
+									allSelect = 0
+									$("#targetUser option").prop("selected", true);
+									$("#option0").prop("selected", false) //0は解除
+								}
+								//inputフォームに反映
+								$('input[name="targetUser"]').val( $("#targetUser").val() );
+								$('.selectpicker').selectpicker('refresh');
+							});
+
 							$("#targetUser").change(function(){
+								//inputフォームに反映
 								$('input[name="targetUser"]').val( $(this).val() );
 							});
 						});
@@ -132,7 +150,7 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 
 							<input type="hidden" name="targetUser" value="<?= $formDefault["targetUser"] ?>" >
 							<div class="form-group">
-								<label >対象キュレーターを選択</label>
+								<label >対象キュレーターを選択</label>　<span ><a href="#" id="selectall"><i class='fa fa-check-square-o'></i> 全選択</a></span>
 								<select multiple class="form-control selectpicker" data-style="btn btn-link" id="targetUser">
 									<?php
 									$target_user_ids = explode(",", $formDefault["targetUser"]);
