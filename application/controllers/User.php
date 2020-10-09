@@ -124,7 +124,12 @@ class User extends MY_Controller {
 			exit;
 		}
 
-		$this->vd["appuser"] = $this->appuser_model->FindByID($appID);
+		$appuser = $this->appuser_model->FindByID($appID);
+		if(empty($appuser["is_public"])) {
+			echo "不正アクセス";
+			exit;
+		}
+		$this->vd["appuser"] = $appuser;
 		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
 		$this->vd += $this->session_model->GetFlash();
 		$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
