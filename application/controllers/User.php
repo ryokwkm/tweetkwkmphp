@@ -35,7 +35,8 @@ class User extends MY_Controller {
 		//ユーザー一覧を先に取得しておく
 		$users = $this->appuser_model->GetPublicUsers();
 
-		$posts = $this->input->post();
+		$posts = $this->input->get();	//postからgetに変えた
+
 		$formDefault = array();
 		$targetUserArray = array();
 		$errMessage = "";
