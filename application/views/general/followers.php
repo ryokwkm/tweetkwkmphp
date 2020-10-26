@@ -68,6 +68,15 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 				colorschemes: {
 					scheme: 'brewer.Paired12'
 				}
+			},
+			scales: {
+				xAxes: [
+					{
+						ticks: {
+							maxTicksLimit: 9
+						}
+					}
+				]
 			}
 		}
 
