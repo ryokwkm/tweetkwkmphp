@@ -49,8 +49,14 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 	$(function(){
 
 
-		$("#myChart").height(window.innerHeight * 0.8);
-		console.log(window.innerHeight * 0.8)
+
+		//スマホ？
+		if(window.innerWidth < 500 ) {
+			$("#myChart").height(window.innerHeight * 0.8);
+		} else {
+			$("#myChart").height(window.innerHeight * 0.6);
+		}
+
 
 		var ctx = document.getElementById("myChart").getContext('2d');
 		var options = {
@@ -181,7 +187,11 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 
 
 					<div class="col-md-12">
-						<canvas id="myChart" ></canvas>
+						<div class="row">
+							<canvas id="myChart" ></canvas>
+						</div>
+
+
 					</div>
 
 				</div>
