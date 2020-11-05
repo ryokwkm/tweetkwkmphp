@@ -7,7 +7,34 @@
 <?php
 
 $chartData = '';
+$chartArray = array();
+$chartArray["datasets"] = array();
+//ラベル作成。key()は最初の要素のキーを返す
+$labels = array();
+if(!empty($userFollowers)) {
+	foreach ($userFollowers[key($userFollowers)]["followers"] as $date => $follower) {
+		$labels[] = $date;
+	}
+}
+$chartArray["labels"] = $labels;
 
+//データ作成
+foreach ($userFollowers as $followers) {
+	$u_followers = array();
+	foreach ($followers["followers"] as $f) {
+		$u_followers[] = $f;
+	}
+	if(!isset($followers["name"])) {
+		$followers["name"] = "";
+	}
+	$chartArray["datasets"][] = array(
+		"label" => $followers["name"],
+		"data"=> $u_followers,
+		"backgroundColor" => "rgba(0,0,0,0)",
+		"hoverBorderWidth" => 10,
+	);
+
+}
 
 $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 

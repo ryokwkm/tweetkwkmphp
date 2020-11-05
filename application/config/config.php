@@ -20,8 +20,13 @@ $config["my_pages"] = array(
 	array(
 		"url" => "/mypage/user",
 		"icon" => "person",
-		"title" => "Editing the curator",
+		"title" => "Editing the Curator",
 		"title_only" => true,
+	),
+	array(
+		"url" => "/mypage/sisters",
+		"icon" => "person",
+		"title" => "Sisters",
 	),
 
 //	array(
@@ -46,10 +51,21 @@ $config["general_pages"] = array(
 		"title_only" => true,
 	),
 	array(
-		"url" => "/user/followers",
+		"url" => "/check/followers",
 		"icon" => "person",
 		"title" => "Followers",
 	),
+	array(
+		"url" => "/check/limit",
+		"icon" => "dashboard",
+		"title" => "Check Active",
+	),
+	array(
+		"url" => "/user/sisters",
+		"icon" => "dashboard",
+		"title" => "Sisters",
+	),
+
 );
 
 
