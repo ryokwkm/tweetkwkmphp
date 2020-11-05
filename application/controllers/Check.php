@@ -152,7 +152,7 @@ array(2) {
 			);
 		}
 		$this->vd["chartArray"] = $chartArray;
-		vr($chartArray);exit;
+//		vr($chartArray);exit;
 
 
 		$this->vd["userFollowers"] = $userFollowers;
