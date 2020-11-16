@@ -60,8 +60,6 @@ function makeGraphData($limits, $labels, $users) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 <script src="https://github.com/nagix/chartjs-plugin-colorschemes/releases/download/v0.2.0/chartjs-plugin-colorschemes.min.js"></script>
 <script>
-
-
 	$(function(){
 		function makeGraphJS(data, graphName, dispElmIDStr, apiLimit) {
 			var ctx = document.getElementById( dispElmIDStr ).getContext('2d');
@@ -98,7 +96,17 @@ function makeGraphData($limits, $labels, $users) {
 				data: data,
 				options: options,
 			});
+		}	//makeGraphJS() end
+
+		function adjustmentCanvasSize(canvasID) {
+			//スマホ？
+			if(window.innerWidth < 500 ) {
+				$("#" + canvasID).height(window.innerHeight * 0.8);
+			} else {
+				$("#" + canvasID).height(window.innerHeight * 0.6);
+			}
 		}
+
 
 		<?php
 		$x=0;
@@ -106,23 +114,18 @@ function makeGraphData($limits, $labels, $users) {
 			list($limits, $labels, $max) = $apiGraphData;
 			$chartData = makeGraphData($limits, $labels, $users);
 		?>
+				//js
 				var gData = <?= $chartData; ?>;
 				var apiName = '<?= $apiName; ?>';
 				var canvasID = `myChart<?= $x; ?>`;
 				var apiLimit = <?= $max; ?>;
+				adjustmentCanvasSize(canvasID)
 				makeGraphJS(gData, apiName, canvasID, apiLimit)
+
 	<?php
 			$x++;
 		}
 	?>
-
-		// //スマホ？
-		// if(window.innerWidth < 500 ) {
-		// 	$("#myChart").height(window.innerHeight * 0.8);
-		// } else {
-		// 	$("#myChart").height(window.innerHeight * 0.6);
-		// }
-		//makeGraphJS(<?//= $chartData; ?>//, "フォロワー", "myChart")
 
 	});
 </script>
