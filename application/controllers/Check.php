@@ -22,12 +22,84 @@ class Check extends MY_Controller {
 		$users = $this->appuser_model->GetPublicUsers();
 		$params = $this->validation($users, $this->input->get());
 
+		//特有のvalidation
+		$params["apiName"] = $this->input->get("apiName");
+
+
+		$limitsData = $this->lapilimit_model->FindByDate($params["start"], $params["end"], $params["userIDs"]);
+
+		$labels = array();
+		$graphData = array(); // [apiName] => array(graphData, labels)
+		//表示させないAPI
+		$excludeApiNames = array(
+			"/application/rate_limit_status",
+			"/friends/ids",
+			"/followers/ids",
+		);
+		if(!empty($limitsData)) {
+			//使用したAPIを抽出
+			$apiNames = array();
+			foreach ($limitsData as $l) {
+				$json = json_decode($l["json"], TRUE);
+				foreach ($json["resources"] as $resource) {
+					foreach ($resource as $apiName => $api) {
+						if ($api["limit"] != $api["remaining"]) {
+							if(!in_array($apiName, $excludeApiNames) && !in_array($apiName, $apiNames)) {
+								$apiNames[] = $apiName;
+							}
+						}
+					}
+				}
+			}
+
+			foreach ($apiNames as $apiName) {
+				list($limits, $labels, $max) = $this->makeGraphArray($limitsData, $apiName);
+				$graphData[$apiName] = array($limits, $labels, $max);
+			}
+		}
+
+//		$this->vd["debug"] = true;
 		$this->vd["users"] = $users;
 		$this->vd["formDefault"] = $params;
+		$this->vd["labels"] = $labels;
+		$this->vd["graphData"] = $graphData;
 
 
 		$this->vd["contents"] = $this->load->view('general/check_limit', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
+	}
+
+	private function makeGraphArray($limits, $targetAPI) {
+		$labels = array();
+		$ret = array();
+		$max = 0;
+		foreach ($limits as $l) {
+			$graphData = array();
+			$json = json_decode($l["json"], true);
+			$resources = $json["resources"];
+
+			foreach($resources as $resource) {
+				foreach ($resource as $apiName => $api) {
+					if($targetAPI != $apiName) {
+						continue;
+					}
+					if($api["limit"] != $api["remaining"]) {
+						$graphData["api_name"] = $apiName;
+						$graphData["use"] = $api["limit"] - $api["remaining"];
+						$max = $api["limit"];
+					}
+				}
+			}
+
+			//追加
+			$userID = $l["user_id"];
+			$dateName = date('Y-m-d-H', strtotime($l["created"]));
+			$ret[$userID][$dateName] = $graphData;
+			if(!in_array($dateName, $labels)) {
+				$labels[] = $dateName;
+			}
+		}
+		return array($ret, $labels, $max);
 	}
 
 
@@ -196,6 +268,14 @@ array(2) {
 				$targetUserArray[] = $user["id"];
 			}
 		}
+
+		//users
+//		$us = array();
+//		foreach ($users as $user) {
+//			$us[$user["id"]] = $user["name"];
+//		}
+//		$this->vd["users"] = $us;
+
 		$formDefault = array();
 		$formDefault["start"] = $start;
 		$formDefault["end"] = $end;

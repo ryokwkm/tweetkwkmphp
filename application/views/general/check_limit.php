@@ -6,37 +6,53 @@
 <pre>
 <?php
 
-$chartData = '';
-$chartArray = array();
-$chartArray["datasets"] = array();
-//ラベル作成。key()は最初の要素のキーを返す
-$labels = array();
-if(!empty($userFollowers)) {
-	foreach ($userFollowers[key($userFollowers)]["followers"] as $date => $follower) {
-		$labels[] = $date;
-	}
-}
-$chartArray["labels"] = $labels;
+
 
 //データ作成
-foreach ($userFollowers as $followers) {
-	$u_followers = array();
-	foreach ($followers["followers"] as $f) {
-		$u_followers[] = $f;
-	}
-	if(!isset($followers["name"])) {
-		$followers["name"] = "";
-	}
-	$chartArray["datasets"][] = array(
-		"label" => $followers["name"],
-		"data"=> $u_followers,
-		"backgroundColor" => "rgba(0,0,0,0)",
-		"hoverBorderWidth" => 10,
-	);
+function makeGraphData($limits, $labels, $users) {
+	$chartData = '';
+	$chartArray = array();
+	$chartArray["datasets"] = array();
 
+	$chartArray["labels"] = $labels;
+
+
+
+	foreach ($limits as $userID => $l) {
+		$data = array();
+		foreach ($labels as $label) {
+			//対象日付のデータがなければ０にする
+			if(!isset($l[$label]) || !isset($l[$label]["use"])) {
+				$data[] = 0;
+			} else {
+				$data[] = $l[$label]["use"];
+			}
+		}
+
+
+		if(!isset($followers["name"])) {
+			$followers["name"] = "";
+		}
+
+		$u = findUserByID($users, $userID);
+		$userName = "";
+		if(!empty($u)) {
+			$userName = $u["name"];
+		}
+		$chartArray["datasets"][] = array(
+			"label" => $userName,
+			"data"=> $data,
+			"backgroundColor" => "rgba(0,0,0,0)",
+			"hoverBorderWidth" => 10,
+		);
+
+	}
+
+	$chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
+	return $chartData;
 }
 
-$chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
+
 
 
 ?>
@@ -44,55 +60,70 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 <script src="https://github.com/nagix/chartjs-plugin-colorschemes/releases/download/v0.2.0/chartjs-plugin-colorschemes.min.js"></script>
 <script>
-	'use strict';
+
 
 	$(function(){
-
-
-
-		//スマホ？
-		if(window.innerWidth < 500 ) {
-			$("#myChart").height(window.innerHeight * 0.8);
-		} else {
-			$("#myChart").height(window.innerHeight * 0.6);
-		}
-
-
-		var ctx = document.getElementById("myChart").getContext('2d');
-		var options = {
-			title: {
-				display: true,
-				text: 'フォロワー推移'
-			},
-			tooltips: {
-				mode: 'index',
-				itemSort: function(a, b, data) {
-					return (b.yLabel - a.yLabel);
+		function makeGraphJS(data, graphName, dispElmIDStr, apiLimit) {
+			var ctx = document.getElementById( dispElmIDStr ).getContext('2d');
+			var graphName = graphName + "　　Limit: " + apiLimit
+			var options = {
+				title: {
+					display: true,
+					text: graphName
 				},
-			},
-			plugins: {
-				colorschemes: {
-					scheme: 'brewer.Paired12'
-				}
-			},
-			scales: {
-				xAxes: [
-					{
-						ticks: {
-							maxTicksLimit: 9
-						}
+				tooltips: {
+					mode: 'index',
+					itemSort: function(a, b, data) {
+						return (b.yLabel - a.yLabel);
+					},
+				},
+				plugins: {
+					colorschemes: {
+						scheme: 'brewer.Paired12'
 					}
-				]
+				},
+				scales: {
+					xAxes: [
+						{
+							ticks: {
+								maxTicksLimit: 9
+							}
+						}
+					]
+				}
 			}
+
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: options,
+			});
 		}
 
-		var data =<?php echo $chartData; ?>
+		<?php
+		$x=0;
+		foreach($graphData as $apiName => $apiGraphData) {
+			list($limits, $labels, $max) = $apiGraphData;
+			$chartData = makeGraphData($limits, $labels, $users);
+		?>
+				var gData = <?= $chartData; ?>;
+				var apiName = '<?= $apiName; ?>';
+				var canvasID = `myChart<?= $x; ?>`;
+				var apiLimit = <?= $max; ?>;
+				makeGraphJS(gData, apiName, canvasID, apiLimit)
+	<?php
+			$x++;
+		}
+	?>
 
-		var myChart = new Chart(ctx, {
-			type: 'line',
-			data: data,
-			options: options,
-		});
+		// //スマホ？
+		// if(window.innerWidth < 500 ) {
+		// 	$("#myChart").height(window.innerHeight * 0.8);
+		// } else {
+		// 	$("#myChart").height(window.innerHeight * 0.6);
+		// }
+		//makeGraphJS(<?//= $chartData; ?>//, "フォロワー", "myChart")
+
 	});
 </script>
 
@@ -104,10 +135,10 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-header card-header-primary">
-				フォロワー推移
+				Check Active
 			</div>
 			<div class="card-body" id="main_form">
-				<form action="followers" method="get">
+				<form action="limit" method="get">
 				<div class="row">
 
 
@@ -186,13 +217,21 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 
 
 
-					<div class="col-md-12">
-						<div class="row">
-							<canvas id="myChart" ></canvas>
-						</div>
+					<?php
+						for($x=0; $x<count($graphData); $x++) {
+					?>
+								<div class="col-md-12">
+									<div class="row">
+										<br>
+										<br>
+										<canvas id="myChart<?= $x ?>" ></canvas>
+									</div>
+								</div>
+					<?php
+						}
+					?>
 
 
-					</div>
 
 				</div>
 				</form>

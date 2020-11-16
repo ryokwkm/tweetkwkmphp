@@ -850,10 +850,8 @@ if ( ! function_exists('function_usable'))
 
 function vr($array) {
 	echo "<pre>";
-	if(is_array($array)) {
+//	if(is_array($array)) {
 		var_dump($array);
-	} else {
-		echo $array;
-	}
+//	}
 	echo "</pre>";
 }

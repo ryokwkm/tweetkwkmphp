@@ -30,6 +30,15 @@ function IsAdminIP() {
 	return false;
 }
 
+function findUserByID($users, $id) {
+	foreach ($users as $user) {
+		if($user["id"] == $id) {
+			return $user;
+		}
+	}
+	return "";
+}
+
 function TwitterMode($mode) {
 	switch ($mode) {
 		case 0:
