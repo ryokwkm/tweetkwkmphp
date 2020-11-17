@@ -365,7 +365,7 @@ if(!empty($general)) {
 										<div class="col-md-6 trendsearch_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">ツイートするランキング数</label>
-												<input type="number" name="search_count" class="form-control"  min="0" max="10" value="<?= $appuser["search_count"] ?>" <?= $readOnly ?>>
+												<input type="number" name="search_count" class="form-control"  min="0" max="15" value="<?= $appuser["search_count"] ?>" <?= $readOnly ?>>
 											</div>
 										</div>
 
@@ -379,7 +379,7 @@ if(!empty($general)) {
 										<div class="col-md-6 trendsearch_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">リアクション数</label>
-												<input type="number" name="fire_lv" class="form-control" min="0" max="10" value="<?= $appuser["fire_lv"] ?>" placeholder="min_faves:3" <?= $readOnly ?>>
+												<input type="number" name="fire_lv" class="form-control" min="0" max="20" value="<?= $appuser["fire_lv"] ?>" placeholder="min_faves:3" <?= $readOnly ?>>
 											</div>
 										</div>
 									</div>

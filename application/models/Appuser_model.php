@@ -126,10 +126,10 @@ class Appuser_model extends CI_Model {
 		}
 
 		// 制限チェック
-		if($ups["fire_lv"] > 10) {
+		if($ups["fire_lv"] > 20) {
 			throw new Exception("リアクション数が多すぎます");
 		}
-		if($ups["search_count"] > 10) {
+		if($ups["search_count"] > 15) {
 			throw new Exception("ツイートするランキング数が多すぎます");
 		}
 
