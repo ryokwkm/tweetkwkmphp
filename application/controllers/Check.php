@@ -20,7 +20,7 @@ class Check extends MY_Controller {
 		$this->vd += $this->session_model->GetFlash();
 		//ユーザー一覧を先に取得しておく
 		$users = $this->appuser_model->GetPublicUsers();
-		$params = $this->validation($users, $this->input->get());
+		$params = $this->validation($users, $this->input->get(), 3);
 
 		//特有のvalidation
 		$params["apiName"] = $this->input->get("apiName");
@@ -242,7 +242,7 @@ array(2) {
 	}
 
 	//バリデーション
-	private function validation($users, $params) {
+	private function validation($users, $params, $startDefault=10) {
 		if(!empty($params)) {
 			$start = $params["start"];
 			$end = $params["end"];
@@ -260,8 +260,8 @@ array(2) {
 
 		} else if(empty($params)) {
 			//直接アクセス
-			$start = date('Y-m-d', strtotime("-10 days"));
-			$end = date('Y-m-d');
+			$start = date('Y-m-d', strtotime("-". $startDefault. " days"));
+			$end = date('Y-m-d', strtotime("+1 days"));
 
 			//対象ユーザーのデフォルト作成
 			foreach ($users as $user) {
