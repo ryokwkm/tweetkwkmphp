@@ -111,7 +111,7 @@ class Check extends MY_Controller {
 		$this->vd += $this->session_model->GetFlash();
 		//ユーザー一覧を先に取得しておく
 		$users = $this->appuser_model->GetPublicUsers();
-		$params = $this->validation($users, $this->input->get());
+		$params = $this->validation($users, $this->input->get(), 30);
 
 
 		$followers = $this->userfollowers_model->FindByDate($params["start"], $params["end"], $params["userIDs"]);
