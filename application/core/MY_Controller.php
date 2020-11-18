@@ -23,6 +23,7 @@ class MY_Controller extends CI_Controller {
 		$this->load->model("acharacter_model");
 		$this->load->model("aeelin_model");
 		$this->load->model("lapilimit_model");
+		$this->load->model("laction_model");
 		$this->load->model("tnews_model");
 		$this->load->model("mypage_model");
 		$this->load->library('params');

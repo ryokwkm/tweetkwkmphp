@@ -103,6 +103,7 @@
  * @property Acharacter_model         $acharacter_model
  * @property Aeelin_model             $aeelin_model
  * @property Lapilimit_model          $lapilimit_model
+ * @property LAction_model            $laction_model
  * @property Tnews_model              $tnews_model
  * @property Mypage_model             $mypage_model
  *

@@ -7,8 +7,49 @@
 <?php
 
 
+/**
+ * Activeグラフデータ
+ */
+function makeActiveGraphData($actives, $labels, $users) {
+	$chartArray = array();
+	$chartArray["datasets"] = array();
+	$chartArray["labels"] = $labels;
 
-//データ作成
+
+
+	foreach ($actives as $userID => $l) {
+		$data = array();
+		foreach ($labels as $label) {
+			//対象日付のデータがなければ０にする
+			if(!isset($l[$label])) {
+				$data[] = 0;
+			} else {
+				$data[] = $l[$label];
+			}
+		}
+
+		$u = findUserByID($users, $userID);
+		$userName = "";
+		if(!empty($u)) {
+			$userName = $u["name"];
+		}
+		$chartArray["datasets"][] = array(
+			"label" => $userName,
+			"data"=> $data,
+			"backgroundColor" => "rgba(0,0,0,0)",
+			"hoverBorderWidth" => 10,
+		);
+
+	}
+
+	$chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
+	return $chartData;
+}
+
+
+/**
+ * API Limitグラフデータ
+ */
 function makeGraphData($limits, $labels, $users) {
 	$chartData = '';
 	$chartArray = array();
@@ -27,11 +68,6 @@ function makeGraphData($limits, $labels, $users) {
 			} else {
 				$data[] = $l[$label]["use"];
 			}
-		}
-
-
-		if(!isset($followers["name"])) {
-			$followers["name"] = "";
 		}
 
 		$u = findUserByID($users, $userID);
@@ -63,7 +99,9 @@ function makeGraphData($limits, $labels, $users) {
 	$(function(){
 		function makeGraphJS(data, graphName, dispElmIDStr, apiLimit) {
 			var ctx = document.getElementById( dispElmIDStr ).getContext('2d');
-			var graphName = graphName + "　　Limit: " + apiLimit
+			if( apiLimit != "") {
+				graphName = graphName + "　　Limit: " + apiLimit
+			}
 			var options = {
 				title: {
 					display: true,
@@ -109,7 +147,27 @@ function makeGraphData($limits, $labels, $users) {
 
 
 		<?php
+		//limit
 		$x=0;
+		?>
+
+		<?php
+			foreach ($activeGraphData as $apiName => $active) {
+			$chartData = makeActiveGraphData($active, $labels, $users);
+		?>
+			//js
+			var gData = <?= $chartData; ?>;
+			var apiName = '<?= $apiName; ?>';
+			var canvasID = `myChart<?= $x; ?>`;
+			var apiLimit = ``;
+			adjustmentCanvasSize(canvasID)
+			makeGraphJS(gData, apiName, canvasID, apiLimit)
+		<?php
+			$x++;
+			}
+		?>
+
+		<?php
 		foreach($graphData as $apiName => $apiGraphData) {
 			list($limits, $labels, $max) = $apiGraphData;
 			$chartData = makeGraphData($limits, $labels, $users);
@@ -118,14 +176,16 @@ function makeGraphData($limits, $labels, $users) {
 				var gData = <?= $chartData; ?>;
 				var apiName = '<?= $apiName; ?>';
 				var canvasID = `myChart<?= $x; ?>`;
-				var apiLimit = <?= $max; ?>;
+				var apiLimit = "<?= $max; ?>";
 				adjustmentCanvasSize(canvasID)
 				makeGraphJS(gData, apiName, canvasID, apiLimit)
 
-	<?php
+		<?php
 			$x++;
 		}
-	?>
+		?>
+
+
 
 	});
 </script>
@@ -221,7 +281,7 @@ function makeGraphData($limits, $labels, $users) {
 
 
 					<?php
-						for($x=0; $x<count($graphData); $x++) {
+						for($x=0; $x<count($graphData)+count($activeGraphData); $x++) {
 					?>
 								<div class="col-md-12">
 									<div class="row">

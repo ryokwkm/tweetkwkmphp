@@ -22,12 +22,62 @@ class Check extends MY_Controller {
 		$users = $this->appuser_model->GetPublicUsers();
 		$params = $this->validation($users, $this->input->get(), 3);
 
-		//特有のvalidation
-		$params["apiName"] = $this->input->get("apiName");
 
-
+		//API Limit グラフデータ作成
 		$limitsData = $this->lapilimit_model->FindByDate($params["start"], $params["end"], $params["userIDs"]);
+		list($limitGraph, $limitLabels) = $this->makeLimitGraphData($limitsData);
+		$this->vd["graphData"] = $limitGraph;
+		$this->vd["labels"] = $limitLabels;
 
+			//check active グラフデータ作成
+		$activeData = $this->laction_model->FindByDate($params["start"], $params["end"], $params["userIDs"]);
+		list($activeGraph, $activeLabels) = $this->makeActiveGraphData($activeData);
+		$this->vd["activeGraphData"] = $activeGraph;
+		$this->vd["activeLabels"] = $activeLabels;
+
+
+
+//		$this->vd["debug"] = true;
+		$this->vd["users"] = $users;
+		$this->vd["formDefault"] = $params;
+
+
+		$this->vd["contents"] = $this->load->view('general/check_limit', $this->vd, TRUE);
+		$this->load->view('admin/base', $this->vd);
+	}
+
+	private function makeActiveGraphData($activeData) {
+		$labels = array(); //日付
+		$graphData = array(); // [activeName][userID][date]
+
+		//カラム名からグラフにすべきカラムを抽出
+		$activeNames = array();
+		$excludeNames = array("id", "user_id", "created", "modified"); //除外するカラム名
+		foreach ($activeData[0] as $activeName => $value) {
+			if(!in_array($activeName, $excludeNames)) {
+				$activeNames[] = $activeName;
+			}
+		}
+
+		foreach ($activeData as $active) {
+			foreach ($activeNames as $activeName) {
+				$dateName = date('Y-m-d-H', strtotime($active["created"]));
+				$graphData[$activeName][$active["user_id"]][$dateName] = (int)$active[$activeName];
+
+				//ラベル追加
+				if(!in_array($dateName, $labels)) {
+					$labels[] = $dateName;
+				}
+			}
+		}
+
+		return array($graphData, $labels);
+	}
+
+	/**
+	 *　API Limit グラフ作成
+	 */
+	private function makeLimitGraphData($limitsData) {
 		$labels = array();
 		$graphData = array(); // [apiName] => array(graphData, labels)
 		//表示させないAPI
@@ -57,16 +107,7 @@ class Check extends MY_Controller {
 				$graphData[$apiName] = array($limits, $labels, $max);
 			}
 		}
-
-//		$this->vd["debug"] = true;
-		$this->vd["users"] = $users;
-		$this->vd["formDefault"] = $params;
-		$this->vd["labels"] = $labels;
-		$this->vd["graphData"] = $graphData;
-
-
-		$this->vd["contents"] = $this->load->view('general/check_limit', $this->vd, TRUE);
-		$this->load->view('admin/base', $this->vd);
+		return array($graphData, $labels);
 	}
 
 	private function makeGraphArray($limits, $targetAPI) {
@@ -237,9 +278,6 @@ array(2) {
 	}
 
 
-	private function makeChartJSDefault($label) {
-
-	}
 
 	//バリデーション
 	private function validation($users, $params, $startDefault=10) {
@@ -269,12 +307,6 @@ array(2) {
 			}
 		}
 
-		//users
-//		$us = array();
-//		foreach ($users as $user) {
-//			$us[$user["id"]] = $user["name"];
-//		}
-//		$this->vd["users"] = $us;
 
 		$formDefault = array();
 		$formDefault["start"] = $start;
