@@ -31,9 +31,15 @@ class Check extends MY_Controller {
 
 			//check active グラフデータ作成
 		$activeData = $this->laction_model->FindByDate($params["start"], $params["end"], $params["userIDs"]);
-		list($activeGraph, $activeLabels) = $this->makeActiveGraphData($activeData);
-		$this->vd["activeGraphData"] = $activeGraph;
-		$this->vd["activeLabels"] = $activeLabels;
+
+		if (!empty($activeData)) {
+			list($activeGraph, $activeLabels) = $this->makeActiveGraphData($activeData);
+			$this->vd["activeGraphData"] = $activeGraph;
+			$this->vd["activeLabels"] = $activeLabels;
+		} else {
+			$this->vd["activeGraphData"] = array();
+			$this->vd["activeLabels"] = array();
+		}
 
 
 

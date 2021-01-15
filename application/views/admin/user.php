@@ -56,15 +56,15 @@ if(!empty($general)) {
 		if( $this.val() == 1) {
 			$(".character_mode1").show();
 			$(".character_mode2").hide();
-			$(".serif_rate").show();
+			$(".serif_setting").show();
 		} else if( $this.val() == 2) {
 			$(".character_mode1").hide();
 			$(".character_mode2").show();
-			$(".serif_rate").show();
+			$(".serif_setting").show();
 		} else {
 			$(".character_mode1").hide();
 			$(".character_mode2").hide();
-			$(".serif_rate").hide();
+			$(".serif_setting").hide();
 		}
 	}
 
@@ -207,41 +207,41 @@ if(!empty($general)) {
 									<p class="category">AIでこのキャラクターのセリフを生成してつぶやく</p>
 									<div class="row">
 
-									<div class="col-md-3">
-										<div class="form-check form-check-radio">
-											<label class="form-check-label">
-												<input class="form-check-input" type="radio" name="character_mode" value="0" <?= $character_mode0 ?>  <?= $readOnly ?>>
-												なし
-												<span class="circle">
-													<span class="check"></span>
-												</span>
-											</label>
-										</div>
-
-										<div class="form-check form-check-radio">
-											<label class="form-check-label">
-												<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> <?= $readOnly ?> >
-												Twitterユーザー
-												<span class="circle">
+										<div class="col-md-3">
+											<div class="form-check form-check-radio">
+												<label class="form-check-label">
+													<input class="form-check-input" type="radio" name="character_mode" value="0" <?= $character_mode0 ?>  <?= $readOnly ?>>
+													なし
+													<span class="circle">
 														<span class="check"></span>
-												</span>
-											</label>
+													</span>
+												</label>
+											</div>
+
+											<div class="form-check form-check-radio">
+												<label class="form-check-label">
+													<input class="form-check-input" type="radio" name="character_mode" value="1" <?= $character_mode1 ?> <?= $readOnly ?> >
+													Twitterユーザー
+													<span class="circle">
+															<span class="check"></span>
+													</span>
+												</label>
+											</div>
+
+											<div class="form-check form-check-radio">
+												<label class="form-check-label">
+													<input class="form-check-input" type="radio" name="character_mode" id="exampleRadios2" value="2" <?= $character_mode2 ?> <?= $readOnly ?> >
+													キャラクター
+													<span class="circle">
+															<span class="check"></span>
+													</span>
+												</label>
+											</div>
 										</div>
 
-										<div class="form-check form-check-radio">
-											<label class="form-check-label">
-												<input class="form-check-input" type="radio" name="character_mode" id="exampleRadios2" value="2" <?= $character_mode2 ?> <?= $readOnly ?> >
-												キャラクター
-												<span class="circle">
-														<span class="check"></span>
-												</span>
-											</label>
-										</div>
-									</div>
+										<div class="col-md-9 serif_setting">
 
-									<div class="col-md-9">
-
-										<div class="form-group serif_rate">
+										<div class="form-group">
 											<label for="exampleInputPassword1">セリフの実行確率(%)</label>
 											<input name="serif_rate" type="number" class="form-control"  min="0" max="100" value="<?= $appuser["serif_rate"] ?>" <?= $readOnly ?>>
 										</div>
@@ -296,7 +296,19 @@ if(!empty($general)) {
 											</select>
 										</div>
 
+
+										<div class="togglebutton">
+											<label>
+												<input type="checkbox" value="1" name="serif_reration_retweet" id="input_serif_reration_retweet" <?php if($appuser["serif_reration_retweet"] == 1) echo "checked" ?> <?= $readOnly ?> >
+												<span class="toggle"></span>
+												関連したツイートをリツイート
+												<span id="input_serif_reration_retweet_text"></span>
+											</label>
+										</div>
+
 									</div>
+
+
 									</div>
 								</div>
 							</div>
