@@ -6,8 +6,11 @@ $config["version"] = 1;
 $config["site_title"] = "キュレーター・メーカー（仮）";
 
 $config["create_app"] = "createapp";	//エンドユーザーによるBot作成
-$config["create_app_limit"] = 2;	//1つのTwitterアプリが担当できるエンドユーザー数（あんまり多いとAPIリミットになる）
-$config["create_app_admin"] = "createadmin";
+$config["create_app_admin"] = "createadmin"; //adminによるBot作成
+$config["create_app_sisters"] = "createsisters"; //sister作成
+$config["create_app_limit"] = 5;	//1つのTwitterアプリが担当できるエンドユーザー数 checkの間隔がネック。今は100s 置きに実行しているが、この間隔を増やせばここも増やせる。
+$config["create_app_sisters_limit"] = 30;	//sistersで登録できるユーザー数
+
 $config["login_app"] = "loginapp";
 
 // title_only => true の場合、サイドバーには出さず、タイトル定義のみする

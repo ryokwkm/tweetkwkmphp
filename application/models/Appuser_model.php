@@ -82,6 +82,10 @@ class Appuser_model extends CI_Model {
 		return $this->db->query("SELECT  * from twitter_users where is_public = 1 ")->result_array();
 	}
 
+	public function GetPublicParents() {
+		return $this->db->query("SELECT  * from twitter_users where is_public = 1 and is_debug = 0 and parent_id = -1")->result_array();
+	}
+
 	public function UpdateByID($id, $posts) {
 		$this->db->update("twitter_users", $posts, array("id" => $id));
 		echo $this->db->last_query();

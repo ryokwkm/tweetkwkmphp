@@ -43,6 +43,25 @@ class Twitter_model extends CI_Model {
 		return "";
 	}
 
+	// Sisters登録用のアプリを１つ取得
+	public function GetSistersuserNewApp() {
+		$apps = $this->db->query("
+			SELECT a.id, a.account_name, count(u.id) cnt
+			FROM twitter_apps a
+			LEFT JOIN twitter_users u on a.id = u.app_id and u.is_deleted <> 1
+			WHERE a.is_sisters = 1
+			GROUP BY a.id
+			ORDER BY a.id
+			")->result_array();
+
+		foreach($apps as $app) {
+			if($app["cnt"] < $this->config->item('create_app_sisters_limit')) {
+				return $app["account_name"];
+			}
+		}
+		return "";
+	}
+
 	/**
 	 * Twitterからプロフィール情報を取得する
 	 * @return array|object

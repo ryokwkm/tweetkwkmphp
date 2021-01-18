@@ -6,7 +6,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 class Auth extends MY_Controller {
 	// ログインを許可するアプリ。エンドユーザー用
 
-	public $loginApp = array("magialogin");	//
+	public $loginApp = "magialogin";	//
 
 	// ソース側で定義してあるユーザーの場合、end_userではない
 	public $myApp = array();	//array("priconne");
@@ -24,10 +24,36 @@ class Auth extends MY_Controller {
 		$data["contents"] = $this->load->view('admin/login', '', TRUE);
 		$this->load->view('admin/noside_base', $data);
 	}
+
 	public function regist()
 	{
 		$data = $this->getBaseTemplate();
-		$data["contents"] = $this->load->view('admin/regist', '', TRUE);
+
+		$d = array();
+		//通常のBot作成
+		$d["account_name"] = $this->config->item("create_app");
+		$d["title"] = "Regist";
+		$data["contents"] = $this->load->view('admin/regist', $d, TRUE);
+
+		$this->load->view('admin/noside_base', $data);
+	}
+
+	//sisters作成
+	public function sisters_regist()
+	{
+		$data = $this->getBaseTemplate();
+
+		$d = array();
+		//Sisters
+		$d["account_name"] = $this->config->item("create_app_sisters");
+		$d["title"] = "Sisters登録";
+		$users = $this->appuser_model->GetPublicParents();
+		foreach ($users as $user) {
+			$d["users"][] = array("id"=>$user["id"], "name"=>$user["name"]);
+		}
+
+		$data["contents"] = $this->load->view('admin/regist', $d, TRUE);
+
 		$this->load->view('admin/noside_base', $data);
 	}
 
@@ -45,35 +71,16 @@ class Auth extends MY_Controller {
 	{
 		//バリデーション
 		$appName = $this->input->post('account_name');
-		//エンドユーザーによるBotの作成
-		if($appName == $this->config->item("create_app")) {
-			$_SESSION['create_mode'] = $this->config->item("create_app");
 
-			$appName = $this->twitter_model->GetEnduserNewApp();
-			if(empty($appName)) {
-				echo " 現在アクセスが集中しています。アプリの作成が出来ません <br> 管理者にお問い合わせ下さい";
-				exit;
-			}
-		}
-		//ログインのみ
-		else if(in_array($appName, $this->loginApp)) {
-			$_SESSION['create_mode'] = $this->config->item("login_app");
-		}
-		//管理者によるBotの作成
-		//逐一ソースをいじって追加していきます
-		else if(in_array($appName, $this->myApp)) {
-			$_SESSION['create_mode'] = $this->config->item("create_app_admin");
-		}
-		else {
-			echo "不明なエラー。不正アクセスしていませんか？";
-			exit;
-		}
+		$appName = $this->setAuthSession($appName);
+
 
 		$twitterApps = $this->getApp($appName);
 		if(empty($twitterApps)) {
 			echo " アプリが見つからない";
 			exit;
 		}
+
 		$twitterApp = $twitterApps[0];
 		//TwitterOAuth をインスタンス化
 		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
@@ -91,6 +98,54 @@ class Auth extends MY_Controller {
 
 		//Twitter.com の認証画面へリダイレクト
 		header( 'location: '. $url );
+	}
+
+	//認証タイプを判定し、sessionをセット。$appName を返却
+	private function setAuthSession($appName) {
+		switch ($appName) {
+			//enduserによる作成
+			case $this->config->item("create_app"):
+				$_SESSION['create_mode'] = $this->config->item("create_app");
+
+				$appName = $this->twitter_model->GetEnduserNewApp();
+				if(empty($appName)) {
+					echo " 現在アクセスが集中しています。アプリの作成が出来ません <br> 管理者にお問い合わせ下さい";
+					exit;
+				}
+				break;
+
+			//Sisters作成
+			case $this->config->item("create_app_sisters"):
+				$_SESSION['create_mode'] = $this->config->item("create_app_sisters");
+				$_SESSION['parent_id'] = $this->input->post('parent_id');
+
+				$appName = $this->twitter_model->GetSistersuserNewApp();
+				if(empty($appName)) {
+					echo " 現在アクセスが集中しています。アプリの作成が出来ません <br> 管理者にお問い合わせ下さい";
+					exit;
+				}
+				break;
+
+			//管理者による作成
+			case $this->config->item("create_app_admin"):
+				//逐一ソースをいじって追加していきます
+				if(in_array($appName, $this->myApp)) {
+					$_SESSION['create_mode'] = $this->config->item("create_app_admin");
+				}
+				break;
+
+			//ログイン
+			case $this->loginApp:
+				$_SESSION['create_mode'] = $this->config->item("login_app");
+				break;
+
+			default:
+				echo '不正アクセス';
+				exit;
+
+		}
+
+		return $appName;
 	}
 
 
@@ -132,7 +187,9 @@ class Auth extends MY_Controller {
 
 
 		if($_SESSION['create_mode'] == $this->config->item("create_app") ||
-				$_SESSION['create_mode'] == $this->config->item("create_app_admin")	){
+				$_SESSION['create_mode'] == $this->config->item("create_app_admin") ||
+				$_SESSION['create_mode'] == $this->config->item("create_app_sisters")
+		){
 			//作成
 			$data = array(
 				"name" => $twitterProfile->name,
@@ -150,6 +207,10 @@ class Auth extends MY_Controller {
 			//管理者による作成の場合、管理者フラグをOn
 			if($_SESSION['create_mode'] == $this->config->item("create_app_admin")) {
 				$data["is_admin"] = 1;
+			}
+			//sisters
+			if($_SESSION['create_mode'] == $this->config->item("create_app_sisters")) {
+				$data["parent_id"] = $_SESSION['parent_id'];
 			}
 			$this->db->replace("twitter_users", $data);
 		}
