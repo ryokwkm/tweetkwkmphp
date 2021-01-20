@@ -26,6 +26,7 @@
 										<?= $user["name"] ?>
 										</option>
 									<?php } ?>
+									<option value="-1" >親機として登録</option>
 								</select>
 
 							<?php	} 	?>
