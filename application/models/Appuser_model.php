@@ -77,6 +77,20 @@ class Appuser_model extends CI_Model {
 		return $this->db->query("SELECT  * from twitter_users where is_public = 1 and is_debug = 0")->result_array();
 	}
 
+	//リストページ表示用
+	//sisters親機も表示
+	public function GetPublicAndNotParentUsers() {
+		return $this->db->query("SELECT  * from twitter_users 
+			where is_public = 1 and is_debug = 0 and parent_id <= 0")->result_array();
+	}
+
+	//sistersを表示
+	public function GetSisters() {
+		return $this->db->query("SELECT  * from twitter_users 
+			where is_public = 1 and is_debug = 0 
+			and (parent_id < 0 OR parent_id > 0 )")->result_array();
+	}
+
 	//管理者用。デバッグユーザーも表示
 	public function GetUsersByAdmin() {
 		return $this->db->query("SELECT  * from twitter_users where is_public = 1 ")->result_array();
@@ -97,6 +111,21 @@ class Appuser_model extends CI_Model {
 			$posts[$checkbox] = $this->check_checkbox($posts, $checkbox);
 		}
 		return $posts;
+	}
+
+	//対象parentIDを持つユーザーを親の設定にコピー
+	public function CopyParentByID($parentID) {
+		$parent = $this->FindByID($parentID);
+
+		//更新対象のカラムを全てアップデート
+		$update = array();
+		foreach ($this->updateColumn as $col) {
+			$update[$col] = $parent[$col];
+		}
+		$update["is_deleted"] = $parent["is_deleted"];
+		unset($update["memo"]); //memoは対象外
+
+		$this->db->update("twitter_users", $update, array("parent_id" => $parentID));
 	}
 
 

@@ -190,31 +190,55 @@ class Auth extends MY_Controller {
 				$_SESSION['create_mode'] == $this->config->item("create_app_admin") ||
 				$_SESSION['create_mode'] == $this->config->item("create_app_sisters")
 		){
-			//作成
-			$data = array(
-				"name" => $twitterProfile->name,
-				"user_id" => $_SESSION['auth']["user_id"],
-				"app_id" => $twitterApp["id"],
-				"account_name" => $twitterProfile->screen_name,
-				"access_token" => $_SESSION['auth']["oauth_token"],
-				"access_secret" => $_SESSION['auth']["oauth_token_secret"],
-				"function_id" => 15,  //マスターモード
-				"language_id" => 95,  //日本語
-				"location_id" => 1,  //日本
-				"is_deleted" => 1,	// 削除状態で作成
-				"is_public" => 1,	// リストにて公開
-			);
-			//管理者による作成の場合、管理者フラグをOn
-			if($_SESSION['create_mode'] == $this->config->item("create_app_admin")) {
-				$data["is_admin"] = 1;
-			}
-			//sisters
-			if($_SESSION['create_mode'] == $this->config->item("create_app_sisters")) {
-				$data["parent_id"] = $_SESSION['parent_id'];
-			}
-			$this->db->replace("twitter_users", $data);
+			$this->userRegist($twitterApp, $twitterProfile);
 		}
 
+		$this->enduserRegist($twitterApp, $twitterProfile);
+
+
+
+//		$twitterProfile = $this->getTwitterProfile($_SESSION['auth']["user_id"], $_SESSION['auth']["oauth_token"], $_SESSION['auth']["oauth_token_secret"], $_SESSION["account_name"]);
+
+		//ログイン状態にする
+		$_SESSION["is_login"] = TRUE;
+		//マイページへリダイレクト
+		header('location: /mypage/index');
+	}
+
+	//twitter_users に新規登録
+	private function userRegist($twitterApp, $twitterProfile) {
+		//作成
+		$data = array(
+			"name" => $twitterProfile->name,
+			"user_id" => $_SESSION['auth']["user_id"],
+			"app_id" => $twitterApp["id"],
+			"account_name" => $twitterProfile->screen_name,
+			"access_token" => $_SESSION['auth']["oauth_token"],
+			"access_secret" => $_SESSION['auth']["oauth_token_secret"],
+			"function_id" => 15,  //マスターモード
+			"language_id" => 95,  //日本語
+			"location_id" => 1,  //日本
+			"is_deleted" => 1,	// 削除状態で作成
+			"is_public" => 1,	// リストにて公開
+		);
+		//管理者による作成の場合、管理者フラグをOn
+		if($_SESSION['create_mode'] == $this->config->item("create_app_admin")) {
+			$data["is_admin"] = 1;
+		}
+
+		//sisters
+		if($_SESSION['create_mode'] == $this->config->item("create_app_sisters")) {
+			$data["parent_id"] = $_SESSION['parent_id'];
+			$data["function_id"] = 20;
+		}
+
+		$this->db->replace("twitter_users", $data);
+
+		//sistersの場合、親の設定をコピー
+		$this->appuser_model->CopyParentByID($_SESSION['parent_id']);
+	}
+
+	private function enduserRegist($twitterApp, $twitterProfile) {
 		//エンドユーザー
 		$data = array(
 			"app_id" => $twitterApp["id"],
@@ -226,14 +250,6 @@ class Auth extends MY_Controller {
 			"image_url" => $twitterProfile->profile_image_url_https,
 		);
 		$this->db->replace("twitter_end_users", $data);
-
-
-//		$twitterProfile = $this->getTwitterProfile($_SESSION['auth']["user_id"], $_SESSION['auth']["oauth_token"], $_SESSION['auth']["oauth_token_secret"], $_SESSION["account_name"]);
-
-		//ログイン状態にする
-		$_SESSION["is_login"] = TRUE;
-		//マイページへリダイレクト
-		header('location: /mypage/index');
 	}
 
 }
