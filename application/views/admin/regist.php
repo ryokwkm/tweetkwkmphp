@@ -18,18 +18,17 @@
 						</p>
 
 						<div class="form-group">
-							<?php if (!empty($users)) { ?>
-								コントローラーを選択<BR>
-								<select class="form-control " name="parent_id" >
+							コントローラーを選択<BR>
+							<select class="form-control " name="parent_id" >
+								<?php if (!empty($users)) { ?>
 									<?php foreach($users as $user) {	?>
 										<option value="<?= $user["id"] ?>" >
 										<?= $user["name"] ?>
 										</option>
 									<?php } ?>
-									<option value="-1" >親機として登録</option>
-								</select>
-
-							<?php	} 	?>
+									<?php	} 	?>
+								<option value="-1" >親機として登録</option>
+							</select>
 						</div>
 
 
