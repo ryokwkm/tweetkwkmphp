@@ -17,6 +17,8 @@
 							電源ボタンをOffにすることで、Botはいつでも停止させることが出来ます。<br>
 						</p>
 
+						<?php if (!empty($sisters)) { ?>
+
 						<div class="form-group">
 							コントローラーを選択<BR>
 							<select class="form-control " name="parent_id" >
@@ -30,6 +32,8 @@
 								<option value="-1" >親機として登録</option>
 							</select>
 						</div>
+
+						<?php } ?>
 
 
 

@@ -52,6 +52,7 @@ class Auth extends MY_Controller {
 			$d["users"][] = array("id"=>$user["id"], "name"=>$user["name"]);
 		}
 
+		$d["sisters"] = true;
 		$data["contents"] = $this->load->view('admin/regist', $d, TRUE);
 
 		$this->load->view('admin/noside_base', $data);
