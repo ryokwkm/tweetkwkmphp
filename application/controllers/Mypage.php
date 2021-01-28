@@ -63,6 +63,11 @@ class Mypage extends MY_Controller {
 		$appuser = $this->appuser_model->FindByID($appID);
 		$this->usertlog_model->UpdateActioned($appuser["user_id"]);
 
+		//親機なら設定を子機にコピー
+		if ($appuser["parent_id"] == -1) {
+			$this->appuser_model->CopyParentByID($appuser["id"]);
+		}
+
 		$this->session_model->SetFlash("message", "更新しました");
 		header( 'location: /mypage/user/'. $appID );
 	}
