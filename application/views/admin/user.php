@@ -299,10 +299,10 @@ if(!empty($general)) {
 
 										<div class="togglebutton">
 											<label>
-												<input type="checkbox" value="1" name="serif_reration_retweet" id="input_serif_reration_retweet" <?php if($appuser["serif_reration_retweet"] == 1) echo "checked" ?> <?= $readOnly ?> >
+												<input type="checkbox" value="1" name="serif_relation_retweet" id="input_serif_relation_retweet" <?php if($appuser["serif_relation_retweet"] == 1) echo "checked" ?> <?= $readOnly ?> >
 												<span class="toggle"></span>
 												関連したツイートをリツイート
-												<span id="input_serif_reration_retweet_text"></span>
+												<span id="input_serif_relation_retweet_text"></span>
 											</label>
 										</div>
 
