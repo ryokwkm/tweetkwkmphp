@@ -56,8 +56,10 @@ class Mypage_model extends CI_Model {
 
 		$app = $this->appuser_model->FindByID($appID);
 		if(empty($app) || $app["is_public"] == 0 ) {
-			echo "編集が許可されていません";
-			exit;
+			if (!$app["is_debug"] == 1) {
+				echo "編集が許可されていません";
+				exit;
+			}
 		}
 
 		return $appID;

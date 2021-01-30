@@ -93,7 +93,8 @@ class Appuser_model extends CI_Model {
 
 	//管理者用。デバッグユーザーも表示
 	public function GetUsersByAdmin() {
-		return $this->db->query("SELECT  * from twitter_users where is_public = 1 ")->result_array();
+		return $this->db->query("SELECT  * from twitter_users 
+			where (is_public = 1 OR is_debug = 1) ")->result_array();
 	}
 
 	public function GetPublicParents() {
