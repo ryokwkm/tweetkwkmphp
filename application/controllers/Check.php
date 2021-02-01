@@ -11,17 +11,29 @@ class Check extends MY_Controller {
 		$this->vd["general"] = true;
 	}
 
+	public function limit() {
+
+		$users = $this->appuser_model->GetPublicAndNotSisters();
+		$this->getLimit($users);
+	}
+
+	public function sisters_limit() {
+
+		$users = $this->appuser_model->GetSisters();
+		$this->getLimit($users);
+	}
+
+
+
 	/**
 	 * APIリミットをチェック
 	 */
-	public function limit()
+	private function getLimit($users)
 	{
 
 		$this->vd += $this->session_model->GetFlash();
-		//ユーザー一覧を先に取得しておく
-		$users = $this->appuser_model->GetPublicUsers();
-		$params = $this->validation($users, $this->input->get(), 3);
 
+		$params = $this->validation($users, $this->input->get(), 3);
 
 		//API Limit グラフデータ作成
 		$limitsData = $this->lapilimit_model->FindByDate($params["start"], $params["end"], $params["userIDs"]);
@@ -51,6 +63,7 @@ class Check extends MY_Controller {
 		$this->vd["contents"] = $this->load->view('general/check_limit', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
+
 
 	private function makeActiveGraphData($activeData) {
 		$labels = array(); //日付

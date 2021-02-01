@@ -201,7 +201,7 @@ function makeGraphData($limits, $labels, $users) {
 				Check Active
 			</div>
 			<div class="card-body" id="main_form">
-				<form action="limit" method="get">
+				<form  method="get">
 				<div class="row">
 
 

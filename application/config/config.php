@@ -64,6 +64,11 @@ $config["general_pages"] = array(
 		"title" => "Check Active",
 	),
 	array(
+		"url" => "/check/sisters_limit",
+		"icon" => "dashboard",
+		"title" => "Check Active Sisters",
+	),
+	array(
 		"url" => "/user/sisters",
 		"icon" => "dashboard",
 		"title" => "Sisters",
