@@ -43,8 +43,13 @@ $config["general_pages"] = array(
 	array(
 		"default" => true,
 		"url" => "/user/index",
-		"icon" => "dashboard",
-		"title" => "Dashboard",
+		"icon" => "person",
+		"title" => "Users",
+	),
+	array(
+		"url" => "/user/sisters",
+		"icon" => "person",
+		"title" => "Sisters",
 	),
 
 	array(
@@ -55,23 +60,18 @@ $config["general_pages"] = array(
 	),
 	array(
 		"url" => "/check/followers",
-		"icon" => "person",
+		"icon" => "auto_graph",
 		"title" => "Followers",
 	),
 	array(
 		"url" => "/check/limit",
-		"icon" => "dashboard",
+		"icon" => "timeline",
 		"title" => "Check Active",
 	),
 	array(
 		"url" => "/check/sisters_limit",
-		"icon" => "dashboard",
+		"icon" => "timeline",
 		"title" => "Check Active Sisters",
-	),
-	array(
-		"url" => "/user/sisters",
-		"icon" => "dashboard",
-		"title" => "Sisters",
 	),
 
 );
