@@ -19,7 +19,7 @@ class User extends MY_Controller {
 	public function list()
 	{
 		$this->vd += $this->session_model->GetFlash();
-		$this->vd["twitterUsers"] = $this->appuser_model->GetPublicAndNotParentUsers();
+		$this->vd["twitterUsers"] = $this->appuser_model->GetPublicAndNotSisters();
 		$this->vd["contents"] = $this->load->view('general/list', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}

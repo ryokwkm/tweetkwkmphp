@@ -81,9 +81,9 @@ class Appuser_model extends CI_Model {
 
 	//リストページ表示用
 	//sisters親機も表示
-	public function GetPublicAndNotParentUsers() {
+	public function GetPublicAndNotSisters() {
 		return $this->db->query("SELECT  * from twitter_users 
-			where is_public = 1 and is_debug = 0 and parent_id <= 0")->result_array();
+			where is_public = 1 and is_debug = 0 and parent_id = 0")->result_array();
 	}
 
 	//sistersを表示
