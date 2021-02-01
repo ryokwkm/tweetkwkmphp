@@ -1,10 +1,10 @@
 <?php
 
-$editMode = true;
+$adminMode = true;
 $readOnly = "";
 
 if(!empty($general)) {
-	$editMode = false;
+	$adminMode = false;
 	$readOnly = " disabled='disabled' ";
 }
 ?>
@@ -99,7 +99,7 @@ if(!empty($general)) {
 
 <div class="container-fluid" >
 
-	<?php if($editMode) { ?>
+	<?php if($adminMode) { ?>
 		<form action="/mypage/userupdate" method="post">
 			<input type="hidden" name="id" value="<?= $appuser["id"] ?>" >
 	<?php } ?>
@@ -394,6 +394,17 @@ if(!empty($general)) {
 												<input type="number" name="fire_lv" class="form-control" min="0" max="20" value="<?= $appuser["fire_lv"] ?>" placeholder="min_faves:3" <?= $readOnly ?>>
 											</div>
 										</div>
+
+										<?php if ($adminMode) {  //編集モードのときのみ表示  ?>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label for="exampleInputPassword1">パンダ検索キーワード</label>
+												<input type="text" name="panda_keyword" class="form-control" value="<?= $appuser["panda_keyword"] ?>" placeholder="fate fgo" <?= $readOnly ?>>
+											</div>
+										</div>
+										<?php } ?>
+
+
 									</div>
 
 								</div>
@@ -516,7 +527,7 @@ if(!empty($general)) {
 
 
 
-					<?php if($editMode) { ?>
+					<?php if($adminMode) { ?>
 						<button type="submit" class="btn btn-primary pull-right">Update Profile</button>
 					<?php } ?>
 
@@ -544,7 +555,7 @@ if(!empty($general)) {
 
 	</div>
 
-<?php if($editMode) {?>
+<?php if($adminMode) {?>
 		</form>
 <?php  }  ?>
 

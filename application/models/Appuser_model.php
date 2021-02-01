@@ -35,6 +35,7 @@ class Appuser_model extends CI_Model {
 		"search_rate",
 		"search_count",
 		"search_keyword",
+		"panda_keyword",
 		"search_option",
 		"fire_lv",
 		"is_search",
@@ -53,6 +54,7 @@ class Appuser_model extends CI_Model {
 	public $csvColumn = array(
 		"target_character_id",
 		"search_keyword",
+		"panda_keyword",
 		"news_keyword",
 	);
 
