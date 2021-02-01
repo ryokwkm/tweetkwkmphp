@@ -58,20 +58,28 @@ $config["general_pages"] = array(
 		"title" => "Curator details",
 		"title_only" => true,
 	),
-	array(
-		"url" => "/check/followers",
-		"icon" => "auto_graph",
-		"title" => "Followers",
-	),
+
 	array(
 		"url" => "/check/limit",
 		"icon" => "timeline",
-		"title" => "Check Active",
+		"title" => "Users Active",
 	),
 	array(
 		"url" => "/check/sisters_limit",
 		"icon" => "timeline",
-		"title" => "Check Active Sisters",
+		"title" => "Sisters Active",
+	),
+
+	array(
+		"url" => "/check/followers",
+		"icon" => "auto_graph",
+		"title" => "Users Follower",
+	),
+
+	array(
+		"url" => "/check/sisters_followers",
+		"icon" => "auto_graph",
+		"title" => "Sisters Follower",
 	),
 
 );

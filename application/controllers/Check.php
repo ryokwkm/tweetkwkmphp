@@ -54,8 +54,6 @@ class Check extends MY_Controller {
 		}
 
 
-
-//		$this->vd["debug"] = true;
 		$this->vd["users"] = $users;
 		$this->vd["formDefault"] = $params;
 
@@ -162,15 +160,24 @@ class Check extends MY_Controller {
 		return array($ret, $labels, $max);
 	}
 
+	public function followers() {
+		$users = $this->appuser_model->GetPublicAndNotSisters();
+		$this->makeFollowers($users);
+	}
+
+	public function sisters_followers() {
+		$users = $this->appuser_model->GetSisters();
+		$this->makeFollowers($users);
+	}
 
 	/**
 	 * フォロワーチェック
 	 */
-	public function followers()
+	private function makeFollowers($users)
 	{
 		$this->vd += $this->session_model->GetFlash();
 		//ユーザー一覧を先に取得しておく
-		$users = $this->appuser_model->GetPublicUsers();
+
 		$params = $this->validation($users, $this->input->get(), 30);
 
 
