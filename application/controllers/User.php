@@ -20,6 +20,7 @@ class User extends MY_Controller {
 	{
 		$this->vd += $this->session_model->GetFlash();
 		$this->vd["twitterUsers"] = $this->appuser_model->GetPublicAndNotSisters();
+		$this->vd["memo"] = "情報をつぶやくBot達。";
 		$this->vd["contents"] = $this->load->view('general/list', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
@@ -28,6 +29,7 @@ class User extends MY_Controller {
 	{
 		$this->vd += $this->session_model->GetFlash();
 		$this->vd["twitterUsers"] = $this->appuser_model->GetSisters();
+		$this->vd["memo"] = "Sistersは一般人のように振る舞うことを目的としたBot。実験中";
 		$this->vd["contents"] = $this->load->view('general/list', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}

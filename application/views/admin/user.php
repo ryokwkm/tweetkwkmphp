@@ -97,6 +97,7 @@ if(!empty($general)) {
 
 </script>
 
+
 <div class="container-fluid" >
 
 	<?php if($adminMode) { ?>

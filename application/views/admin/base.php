@@ -28,6 +28,15 @@
 			<?= $navBar; ?>
 
       <div class="content" >
+				<?php
+					//ページ内容のメモがあれば表示する
+					if(isset($memo) && strlen($memo) > 0 ) { ?>
+					<div class="container-fluid">
+						<p class=" text-secondary">
+							<?= $memo; ?>
+						</p>
+					</div>
+				<?php } ?>
 
 				<?= $contents; ?>
 				<?= $footer; ?>

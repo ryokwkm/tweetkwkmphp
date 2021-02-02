@@ -33,7 +33,8 @@ class MY_Controller extends CI_Controller {
 		$this->vd = array(
 			"debug" => false,
 			"general" => false,
-			"login" => $this->session_model->IsLogin());
+			"login" => $this->session_model->IsLogin(),
+			"memo" => "");
 	}
 
 
