@@ -431,6 +431,7 @@ if(!empty($general)) {
 															>
 																<?= $genre ?>
 															</option>
+															<option value="">ジャンルを選択</option>
 														<?php } ?>
 													<?php	} 	?>
 												</select>
