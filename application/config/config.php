@@ -84,6 +84,15 @@ $config["general_pages"] = array(
 
 );
 
+$config['trend_genre'] = array(
+	"s" => "スポーツ",
+	"e" => "エンタメ",
+	"b" => "ビジネス",
+	"h" => "健康",
+	"m" => "主要ニュース",
+	"t" => "サイエンス＆テクノロジー",
+	"all" => "全て",
+);
 
 $config['base_url'] = '';
 

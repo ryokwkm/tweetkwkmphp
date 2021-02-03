@@ -50,14 +50,14 @@ if(!empty($general)) {
 
 	}
 
-	function DispCharaMode() {
-		$this = $('input[name="character_mode"]:checked');
+	function ChangeRadio() {
+		$charaMode = $('input[name="character_mode"]:checked');
 
-		if( $this.val() == 1) {
+		if( $charaMode.val() == 1) {
 			$(".character_mode1").show();
 			$(".character_mode2").hide();
 			$(".serif_setting").show();
-		} else if( $this.val() == 2) {
+		} else if( $charaMode.val() == 2) {
 			$(".character_mode1").hide();
 			$(".character_mode2").show();
 			$(".serif_setting").show();
@@ -66,6 +66,18 @@ if(!empty($general)) {
 			$(".character_mode2").hide();
 			$(".serif_setting").hide();
 		}
+
+		$searchMode = $('input[name="search_mode"]:checked');
+		console.log($searchMode.val())
+		if( $searchMode.val() == 2 || $searchMode.val() == 3) {
+			$(".keyword_disp_box").show();
+			$(".ranking_disp_box").hide();
+		} else if ($searchMode.val() == 1 ) {
+			//リアルタイムランキング
+			$(".keyword_disp_box").hide();
+			$(".ranking_disp_box").show();
+		}
+
 	}
 
 	function ChangeExeRate(){
@@ -80,15 +92,15 @@ if(!empty($general)) {
 		$('input[type="checkbox"]').each(function(){
 			DisplayProfileForm($(this));
 		});
-		DispCharaMode();
+		ChangeRadio();
 		ChangeExeRate();
 
 
 		$('input[type="checkbox"]').change(function(){
 			DisplayProfileForm($(this));
 		});
-		$('input[name="character_mode"]').change(function(){
-			DispCharaMode();
+		$('input[type="radio"]').change(function(){
+			ChangeRadio();
 		});
 		$('input[name="exe_rate"]').change(function(){
 			ChangeExeRate();
@@ -280,6 +292,10 @@ if(!empty($general)) {
 													$("#target_character").change(function(){
 														$("#target_character_id").val( $(this).val() );
 													});
+
+													$("#search_genre").change(function(){
+														$('input[name="search_genre"]').val( $(this).val() );
+													});
 												});
 											</script>
 
@@ -327,7 +343,6 @@ if(!empty($general)) {
 										<div class="col-md-12">
 											<div class="togglebutton">
 												<label>
-													<input type="hidden" name="search_mode" value="2">
 													<input type="checkbox" name="is_search" value="1" id="input_trendsearch" <?php if($appuser["is_search"] == 1) echo "checked" ?> <?= $readOnly ?> >
 													<span class="toggle"></span>
 													トレンドサーチ
@@ -339,13 +354,16 @@ if(!empty($general)) {
 										<div class="col-md-12 trendsearch_box">
 
 											<?php
+											$search_mode1 = "";
 											$search_mode2 = "";
-											$search_mode3 = "";
+											$search_mode3 = ""; //デフォルトは3
 											if(empty($appuser["search_mode"]) || $appuser["search_mode"] == 3) {
 												$search_mode3 = " checked";
 											} else if($appuser["search_mode"] == 2) {
 												$search_mode2 = " checked";
-											} ?>
+											} else if($appuser["search_mode"] == 1) {
+												$search_mode1 = " checked";
+											}?>
 
 											<div class="form-check form-check-radio">
 												<label class="form-check-label">
@@ -366,6 +384,17 @@ if(!empty($general)) {
 													</span>
 												</label>
 											</div>
+
+											<div class="form-check form-check-radio">
+												<label class="form-check-label">
+													<input class="form-check-input" type="radio" name="search_mode" value="1" <?= $search_mode1 ?>  <?= $readOnly ?>>
+													トレンドランキング
+													<span class="circle">
+															<span class="check"></span>
+														</span>
+												</label>
+											</div>
+
 										</div>
 
 										<div class="col-md-6 trendsearch_box">
@@ -382,10 +411,29 @@ if(!empty($general)) {
 											</div>
 										</div>
 
-										<div class="col-md-6 trendsearch_box">
+										<!--		キーワード検索								-->
+										<div class="col-md-6 trendsearch_box keyword_disp_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">トレンド検索キーワード</label>
 												<input type="text" name="search_keyword" class="form-control" value="<?= $appuser["search_keyword"] ?>" placeholder="fate fgo" <?= $readOnly ?>>
+											</div>
+										</div>
+
+										<div class="col-md-6 trendsearch_box ranking_disp_box">
+											<div class="form-group">
+												<input type="hidden" name="search_genre" value="<?= $appuser["search_genre"]; ?>">
+												<select class="form-control selectpicker" data-style="btn btn-link" id="search_genre" <?= $readOnly ?>>
+													<?php
+													if (!empty($trend_genre)) { ?>
+														<?php foreach($trend_genre as $key=>$genre) {	?>
+															<option value="<?= $key ?>"
+																<?php if($appuser["search_genre"] == $key) { echo " selected"; } ?>
+															>
+																<?= $genre ?>
+															</option>
+														<?php } ?>
+													<?php	} 	?>
+												</select>
 											</div>
 										</div>
 

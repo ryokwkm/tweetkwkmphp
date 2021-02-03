@@ -18,6 +18,7 @@ class Mypage_model extends CI_Model {
 		$this->GetBaseTemplate($CI);
 		$CI->vd["appuser"] = $this->appuser_model->FindByID($appID);
 		$CI->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
+		$CI->vd["trend_genre"] = $this->config->item("trend_genre");
 		$CI->vd += $this->session_model->GetFlash();
 	}
 

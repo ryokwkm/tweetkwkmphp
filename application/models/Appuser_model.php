@@ -35,6 +35,7 @@ class Appuser_model extends CI_Model {
 		"search_rate",
 		"search_count",
 		"search_keyword",
+		"search_genre",
 		"panda_keyword",
 		"search_option",
 		"fire_lv",
@@ -182,8 +183,11 @@ class Appuser_model extends CI_Model {
 			}
 		}
 
-		if($ups["is_search"] == 1 && empty($ups["search_keyword"]) ) {
-			throw new Exception("トレンドを検索する場合は、トレンド検索キーワードを指定してください");
+		if($ups["is_search"] == 1 && empty($ups["search_keyword"])) {
+			//トレンド検索の場合（リアルタイム検索でない場合）
+			if( $ups["search_mode"] == 2 || $ups["search_mode"] == 3 ) {
+				throw new Exception("トレンドを検索する場合は、トレンド検索キーワードを指定してください");
+			}
 		}
 		if(!empty($ups["search_keyword"])) {
 			$spaceCount = explode(",", $ups["search_keyword"]);
