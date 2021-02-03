@@ -12,7 +12,7 @@
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-header card-header-primary">
-				ユーザーリスト
+				ユーザーリスト（<?php echo count($twitterUsers); ?>）
 
 			</div>
 			<div class="card-body" id="status_off">
