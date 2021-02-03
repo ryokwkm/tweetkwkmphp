@@ -423,6 +423,7 @@ if(!empty($general)) {
 											<div class="form-group">
 												<input type="hidden" name="search_genre" value="<?= $appuser["search_genre"]; ?>">
 												<select class="form-control selectpicker" data-style="btn btn-link" id="search_genre" <?= $readOnly ?>>
+													<option value="">ジャンルを選択</option>
 													<?php
 													if (!empty($trend_genre)) { ?>
 														<?php foreach($trend_genre as $key=>$genre) {	?>
@@ -431,7 +432,6 @@ if(!empty($general)) {
 															>
 																<?= $genre ?>
 															</option>
-															<option value="">ジャンルを選択</option>
 														<?php } ?>
 													<?php	} 	?>
 												</select>
