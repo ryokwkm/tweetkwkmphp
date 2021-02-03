@@ -80,7 +80,7 @@ $chartData = json_encode($chartArray, JSON_UNESCAPED_UNICODE);
 				フォロワー推移
 			</div>
 			<div class="card-body" id="main_form">
-				<form action="followers" method="get">
+				<form action="" method="get">
 				<div class="row">
 
 
