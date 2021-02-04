@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 $config["version"] = 1;
-$config["site_title"] = "キュレーター・メーカー（仮）";
+$config["site_title"] = "りょーんBot研究所";
 
 $config["create_app"] = "createapp";	//エンドユーザーによるBot作成
 $config["create_app_admin"] = "createadmin"; //adminによるBot作成
