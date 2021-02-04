@@ -49,6 +49,7 @@ class User extends MY_Controller {
 		}
 		$this->vd["appuser"] = $appuser;
 		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
+		$this->vd["trend_genre"] = $this->config->item("trend_genre");
 		$this->vd += $this->session_model->GetFlash();
 		$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
