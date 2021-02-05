@@ -72,7 +72,7 @@ if(!empty($general)) {
 		if( $searchMode.val() == 2 || $searchMode.val() == 3) {
 			$(".keyword_disp_box").show();
 			$(".ranking_disp_box").hide();
-		} else if ($searchMode.val() == 1 ) {
+		} else {
 			//リアルタイムランキング
 			$(".keyword_disp_box").hide();
 			$(".ranking_disp_box").show();
