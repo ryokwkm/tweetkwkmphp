@@ -9334,7 +9334,7 @@ fieldset[disabled] .form-group .form-control {
     position: absolute;
     width: 100%;
     padding-top: 10px;
-    z-index: 1029; }
+    z-index: 900; }
   .navbar .navbar-wrapper {
     display: inline-flex;
     align-items: center; }
