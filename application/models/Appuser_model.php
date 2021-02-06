@@ -20,6 +20,7 @@ class Appuser_model extends CI_Model {
 		"is_reply",
 		"is_replyreply",
 		"is_wasshoi",
+		"wasshoi_rate",
 		"fire_lv",
 		"reply_retweet",
 		"followback"
@@ -47,6 +48,7 @@ class Appuser_model extends CI_Model {
 		"is_reply",
 		"is_replyreply",
 		"is_wasshoi",
+		"wasshoi_rate",
 		"reply_retweet",
 		"followback",
 		"memo",

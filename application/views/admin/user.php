@@ -15,6 +15,32 @@ if(!empty($general)) {
 		margin-bottom: 0px;
 	}
 
+	.wrap {
+		display:-webkit-box;
+		display:-ms-flexbox;
+		display:flex;
+		height:30px;
+	}
+	.between {
+		-webkit-box-pack:justify;
+		-ms-flex-pack:justify;
+		justify-content:space-between;
+	}
+
+	.guage-label {
+		margin:0px;
+	}
+
+	#sliderWasshoi .noUi-connect {
+		background: #9c27b0;
+	}
+
+	#sliderWasshoi .noUi-origin {
+		width: 0%;
+	}
+
+
+
 
 </style>
 
@@ -38,6 +64,12 @@ if(!empty($general)) {
 			$(".news_box").hide();
 		}
 
+		if ($('input[name="is_wasshoi"]').prop('checked')) {
+			$(".wasshoirate_box").show();
+		} else {
+			$(".wasshoirate_box").hide();
+		}
+
 		if ($("#input_main_status").prop('checked')) {
 			$("#main_form").show();
 			$("#status_off").hide();
@@ -45,6 +77,7 @@ if(!empty($general)) {
 			$("#status_off").show();
 			$("#main_form").hide();
 		}
+
 
 
 
@@ -565,39 +598,42 @@ if(!empty($general)) {
 													<span id="input_is_wasshoi_text"></span>
 												</label>
 											</div>
+
+
 										</div>
 
-										<div class="col-md-12">
-											aaa
+										<div class="col-md-12 wasshoirate_box">
+											<div class="form-group">
+												<p class="text-muted">わっしょい貢献割合</p>
+												<div class="wrap between">
+													<small class="guage-label text-muted">← いいねされない</small>
+													<small class="guage-label text-muted">いいねされる →</small>
+												</div>
 
-											<div id="sliderRegular" class="slider"></div>
-											<br>
-											<div id="sliderDouble" class="slider slider-rose"></div>
-											<script>
-												<!-- Javascript -->
-												var slider = document.getElementById('sliderRegular')
-												console.log("slider", slider)
-												noUiSlider.create(slider, {
-													start: 40,
-													connect: [true,false],
-													range: {
-														min: 0,
-														max: 100
+												<input type="hidden" name="wasshoi_rate" value="<?= $appuser["wasshoi_rate"] ?>" >
+												<div id="sliderWasshoi" class="slider"></div>
+												<script>
+													$(function(){
+														var slider = document.getElementById('sliderWasshoi')
+														noUiSlider.create(slider, {
+															start: <?= $appuser["wasshoi_rate"] ?>,
+															step: 1,
+															connect: true,
+															tooltips: true,
+															range: {
+																min: 0,
+																max: 100
+															}
+														});
+
+														slider.noUiSlider.on('change.one', doSomething);
+													});
+													function doSomething(values, handle, unencoded, tap, positions, noUiSlider) {
+														$('input[name="wasshoi_rate"]').val(positions[0]);
 													}
-												});
+												</script>
+											</div>
 
-												var slider2 = document.getElementById('sliderDouble');
-
-												noUiSlider.create(slider2, {
-													start: [ 20, 60 ],
-													connect: true,
-													range: {
-														min:  0,
-														max:  100
-													}
-
-												});
-											</script>
 										</div>
 									</div>
 								</div>
