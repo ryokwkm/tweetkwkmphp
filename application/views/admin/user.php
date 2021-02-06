@@ -567,6 +567,38 @@ if(!empty($general)) {
 											</div>
 										</div>
 
+										<div class="col-md-12">
+											aaa
+
+											<div id="sliderRegular" class="slider"></div>
+											<br>
+											<div id="sliderDouble" class="slider slider-rose"></div>
+											<script>
+												<!-- Javascript -->
+												var slider = document.getElementById('sliderRegular')
+												console.log("slider", slider)
+												noUiSlider.create(slider, {
+													start: 40,
+													connect: [true,false],
+													range: {
+														min: 0,
+														max: 100
+													}
+												});
+
+												var slider2 = document.getElementById('sliderDouble');
+
+												noUiSlider.create(slider2, {
+													start: [ 20, 60 ],
+													connect: true,
+													range: {
+														min:  0,
+														max:  100
+													}
+
+												});
+											</script>
+										</div>
 									</div>
 								</div>
 							</div>

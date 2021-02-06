@@ -38,6 +38,20 @@ class Auth extends MY_Controller {
 		$this->load->view('admin/noside_base', $data);
 	}
 
+	public function admin_regist()
+	{
+		$data = $this->getBaseTemplate();
+
+		$d = array();
+		//通常のBot作成
+		$d["account_name"] = $this->config->item("create_app");
+		$d["title"] = "指定登録";
+		$d["is_admin"] = true;
+		$data["contents"] = $this->load->view('admin/regist', $d, TRUE);
+
+		$this->load->view('admin/noside_base', $data);
+	}
+
 	//sisters作成
 	public function sisters_regist()
 	{
@@ -75,13 +89,7 @@ class Auth extends MY_Controller {
 
 		$appName = $this->setAuthSession($appName);
 
-
 		$twitterApps = $this->getApp($appName);
-		if(empty($twitterApps)) {
-			echo " アプリが見つからない";
-			exit;
-		}
-
 		$twitterApp = $twitterApps[0];
 		//TwitterOAuth をインスタンス化
 		$connection = new TwitterOAuth($twitterApp["consumerkey"], $twitterApp["consumersecret"]);
@@ -141,8 +149,12 @@ class Auth extends MY_Controller {
 				break;
 
 			default:
-				echo '不正アクセス';
-				exit;
+				$twitterApps = $this->getApp($appName);
+				if(empty($twitterApps)) {
+					echo '不正アクセス';
+					exit;
+				}
+				$_SESSION['create_mode'] = $this->config->item("create_app_admin");
 
 		}
 
@@ -236,7 +248,9 @@ class Auth extends MY_Controller {
 		$this->db->replace("twitter_users", $data);
 
 		//sistersの場合、親の設定をコピー
-		$this->appuser_model->CopyParentByID($_SESSION['parent_id']);
+		if($_SESSION['create_mode'] == $this->config->item("create_app_sisters")) {
+			$this->appuser_model->CopyParentByID($_SESSION['parent_id']);
+		}
 	}
 
 	private function enduserRegist($twitterApp, $twitterProfile) {

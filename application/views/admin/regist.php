@@ -9,13 +9,23 @@
 				</div>
 				<div class="card-body">
 					<form action="/auth/login" method="post">
-						<input type="hidden" name="account_name" value="<?= $account_name; ?>">
 
 						<p class="category">
 							Botを新たに作成します。<br>
 							Bot化したいTwitterアカウントでログインしてください。<br>
 							電源ボタンをOffにすることで、Botはいつでも停止させることが出来ます。<br>
 						</p>
+
+						<?php if (!empty($is_admin)) { ?>
+						<div class="form-group">
+							Botアプリ名<br>
+
+							<input class="form-control "type="text" name="account_name" >
+						</div>
+
+						<?php } else { ?>
+							<input type="hidden" name="account_name" value="<?= $account_name; ?>">
+						<?php } ?>
 
 						<?php if (!empty($sisters)) { ?>
 
