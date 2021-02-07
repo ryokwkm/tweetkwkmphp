@@ -606,8 +606,9 @@ if(!empty($general)) {
 											<div class="form-group">
 												<p class="text-muted">わっしょい貢献割合</p>
 												<div class="wrap between">
-													<small class="guage-label text-muted">← いいねされない</small>
-													<small class="guage-label text-muted">いいねされる →</small>
+													<small class="guage-label text-muted">← いいねされない（自分がいいねするのみ）</small>
+													<small class="guage-label text-muted">両方行う</small>
+													<small class="guage-label text-muted">いいねされる（自分はいいねをしない） →</small>
 												</div>
 
 												<input type="hidden" name="wasshoi_rate" value="<?= $appuser["wasshoi_rate"] ?>" >
