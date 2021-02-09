@@ -120,12 +120,12 @@ if(!empty($general)) {
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	//全て更新しないと、たまに整合性がなくなる（トレンドサーチまわりがちょっとおかしかった）
+	//全て更新しないと、たまに整合性がなくなる
+	//トレンドサーチは checkbox によるOn Off
 	function updateForm() {
-		DisplayProfileForm();
 		ChangeRadio();
 		ChangeExeRate();
-
+		DisplayProfileForm();
 	}
 
 	$(document).ready(function() {
@@ -446,16 +446,17 @@ if(!empty($general)) {
 											</div>
 										</div>
 
-										<!--		キーワード検索								-->
-										<div class="col-md-6 trendsearch_box keyword_disp_box">
-											<div class="form-group">
+
+										<div class="col-md-6 trendsearch_box ">
+
+											<!--		キーワード検索								-->
+											<div class="form-group keyword_disp_box">
 												<label for="exampleInputPassword1">トレンド検索キーワード</label>
 												<input type="text" name="search_keyword" class="form-control" value="<?= $appuser["search_keyword"] ?>" placeholder="fate fgo" <?= $readOnly ?>>
 											</div>
-										</div>
 
-										<div class="col-md-6 trendsearch_box ranking_disp_box">
-											<div class="form-group">
+											<!--		ランキングジャンル					-->
+											<div class="form-group ranking_disp_box">
 												<input type="hidden" name="search_genre" value="<?= $appuser["search_genre"]; ?>">
 												<select class="form-control selectpicker" data-style="btn btn-link" id="search_genre" <?= $readOnly ?>>
 													<option value="">ジャンルを選択</option>
@@ -481,7 +482,7 @@ if(!empty($general)) {
 										</div>
 
 										<?php if ($adminMode) {  //編集モードのときのみ表示  ?>
-										<div class="col-md-12">
+										<div class="col-md-12 trendsearch_box">
 											<div class="form-group">
 												<label for="exampleInputPassword1">パンダ検索キーワード</label>
 												<input type="text" name="panda_keyword" class="form-control" value="<?= $appuser["panda_keyword"] ?>" placeholder="fate fgo" <?= $readOnly ?>>
