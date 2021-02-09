@@ -45,7 +45,7 @@ if(!empty($general)) {
 </style>
 
 <script>
-	function DisplayProfileForm($elm) {
+	function DisplayProfileForm() {
 		if ($("#input_trendsearch").prop('checked')) {
 			$(".trendsearch_box").show();
 		} else {
@@ -101,7 +101,7 @@ if(!empty($general)) {
 		}
 
 		$searchMode = $('input[name="search_mode"]:checked');
-		console.log($searchMode.val())
+		console.log("$searchMode.val()", $searchMode.val())
 		if( $searchMode.val() == 2 || $searchMode.val() == 3) {
 			$(".keyword_disp_box").show();
 			$(".ranking_disp_box").hide();
@@ -120,23 +120,25 @@ if(!empty($general)) {
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-	$(document).ready(function() {
-		$('input[type="checkbox"]').each(function(){
-			DisplayProfileForm($(this));
-		});
+	//全て更新しないと、たまに整合性がなくなる（トレンドサーチまわりがちょっとおかしかった）
+	function updateForm() {
+		DisplayProfileForm();
 		ChangeRadio();
 		ChangeExeRate();
 
+	}
+
+	$(document).ready(function() {
+		updateForm();
 
 		$('input[type="checkbox"]').change(function(){
-			DisplayProfileForm($(this));
+			updateForm();
 		});
 		$('input[type="radio"]').change(function(){
-			ChangeRadio();
+			updateForm();
 		});
 		$('input[name="exe_rate"]').change(function(){
-			ChangeExeRate();
+			updateForm();
 		});
 	});
 
