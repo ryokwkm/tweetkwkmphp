@@ -8,7 +8,7 @@ class User extends MY_Controller {
 		parent::__construct();
 //		$this->debugMode();
 		$this->vd = $this->getBaseTemplate(false);
-		$this->vd["general"] = true;
+		$this->vd["adminMode"] = false;
 	}
 
 	public function index()
@@ -47,10 +47,7 @@ class User extends MY_Controller {
 			echo "不正アクセス";
 			exit;
 		}
-		$this->vd["appuser"] = $appuser;
-		$this->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
-		$this->vd["trend_genre"] = $this->config->item("trend_genre");
-		$this->vd += $this->session_model->GetFlash();
+		$this->mypage_model->MakeUserTpl($this, $appID);
 		$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}

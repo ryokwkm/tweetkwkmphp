@@ -8,7 +8,7 @@ class Check extends MY_Controller {
 		parent::__construct();
 //		$this->debugMode();
 		$this->vd = $this->getBaseTemplate(false);
-		$this->vd["general"] = true;
+		$this->vd["adminMode"] = false;
 	}
 
 	public function limit() {

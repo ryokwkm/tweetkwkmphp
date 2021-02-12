@@ -1,10 +1,8 @@
 <?php
 
-$adminMode = true;
 $readOnly = "";
 
-if(!empty($general)) {
-	$adminMode = false;
+if(empty($adminMode)) {
 	$readOnly = " disabled='disabled' ";
 }
 ?>
@@ -101,7 +99,6 @@ if(!empty($general)) {
 		}
 
 		$searchMode = $('input[name="search_mode"]:checked');
-		console.log("$searchMode.val()", $searchMode.val())
 		if( $searchMode.val() == 2 || $searchMode.val() == 3) {
 			$(".keyword_disp_box").show();
 			$(".ranking_disp_box").hide();

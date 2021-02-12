@@ -8,6 +8,7 @@ class Mypage extends MY_Controller {
 		if($this->session_model->IsLogin() == false ) {
 			header( 'location: /auth/index' );
 		}
+		$this->vd["adminMode"] = true;
 	}
 
 
