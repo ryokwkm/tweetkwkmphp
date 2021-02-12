@@ -37,7 +37,6 @@ class Mypage extends MY_Controller {
 	public function user($appID=0) {
 
 		$this->mypage_model->MakeUserTpl($this, $appID);
-		$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
 
@@ -66,7 +65,6 @@ class Mypage extends MY_Controller {
 			}
 			$this->vd["appuser"] = $this->params->OverWrite($this->vd["appuser"], $posts);
 
-			$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
 			$this->load->view('admin/base', $this->vd);
 			return;
 		}

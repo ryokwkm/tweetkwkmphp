@@ -20,6 +20,9 @@ class Mypage_model extends CI_Model {
 		$CI->vd["characters"] = $this->acharacter_model->FindByStoryID(1);
 		$CI->vd["trend_genre"] = $this->config->item("trend_genre");
 		$CI->vd += $this->session_model->GetFlash();
+
+		//viewを読み込み
+		$CI->vd["contents"] = $this->load->view('admin/user', $CI->vd, TRUE);
 	}
 
 	/**

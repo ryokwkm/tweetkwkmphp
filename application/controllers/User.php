@@ -48,7 +48,6 @@ class User extends MY_Controller {
 			exit;
 		}
 		$this->mypage_model->MakeUserTpl($this, $appID);
-		$this->vd["contents"] = $this->load->view('admin/user', $this->vd, TRUE);
 		$this->load->view('admin/base', $this->vd);
 	}
 
