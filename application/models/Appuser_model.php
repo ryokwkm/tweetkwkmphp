@@ -15,6 +15,7 @@ class Appuser_model extends CI_Model {
 	public $checkboxs = array(
 		"character_mode",	//0がある
 		"is_search",
+		"is_keyword_shuffle",
 		"serif_relation_retweet",
 		"is_news",
 		"is_reply",
@@ -41,6 +42,7 @@ class Appuser_model extends CI_Model {
 		"search_option",
 		"fire_lv",
 		"is_search",
+		"is_keyword_shuffle",
 		"serif_relation_retweet",
 		"search_mode",
 		"is_news",
