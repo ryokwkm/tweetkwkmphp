@@ -513,7 +513,7 @@ if(empty($appuser["character_mode"])) {
 			</div>
 
 
-			<div class="col-md-6 trendsearch_box">
+			<div class="col-md-12 trendsearch_box">
 				<div class="form-group">
 					<label for="exampleInputPassword1">実行確率</label>
 					<input type="number" name="search_rate" class="form-control"  min="0" max="100" value="<?= $appuser["search_rate"] ?>" <?= $readOnly ?>>
