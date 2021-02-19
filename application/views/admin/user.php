@@ -536,16 +536,6 @@ if(empty($appuser["character_mode"])) {
 				</div>
 			</div>
 
-			<?php if ($adminMode) {  //編集モードのときのみ表示  ?>
-			<div class="col-md-12 trendsearch_box">
-				<div class="form-group">
-					<label for="exampleInputPassword1">パンダ検索キーワード</label>
-					<input type="text" name="panda_keyword" class="form-control" value="<?= $appuser["panda_keyword"] ?>" placeholder="fate fgo" <?= $readOnly ?>>
-				</div>
-			</div>
-			<?php } ?>
-
-
 		</div>
 
 	</div>
@@ -656,9 +646,18 @@ if(empty($appuser["character_mode"])) {
 						<span id="input_is_wasshoi_text"></span>
 					</label>
 				</div>
-
-
 			</div>
+
+
+			<?php if ($adminMode) {  //編集モードのときのみ表示  ?>
+				<div class="col-md-12 trendsearch_box" style="margin-top: 10px;">
+					<div class="form-group">
+						<label for="exampleInputPassword1">パンダ検索キーワード</label>
+						<input type="text" name="panda_keyword" class="form-control" value="<?= $appuser["panda_keyword"] ?>" placeholder="fate fgo" <?= $readOnly ?>>
+					</div>
+				</div>
+			<?php } ?>
+
 
 			<div class="col-md-12 wasshoirate_box">
 				<div class="form-group">
