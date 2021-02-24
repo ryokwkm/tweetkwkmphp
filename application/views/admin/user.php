@@ -539,7 +539,7 @@ if(empty($appuser["character_mode"])) {
 			<div class="col-md-6 trendsearch_box">
 				<div class="form-group">
 					<label for="exampleInputPassword1">リツイートする下限いいね数</label>
-					<input type="number" name="search_ret_under" class="form-control" min="0" max="20" value="<?= $appuser["search_ret_under"] ?>"  <?= $readOnly ?>>
+					<input type="number" name="search_ret_under" class="form-control" min="0" max="100000" value="<?= $appuser["search_ret_under"] ?>"  <?= $readOnly ?>>
 				</div>
 			</div>
 
