@@ -529,14 +529,14 @@ if(empty($appuser["character_mode"])) {
 
 
 
-			<div class="col-md-6 trendsearch_box">
+			<div class="col-md-6">
 				<div class="form-group">
-					<label for="exampleInputPassword1">リアクション数</label>
+					<label for="exampleInputPassword1">リツイート数 (/ランキング)</label>
 					<input type="number" name="fire_lv" class="form-control" min="0" max="20" value="<?= $appuser["fire_lv"] ?>" <?= $readOnly ?>>
 				</div>
 			</div>
 
-			<div class="col-md-6 trendsearch_box">
+			<div class="col-md-6">
 				<div class="form-group">
 					<label for="exampleInputPassword1">リツイートする下限いいね数</label>
 					<input type="number" name="search_ret_under" class="form-control" min="0" max="100000" value="<?= $appuser["search_ret_under"] ?>"  <?= $readOnly ?>>
