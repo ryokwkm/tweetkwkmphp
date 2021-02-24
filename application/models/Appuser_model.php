@@ -23,6 +23,7 @@ class Appuser_model extends CI_Model {
 		"is_wasshoi",
 		"wasshoi_rate",
 		"fire_lv",
+		"search_ret_under",
 		"reply_retweet",
 		"followback"
 	);
@@ -41,6 +42,7 @@ class Appuser_model extends CI_Model {
 		"panda_keyword",
 		"search_option",
 		"fire_lv",
+		"search_ret_under",
 		"is_search",
 		"is_keyword_shuffle",
 		"serif_relation_retweet",
