@@ -65,7 +65,7 @@ class Appuser_model extends CI_Model {
 		"news_keyword",
 	);
 
-	public $keywordLimit = 15;
+	public $keywordLimit = 50;
 
 
 
