@@ -33,6 +33,7 @@ class Appuser_model extends CI_Model {
 		"exe_rate",
 		"serif_rate",
 		"character_mode",
+		"target_user_id",
 		"target_character_id",
 		"target_screen_name",
 		"search_rate",
